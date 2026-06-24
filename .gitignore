@@ -1,0 +1,5 @@
+/ccc-server
+/ccc
+*.db
+*.db-wal
+*.db-shm
