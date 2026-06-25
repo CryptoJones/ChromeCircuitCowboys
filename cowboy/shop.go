@@ -1,6 +1,9 @@
 package cowboy
 
-import "strings"
+import (
+	"strconv"
+	"strings"
+)
 
 func (w *World) atVendor(p *Player) bool {
 	r := w.room(p.RoomID)
@@ -26,9 +29,9 @@ func (w *World) list(p *Player) {
 		p.send(style(dim, "There's no vendor here.") + crlf)
 		return
 	}
-	p.send(style(neon, "-- Vendor wares (BUY <item>) --") + crlf)
-	for _, x := range shopWares {
-		p.send("  " + style(gold, "€$"+itoa(x.price)) + "  " + x.name + style(dim, " — "+x.desc) + crlf)
+	p.send(style(neon, "-- Vendor wares (BUY <#> or <item>) --") + crlf)
+	for i, x := range shopWares {
+		p.send("  " + style(gold, itoa(i+1)+")") + " " + style(gold, "€$"+itoa(x.price)) + "  " + x.name + style(dim, " — "+x.desc) + crlf)
 	}
 	p.send(style(dim, "You have €$"+itoa(p.Eddies)+".") + crlf)
 }
@@ -38,48 +41,80 @@ func (w *World) buy(p *Player, arg string) {
 		p.send(style(dim, "There's no vendor here.") + crlf)
 		return
 	}
-	name := strings.ToLower(strings.TrimSpace(arg))
-	x, ok := findWare(name)
+	// Syntax: BUY <#|name> [qty]  — e.g. "buy 3 4" = four of item 3. Default qty 1.
+	fields := strings.Fields(arg)
+	if len(fields) == 0 {
+		p.send(style(dim, "Buy what? Type LIST.") + crlf)
+		return
+	}
+	var x ware
+	var ok bool
+	if n, err := strconv.Atoi(fields[0]); err == nil {
+		if n >= 1 && n <= len(shopWares) {
+			x, ok = shopWares[n-1], true
+		}
+	} else {
+		x, ok = findWare(strings.ToLower(fields[0]))
+	}
 	if !ok {
 		p.send(style(dim, "No such item. Type LIST.") + crlf)
 		return
 	}
-	if p.Eddies < x.price {
-		p.send(style(red, "Not enough scrip (need €$"+itoa(x.price)+").") + crlf)
-		return
-	}
-	p.Eddies -= x.price
-	if x.bonus > 0 {
-		// A weapon: only upgrades (don't let a cheaper buy downgrade you).
-		if x.bonus <= p.WeaponBonus {
-			p.send(style(dim, "Your current weapon is already better.") + crlf)
-			p.Eddies += x.price // refund
+	qty := 1
+	if len(fields) >= 2 {
+		q, err := strconv.Atoi(fields[1])
+		if err != nil || q < 1 {
+			p.send(style(dim, "Quantity must be a positive number.") + crlf)
 			return
 		}
-		p.WeaponBonus = x.bonus
-		p.WeaponName = x.name
+		qty = q
+	}
+
+	// Weapons and cyberdecks are permanent one-time UPGRADES — quantity doesn't
+	// apply; always a single purchase.
+	if x.bonus > 0 {
+		if x.bonus <= p.WeaponBonus {
+			p.send(style(dim, "Your current weapon is already better.") + crlf)
+			return
+		}
+		if p.Eddies < x.price {
+			p.send(style(red, "Not enough scrip (need €$"+itoa(x.price)+").") + crlf)
+			return
+		}
+		p.Eddies -= x.price
+		p.WeaponBonus, p.WeaponName = x.bonus, x.name
 		p.send(style(green, "You jack in the "+x.name+". Attack +"+itoa(x.bonus)+".") + crlf)
 		return
 	}
 	if x.deck > 0 {
-		// A cyberdeck: only upgrades your max RAM.
 		if x.deck <= p.DeckBonus {
 			p.send(style(dim, "Your current deck is already as good.") + crlf)
-			p.Eddies += x.price // refund
 			return
 		}
+		if p.Eddies < x.price {
+			p.send(style(red, "Not enough scrip (need €$"+itoa(x.price)+").") + crlf)
+			return
+		}
+		p.Eddies -= x.price
 		p.DeckBonus = x.deck
 		p.RAM = maxRAM(p) // fresh deck boots with full RAM
 		p.send(style(green, "You install the "+x.name+". Max RAM is now "+itoa(maxRAM(p))+".") + crlf)
 		return
 	}
-	if invCount(p) >= carryCap(p) {
-		p.Eddies += x.price // refund — the buy is refused
-		p.send(style(dim, "Your pack is full ("+itoa(invCount(p))+"/"+itoa(carryCap(p))+"). STASH something at your Re-Clone Bay first.") + crlf)
+
+	// Consumables: buy qty of them.
+	cost := x.price * qty
+	if p.Eddies < cost {
+		p.send(style(red, "Not enough scrip ("+itoa(qty)+"x "+x.name+" = €$"+itoa(cost)+").") + crlf)
 		return
 	}
-	p.Inv[x.name]++
-	p.send(style(green, "Bought "+x.name+". You have "+itoa(p.Inv[x.name])+".") + crlf)
+	if invCount(p)+qty > carryCap(p) {
+		p.send(style(dim, "That won't fit: "+itoa(invCount(p))+"/"+itoa(carryCap(p))+" carried. STASH something at your Re-Clone Bay first.") + crlf)
+		return
+	}
+	p.Eddies -= cost
+	p.Inv[x.name] += qty
+	p.send(style(green, "Bought "+itoa(qty)+"x "+x.name+" for €$"+itoa(cost)+". You have "+itoa(p.Inv[x.name])+".") + crlf)
 }
 
 // consumeInv removes one of an item, deleting the key when it hits zero.
