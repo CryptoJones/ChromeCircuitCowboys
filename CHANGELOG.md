@@ -5,6 +5,12 @@ All notable changes to **Chrome Circuit Cowboys** are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning: [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2026-06-25
+
+### Added
+- **Arrow-key movement** — Up/Down/Left/Right map to N/S/W/E when you're not
+  mid-typing a command (great on a phone). Closes #2.
+
 ## [1.0.3] - 2026-06-24
 
 ### Fixed
