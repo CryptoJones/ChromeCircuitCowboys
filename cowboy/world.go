@@ -295,7 +295,7 @@ func xpToNext(level int) int { return int(100 * math.Pow(float64(level), 1.4)) }
 
 // MaxLevel is the level cap (classic MUDs cap progression). At the cap, XP stops
 // accumulating and excess is discarded.
-const MaxLevel = 50
+const MaxLevel = 99
 
 func (w *World) checkLevelUp(p *Player) {
 	for p.Level < MaxLevel && p.XP >= xpToNext(p.Level) {
