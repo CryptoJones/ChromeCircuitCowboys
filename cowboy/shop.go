@@ -29,8 +29,9 @@ func (w *World) list(p *Player) {
 		p.send(style(dim, "There's no vendor here.") + crlf)
 		return
 	}
+	wares := waresForRoom(p.RoomID)
 	p.send(style(neon, "-- Vendor wares (BUY <#> or <item>) --") + crlf)
-	for i, x := range shopWares {
+	for i, x := range wares {
 		p.send("  " + style(gold, itoa(i+1)+")") + " " + style(gold, "€$"+itoa(x.price)) + "  " + x.name + style(dim, " — "+x.desc) + crlf)
 	}
 	p.send(style(dim, "You have €$"+itoa(p.Eddies)+".") + crlf)
@@ -47,14 +48,21 @@ func (w *World) buy(p *Player, arg string) {
 		p.send(style(dim, "Buy what? Type LIST.") + crlf)
 		return
 	}
+	wares := waresForRoom(p.RoomID)
 	var x ware
 	var ok bool
 	if n, err := strconv.Atoi(fields[0]); err == nil {
-		if n >= 1 && n <= len(shopWares) {
-			x, ok = shopWares[n-1], true
+		if n >= 1 && n <= len(wares) {
+			x, ok = wares[n-1], true
 		}
 	} else {
-		x, ok = findWare(strings.ToLower(fields[0]))
+		nm := strings.ToLower(fields[0])
+		for _, ww := range wares {
+			if ww.name == nm {
+				x, ok = ww, true
+				break
+			}
+		}
 	}
 	if !ok {
 		p.send(style(dim, "No such item. Type LIST.") + crlf)
