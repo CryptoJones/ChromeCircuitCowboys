@@ -5,6 +5,15 @@ All notable changes to **Chrome Circuit Cowboys** are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning: [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2026-06-25
+
+### Changed
+- **Per-area, level-scaled vendor stock.** Vendors no longer all sell the same
+  global list: the Chrome Rose carries street stims + a starter blade, the Night
+  Market carries better gear + cyberware, and the band safehouses (L30/50/70/90)
+  stock progressively stronger weapons/decks/stims scaled to their depth. The
+  master catalog gained those higher tiers (so looted gear still installs). Closes #1.
+
 ## [1.0.4] - 2026-06-25
 
 ### Added

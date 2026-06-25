@@ -204,8 +204,9 @@ func TestCowboyDeckPersistsRAM(t *testing.T) {
 	p := w.Connect("Case", out)
 	baseMax := 5 + p.Intelligence/2
 
-	w.Command(p, "out")   // re-sleeve bay -> neon_alley
-	w.Command(p, "south") // chrome_bar vendor
+	w.Command(p, "out")   // re-clone bay -> neon_alley
+	w.Command(p, "east")  // the_sprawl
+	w.Command(p, "south") // Night Market — stocks the cyberdeck
 	p.Eddies = 500
 	w.Command(p, "buy cyberdeck")
 	if p.DeckBonus != 8 {

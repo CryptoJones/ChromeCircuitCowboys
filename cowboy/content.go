@@ -1,6 +1,10 @@
 package cowboy
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
 
 // startRoom is where new and respawning cowboys appear — a PRIVATE capsule pod,
 // so a fresh jack-in or a respawn can never be spawn-camped. You step OUT into
@@ -154,13 +158,25 @@ type ware struct {
 	desc  string
 }
 
-// shopWares are sold at any Vendor room.
+// shopWares is the MASTER catalog — every purchasable/loadable item across all
+// tiers. findWare searches it, so any looted item can be used/installed anywhere.
+// What a given vendor actually STOCKS is a per-area subset (see waresForRoom).
 var shopWares = []ware{
+	// Tier 1 — the street (Chrome Rose / Night Market, L1–10).
 	{name: "stimpak", price: 20, heal: 25, desc: "single-use trauma stim, restores 25 HP"},
 	{name: "ram-chip", price: 30, ram: 8, desc: "single-use RAM chip, restores 8 RAM for netruns"},
 	{name: "ice-breaker", price: 150, bonus: 5, desc: "intrusion blade, +5 attack (permanent)"},
 	{name: "mono-katana", price: 400, bonus: 12, desc: "monomolecular katana, +12 attack (permanent)"},
 	{name: "cyberdeck", price: 250, deck: 8, desc: "upgraded deck, +8 max RAM (permanent)"},
+	// Deeper tiers — sold at the band safehouses (better, pricier gear).
+	{name: "trauma-kit", price: 120, heal: 60, desc: "field trauma kit, restores 60 HP"},
+	{name: "mega-stim", price: 400, heal: 120, desc: "military stim, restores 120 HP"},
+	{name: "ram-bank", price: 150, ram: 20, desc: "RAM bank, restores 20 RAM for netruns"},
+	{name: "war-axe", price: 1200, bonus: 20, desc: "powered war-axe, +20 attack (permanent)"},
+	{name: "rail-blade", price: 3000, bonus: 30, desc: "rail-driven blade, +30 attack (permanent)"},
+	{name: "monowire", price: 8000, bonus: 45, desc: "monomolecular wire, +45 attack (permanent)"},
+	{name: "quantum-deck", price: 1500, deck: 16, desc: "quantum deck, +16 max RAM (permanent)"},
+	{name: "neural-deck", price: 6000, deck: 28, desc: "neural-lace deck, +28 max RAM (permanent)"},
 }
 
 func findWare(name string) (ware, bool) {
@@ -170,4 +186,55 @@ func findWare(name string) (ware, bool) {
 		}
 	}
 	return ware{}, false
+}
+
+// pickWares pulls a curated subset of the master catalog by name.
+func pickWares(names ...string) []ware {
+	out := make([]ware, 0, len(names))
+	for _, n := range names {
+		if w, ok := findWare(n); ok {
+			out = append(out, w)
+		}
+	}
+	return out
+}
+
+// Per-area vendor stock. The fixed city vendors carry tier-1 gear; the band
+// safehouses (generated in buildBandSpine, ids like m90_safe / n50_safe) carry
+// gear scaled to their level band — so you can kit up for the depth you're at.
+var (
+	streetWares      = pickWares("stimpak", "ram-chip", "ice-breaker")              // Chrome Rose
+	nightMarketWares = pickWares("stimpak", "ram-chip", "mono-katana", "cyberdeck") // Night Market (+ Emergency Medic)
+	safehouseWares   = map[int][]ware{
+		30: pickWares("trauma-kit", "ram-chip", "mono-katana", "cyberdeck"),
+		50: pickWares("trauma-kit", "ram-bank", "war-axe", "quantum-deck"),
+		70: pickWares("mega-stim", "ram-bank", "rail-blade", "quantum-deck"),
+		90: pickWares("mega-stim", "ram-bank", "monowire", "neural-deck"),
+	}
+)
+
+// waresForRoom returns the gear a vendor in roomID stocks. Safehouses scale with
+// their band; the two city vendors carry curated street stock; any other vendor
+// falls back to the full catalog.
+func waresForRoom(roomID string) []ware {
+	switch roomID {
+	case "chrome_bar":
+		return streetWares
+	case "market":
+		return nightMarketWares
+	}
+	if strings.HasSuffix(roomID, "_safe") {
+		if list, ok := safehouseWares[bandOf(roomID)]; ok {
+			return list
+		}
+	}
+	return shopWares
+}
+
+// bandOf parses the level-band ceiling from a band-zone room id ("m90_safe" -> 90).
+func bandOf(roomID string) int {
+	s := strings.TrimSuffix(roomID, "_safe")
+	s = strings.TrimPrefix(strings.TrimPrefix(s, "m"), "n")
+	n, _ := strconv.Atoi(s)
+	return n
 }
