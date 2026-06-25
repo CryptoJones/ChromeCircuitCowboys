@@ -145,16 +145,18 @@ func TestCowboyNetBreachVerb(t *testing.T) {
 	w.SetRoll(alwaysHit)
 	out, buf := sink()
 	p := w.Connect("Case", out)
-	// Route into the Net: street -> sprawl -> corpo_plaza -> data_port -> up.
+	// Route into the Net: street -> sprawl -> corpo_plaza -> data_port -> up,
+	// then dive DOWN into the first node's breach layer (where the ICE patrols).
 	w.Command(p, "out")
 	w.Command(p, "east")
 	w.Command(p, "east")
 	w.Command(p, "east")
-	w.Command(p, "up")
-	if p.RoomID != "the_net" {
-		t.Fatalf("expected to reach the_net, at %s", p.RoomID)
+	w.Command(p, "up")   // nz1_1_top (Net access shell)
+	w.Command(p, "down") // nz1_1_mid (breach layer)
+	if p.RoomID != "nz1_1_mid" {
+		t.Fatalf("expected to reach nz1_1_mid, at %s", p.RoomID)
 	}
-	w.Command(p, "attack ice")
+	w.Command(p, "attack")
 	if !strings.Contains(buf.String(), "breach protocol") {
 		t.Error("attacking in the Net should be a breach, not a melee strike")
 	}
@@ -496,10 +498,10 @@ func TestCowboyHackerCanReachTheNet(t *testing.T) {
 		w.Tick() // if corp-sec aggro'd, the player would be locked in combat
 	}
 	// Transit must succeed: a move-locked (in-combat) player would be stuck in
-	// corpo_plaza and never reach the_net.
+	// corpo_plaza and never reach the Net jack-in.
 	w.Command(p, "east")
 	w.Command(p, "up")
-	if p.RoomID != "the_net" {
-		t.Fatalf("Hacker should reach the_net unblocked, at %s", p.RoomID)
+	if p.RoomID != "nz1_1_top" {
+		t.Fatalf("Hacker should reach the Net unblocked, at %s", p.RoomID)
 	}
 }

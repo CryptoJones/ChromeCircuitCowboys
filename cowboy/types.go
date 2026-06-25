@@ -87,6 +87,7 @@ type Room struct {
 	Medic   bool              // a Emergency Medic operates here — re-install salvaged cyberware
 	Private bool              // a per-runner capsule pod — occupants are isolated (no one shares it)
 	Safe    bool              // no-violence zone (outside the clone pods): a security drone flatlines PvP aggressors
+	Net     bool              // inside the Net: combat is a BREACH (Intelligence + RAM), ICE shatters into shards
 }
 
 // Corpse is a dead runner's old body, left where they flatlined. It holds the

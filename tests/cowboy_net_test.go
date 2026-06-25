@@ -7,13 +7,14 @@ import (
 	"github.com/CryptoJones/ChromeCircuitCowboys/cowboy"
 )
 
-// routeToNet walks a player from the start room up into the Grid Node.
+// routeToNet walks a player from the start room up into the first Net node's
+// access shell (nz1_1_top). Diving DOWN reaches the breach layer, then the core.
 func routeToNet(w *cowboy.World, p *cowboy.Player) {
 	w.Command(p, "out")  // capsule pod -> neon_alley (the street)
 	w.Command(p, "east") // the_sprawl
 	w.Command(p, "east") // corpo_plaza
 	w.Command(p, "east") // data_port
-	w.Command(p, "up")   // the_net
+	w.Command(p, "up")   // nz1_1_top (Net access shell)
 }
 
 func TestCowboyRAMBreachEconomy(t *testing.T) {
@@ -22,14 +23,15 @@ func TestCowboyRAMBreachEconomy(t *testing.T) {
 	out, buf := sink()
 	p := w.Connect("Case", out)
 	routeToNet(w, p)
-	if p.RoomID != "the_net" {
-		t.Fatalf("expected the_net, at %s", p.RoomID)
+	w.Command(p, "down") // nz1_1_mid — the breach layer, patrolled by ICE
+	if p.RoomID != "nz1_1_mid" {
+		t.Fatalf("expected nz1_1_mid, at %s", p.RoomID)
 	}
 	// Make this a survivable, controlled breach test.
 	p.MaxHP, p.HP = 1000, 1000
 	p.RAM = 2 // only two full-power breaches before it sputters
 
-	w.Command(p, "attack ice")
+	w.Command(p, "attack")
 	w.Tick() // breach 1: RAM 2 -> 1
 	w.Tick() // breach 2: RAM 1 -> 0
 	if p.RAM != 0 {
@@ -56,9 +58,10 @@ func TestCowboyMultiStageICE(t *testing.T) {
 	out, buf := sink()
 	p := w.Connect("Case", out)
 	routeToNet(w, p)
-	w.Command(p, "down") // ice_wall (Sentinel Lattice — the Gauntlet ICE)
-	if p.RoomID != "ice_wall" {
-		t.Fatalf("expected ice_wall, at %s", p.RoomID)
+	w.Command(p, "down") // nz1_1_mid
+	w.Command(p, "down") // nz1_1_bot — the reconfiguring Gauntlet ICE in the node core
+	if p.RoomID != "nz1_1_bot" {
+		t.Fatalf("expected nz1_1_bot, at %s", p.RoomID)
 	}
 	// Buff so we survive the gauntlet and have RAM to spare.
 	p.Intelligence, p.MaxHP, p.HP, p.RAM = 40, 2000, 2000, 200
@@ -91,7 +94,8 @@ func TestCowboyGauntletRespawnsAsFirstForm(t *testing.T) {
 	out, buf := sink()
 	p := w.Connect("Case", out)
 	routeToNet(w, p)
-	w.Command(p, "down") // ice_wall
+	w.Command(p, "down") // nz1_1_mid
+	w.Command(p, "down") // nz1_1_bot — the Gauntlet ICE
 	p.Intelligence, p.MaxHP, p.RAM = 60, 100000, 100000
 	p.HP = p.MaxHP
 
@@ -108,8 +112,8 @@ func TestCowboyGauntletRespawnsAsFirstForm(t *testing.T) {
 
 	// The slain lock drops a body; its respawn is GATED until looted.
 	w.Command(p, "loot")
-	// Tick past the respawn cooldown; the player is still in the Lattice, so the
-	// reinitialize broadcast (in ice_wall) reaches them with the FIRST-form name.
+	// Tick past the respawn cooldown; the player is still in the node core, so the
+	// reinitialize broadcast (in nz1_1_bot) reaches them with the FIRST-form name.
 	for i := 0; i < 30; i++ {
 		w.Tick()
 	}
@@ -127,20 +131,22 @@ func TestCowboyPvPDuel(t *testing.T) {
 	o2, b2 := sink()
 	p2 := w.Connect("Molly", o2)
 	routeToNet(w, p1)
+	w.Command(p1, "down") // nz1_1_mid — a non-safe Net layer where PvP is live
 	routeToNet(w, p2)
-	if p1.RoomID != "the_net" || p2.RoomID != "the_net" {
-		t.Fatalf("both should be in the_net: %s / %s", p1.RoomID, p2.RoomID)
+	w.Command(p2, "down")
+	if p1.RoomID != "nz1_1_mid" || p2.RoomID != "nz1_1_mid" {
+		t.Fatalf("both should be in nz1_1_mid: %s / %s", p1.RoomID, p2.RoomID)
 	}
 
 	p1.Intelligence, p1.RAM = 40, 50 // strong attacker
 	p1Eddies := p1.Eddies
 	p2.Eddies = 100 // something to siphon
 	// Low enough that p1's breach (~24) finishes it in one round, but high enough
-	// that an aggro'd White ICE hit (~7) can't kill it first — so the kill is the duel's.
+	// that an aggro'd recon ICE hit can't kill it first — so the kill is the duel's.
 	p2.HP = 20
 
 	w.Command(p1, "attack molly")
-	if p1.RoomID != "the_net" || !strings.Contains(b1.String(), "netrun duel") {
+	if p1.RoomID != "nz1_1_mid" || !strings.Contains(b1.String(), "netrun duel") {
 		t.Fatalf("PvP should have engaged in the Net; out:\n%s", b1.String())
 	}
 	w.Tick() // p1 breaches p2 -> flatline

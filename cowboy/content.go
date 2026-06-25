@@ -1,11 +1,5 @@
 package cowboy
 
-import (
-	"fmt"
-	"strconv"
-	"strings"
-)
-
 // startRoom is where new and respawning cowboys appear — a PRIVATE capsule pod,
 // so a fresh jack-in or a respawn can never be spawn-camped. You step OUT into
 // the street (Neon Alley) under your own power.
@@ -37,93 +31,27 @@ func buildRooms() map[string]*Room {
 			Desc:  "Glass and gun-metal. Security drones sweep the concourse and corpo-sec in\r\nmirror visors watch everything. A guarded data port hums to the east.",
 			Exits: map[string]string{"west": "the_sprawl", "east": "data_port"}},
 		{ID: "data_port", Name: "Data Port",
-			Desc:  "A jack-in cradle wired to the city grid. Jacking in (UP) drops your\r\nconsciousness into the Net.",
-			Exits: map[string]string{"west": "corpo_plaza", "up": "the_net"}},
-		{ID: "the_net", Name: "The Net :: Grid Node",
-			Desc:  "Wireframe canyons of glowing data. White ICE patrols the lattice. A\r\nguarded gateway descends (DOWN) toward the Sentinel Lattice.",
-			Exits: map[string]string{"down": "ice_wall", "up": "data_port"}},
-		{ID: "ice_wall", Name: "The Net :: Sentinel Lattice",
-			Desc:  "A churning wall of layered ICE seals the way down. A single Gauntlet\r\nconstruct reconfigures itself endlessly — beat one shell and a harder one\r\nrises. Past it (DOWN) lies the Black ICE Fortress. This deep, runners can\r\njack each other: PvP is live here.",
-			Exits: map[string]string{"up": "the_net", "down": "deep_net"}},
-		{ID: "deep_net", Name: "Deep Net :: Black ICE Fortress",
-			Desc:  "The architecture turns predatory. Black ICE coils in the dark and the\r\nRogue AI watches from the core. Runners fight each other here as readily\r\nas the ICE — PvP is live.",
-			Exits: map[string]string{"up": "ice_wall"}},
+			Desc:  "A jack-in cradle wired to the city grid. Jacking in (UP) drops your\r\nconsciousness into the Net — the seedy underbelly of cyberspace.",
+			Exits: map[string]string{"west": "corpo_plaza", "up": "nz1_1_top"}},
 	}
-	// Meatspace main quest (L1-99): the authored 10-arc underground descent (see
-	// zones.go), hanging off Back Alley. The Net spine is still the procedural
-	// placeholder skeleton, descending from the Deep Net (untouched).
+	// Meatspace main quest (L1-99): the authored 10-arc underground descent
+	// (zones.go), hanging off Back Alley. The Net (L1-99): the authored 10-arc
+	// ascent of 3-layer nodes (netzones.go), jacked into from the Data Port.
 	zoneRooms, _ := buildUndergroundZones()
 	rooms = append(rooms, zoneRooms...)
-	rooms = append(rooms, buildBandSpine("n", "deep_net", "The Net :: Deep")...)
+	netRooms, _ := buildNetZones()
+	rooms = append(rooms, netRooms...)
 
 	m := make(map[string]*Room, len(rooms))
 	for _, r := range rooms {
 		m[r.ID] = r
 	}
-	// Back Alley drops DOWN into the Neon Wasteland (the first authored zone);
-	// the Deep Net descends into its placeholder Net spine.
+	// Back Alley drops DOWN into the Neon Wasteland; the Data Port jacks UP into
+	// the first Net node's access shell (and UP from there jacks back out).
 	m["back_alley"].Exits["down"] = "z1_01"
 	m["z1_01"].Exits["up"] = "back_alley"
-	m["deep_net"].Exits["down"] = "n20_gate"
+	m["nz1_1_top"].Exits["up"] = "data_port"
 	return m
-}
-
-// buildBandSpine generates the placeholder room skeleton for ONE progression
-// path (pathKey "m" = meatspace, "n" = the Net), descending from an existing
-// frontier room out to level 99. Each 10-level band is four rooms — Approach /
-// Field / Den / Boss — wired in a linear up/down spine, with a Vendor+Medic
-// safehouse hung off the Approach (east) every other band (~L30/50/70/90). NO
-// monsters are placed yet: CJ themes each band (story, room text, quests, mob
-// types) and the mobs get wired in afterward. Names/descs are deliberately
-// ASCII-only "(TODO)" placeholders tagged with the level range.
-func buildBandSpine(pathKey, frontier, label string) []*Room {
-	ceils := []int{20, 30, 40, 50, 60, 70, 80, 90, 99}
-	hasSafe := map[int]bool{30: true, 50: true, 70: true, 90: true}
-	var out []*Room
-	prevUp := frontier // the room a band's Approach returns to via "up"
-	for i, c := range ceils {
-		lo := c - 9
-		if c == 99 {
-			lo = 91
-		}
-		gate := fmt.Sprintf("%s%d_gate", pathKey, c)
-		field := fmt.Sprintf("%s%d_field", pathKey, c)
-		den := fmt.Sprintf("%s%d_den", pathKey, c)
-		boss := fmt.Sprintf("%s%d_boss", pathKey, c)
-		out = append(out,
-			&Room{ID: gate, Name: fmt.Sprintf("%s :: L%d-%d Approach (TODO)", label, lo, c),
-				Desc:  todoDesc(label, lo, c, "approach / transit"),
-				Exits: map[string]string{"up": prevUp, "down": field}},
-			&Room{ID: field, Name: fmt.Sprintf("%s :: L%d-%d Field (TODO)", label, lo, c),
-				Desc:  todoDesc(label, lo, c, "common foes"),
-				Exits: map[string]string{"up": gate, "down": den}},
-			&Room{ID: den, Name: fmt.Sprintf("%s :: L%d-%d Den (TODO)", label, lo, c),
-				Desc:  todoDesc(label, lo, c, "elite foes"),
-				Exits: map[string]string{"up": field, "down": boss}},
-			&Room{ID: boss, Name: fmt.Sprintf("%s :: L%d-%d Boss (TODO)", label, lo, c),
-				Desc:  todoDesc(label, lo, c, "band boss / set-piece"),
-				Exits: map[string]string{"up": den}},
-		)
-		boRoom := out[len(out)-1]
-		if i+1 < len(ceils) {
-			boRoom.Exits["down"] = fmt.Sprintf("%s%d_gate", pathKey, ceils[i+1])
-		}
-		if hasSafe[c] {
-			safe := fmt.Sprintf("%s%d_safe", pathKey, c)
-			out[len(out)-4].Exits["east"] = safe // the Approach room
-			out = append(out, &Room{ID: safe, Safe: true, Vendor: true, Medic: true,
-				Name:  fmt.Sprintf("%s :: L%d Safehouse - Vendor + Medic (TODO)", label, c),
-				Desc:  todoDesc(label, lo, c, "spawn-safe resupply: vendor + Emergency Medic"),
-				Exits: map[string]string{"west": gate}})
-		}
-		prevUp = boss
-	}
-	return out
-}
-
-func todoDesc(label string, lo, hi int, role string) string {
-	return fmt.Sprintf("TODO placeholder (%s, L%d-%d, %s). CJ to theme: story, room text, "+
-		"quests, and the monster types that live here. No mobs are wired yet.", label, lo, hi, role)
 }
 
 // mobTemplates defines the hostiles and where they live. The Home field is set
@@ -133,18 +61,21 @@ func buildMobTemplates() map[string]*MobTemplate {
 		{ID: "ganger", Name: "a street ganger", HP: 18, Damage: 4, AC: 2, XP: 25, Eddies: 10, Aggressive: true, Home: "back_alley"},
 		{ID: "drone", Name: "a security drone", HP: 30, Damage: 7, AC: 5, XP: 50, Eddies: 25, Aggressive: false, Home: "corpo_plaza"},
 		{ID: "corposec", Name: "a corpo-sec officer", HP: 45, Damage: 10, AC: 6, XP: 80, Eddies: 40, Aggressive: false, Home: "corpo_plaza"},
-		{ID: "white_ice", Name: "a White ICE sentinel", HP: 35, Damage: 9, AC: 5, XP: 70, Eddies: 30, Aggressive: true, ICE: true, Home: "the_net"},
-		{ID: "black_ice", Name: "a Black ICE daemon", HP: 80, Damage: 16, AC: 8, XP: 200, Eddies: 120, Aggressive: true, ICE: true, Home: "deep_net"},
-		{ID: "rogue_ai", Name: "the Rogue AI", HP: 150, Damage: 22, AC: 10, XP: 500, Eddies: 400, Aggressive: true, ICE: true, Home: "deep_net"},
-		// Multi-stage ICE: only the white shell spawns (Home set); on "death" each
-		// stage morphs into the next, harder one. Only the final lock pays out.
-		{ID: "gauntlet1", Name: "the Gauntlet ICE [white shell]", HP: 40, Damage: 10, AC: 5, Aggressive: true, ICE: true, Home: "ice_wall", Next: "gauntlet2"},
-		{ID: "gauntlet2", Name: "the Gauntlet ICE [black core]", HP: 70, Damage: 16, AC: 8, Aggressive: true, ICE: true, Next: "gauntlet3"},
-		{ID: "gauntlet3", Name: "the Gauntlet ICE [lethal lock]", HP: 110, Damage: 24, AC: 11, XP: 700, Eddies: 600, Aggressive: true, ICE: true},
 	}
 	// Authored underground hostiles + loot caches (L1-99 meatspace zones).
 	_, zoneMobs := buildUndergroundZones()
 	defs = append(defs, zoneMobs...)
+	// Authored Net hostiles + data-caches (L1-99 Net ascent).
+	_, netMobs := buildNetZones()
+	defs = append(defs, netMobs...)
+	// The multi-stage "Gauntlet" ICE: a reconfiguring lattice in the first Net
+	// node's core. Only the white shell spawns (Home set); on "death" each stage
+	// morphs into the next, harder one, and only the final lethal lock pays out.
+	defs = append(defs,
+		&MobTemplate{ID: "gauntlet1", Name: "the Gauntlet ICE [white shell]", HP: 40, Damage: 10, AC: 5, Aggressive: true, ICE: true, Home: netGauntletHome, Next: "gauntlet2"},
+		&MobTemplate{ID: "gauntlet2", Name: "the Gauntlet ICE [black core]", HP: 70, Damage: 16, AC: 8, Aggressive: true, ICE: true, Next: "gauntlet3"},
+		&MobTemplate{ID: "gauntlet3", Name: "the Gauntlet ICE [lethal lock]", HP: 110, Damage: 24, AC: 11, XP: 700, Eddies: 600, Aggressive: true, ICE: true},
+	)
 	m := make(map[string]*MobTemplate, len(defs))
 	for _, t := range defs {
 		m[t.ID] = t
@@ -204,23 +135,17 @@ func pickWares(names ...string) []ware {
 	return out
 }
 
-// Per-area vendor stock. The fixed city vendors carry tier-1 gear; the band
-// safehouses (generated in buildBandSpine, ids like m90_safe / n50_safe) carry
-// gear scaled to their level band — so you can kit up for the depth you're at.
+// Per-area vendor stock. The fixed city vendors carry tier-1 street gear; the
+// authored zone vendors (underground safehouses + Net access shells) scale their
+// stock to their level band (see zoneVendorBand + waresForBand).
 var (
 	streetWares      = pickWares("stimpak", "ram-chip", "ice-breaker")              // Chrome Rose
 	nightMarketWares = pickWares("stimpak", "ram-chip", "mono-katana", "cyberdeck") // Night Market (+ Emergency Medic)
-	safehouseWares   = map[int][]ware{
-		30: pickWares("trauma-kit", "ram-chip", "mono-katana", "cyberdeck"),
-		50: pickWares("trauma-kit", "ram-bank", "war-axe", "quantum-deck"),
-		70: pickWares("mega-stim", "ram-bank", "rail-blade", "quantum-deck"),
-		90: pickWares("mega-stim", "ram-bank", "monowire", "neural-deck"),
-	}
 )
 
-// waresForRoom returns the gear a vendor in roomID stocks. Safehouses scale with
-// their band; the two city vendors carry curated street stock; any other vendor
-// falls back to the full catalog.
+// waresForRoom returns the gear a vendor in roomID stocks. The two city vendors
+// carry curated street stock; authored zone vendors scale with their band; any
+// other vendor falls back to the full catalog.
 func waresForRoom(roomID string) []ware {
 	switch roomID {
 	case "chrome_bar":
@@ -228,21 +153,8 @@ func waresForRoom(roomID string) []ware {
 	case "market":
 		return nightMarketWares
 	}
-	if b, ok := zoneVendorBand[roomID]; ok { // authored underground zone vendors
+	if b, ok := zoneVendorBand[roomID]; ok { // authored zone vendors (underground + Net)
 		return waresForBand(b)
 	}
-	if strings.HasSuffix(roomID, "_safe") {
-		if list, ok := safehouseWares[bandOf(roomID)]; ok {
-			return list
-		}
-	}
 	return shopWares
-}
-
-// bandOf parses the level-band ceiling from a band-zone room id ("m90_safe" -> 90).
-func bandOf(roomID string) int {
-	s := strings.TrimSuffix(roomID, "_safe")
-	s = strings.TrimPrefix(strings.TrimPrefix(s, "m"), "n")
-	n, _ := strconv.Atoi(s)
-	return n
 }
