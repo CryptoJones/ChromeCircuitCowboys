@@ -5,6 +5,18 @@ All notable changes to **Chrome Circuit Cowboys** are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning: [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2026-06-24
+
+### Fixed
+- **Character creation no longer silently defaults on bad input.** A non-numeric
+  or out-of-range class no longer becomes a Hacker, and letters at the
+  skill-point prompts no longer count as 0 (which dumped your points into
+  INTELLIGENCE). Both **re-prompt** now.
+
+### Added
+- **Type `Q` (or `QUIT`) at any creation prompt — or the handle prompt — to jack
+  out** cleanly.
+
 ## [1.0.2] - 2026-06-24
 
 ### Added

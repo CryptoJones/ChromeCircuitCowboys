@@ -2,9 +2,20 @@ package cowboy
 
 import (
 	"bufio"
+	"errors"
 	"strconv"
 	"strings"
 )
+
+// ErrQuit is returned by character creation when the player types Q / QUIT to
+// bail. The connection handler closes on any creation error, so this jacks them
+// out cleanly.
+var ErrQuit = errors.New("player quit")
+
+func isQuit(s string) bool {
+	s = strings.ToLower(strings.TrimSpace(s))
+	return s == "q" || s == "quit"
+}
 
 // SkillPoints is the pool a new cowboy distributes across attributes during
 // character creation, on top of their class's base stats.
@@ -47,7 +58,8 @@ type CharSpec struct {
 // RunCharacterCreation drives the interactive new-character flow over a raw
 // terminal: pick a class, then spend SkillPoints across the three attributes.
 // It is pure I/O over r/out (echo through out), so it's unit-testable by feeding
-// bytes. Invalid input falls back to sensible defaults rather than erroring.
+// bytes. Invalid input RE-PROMPTS (it never silently picks a class or eats
+// points); it only errors out on a read error (caller disconnect).
 func RunCharacterCreation(r *bufio.Reader, out func(string)) (CharSpec, error) {
 	out(crlf + style(neon, "== CHARACTER CREATION ==") + crlf)
 	out(style(dim, "New runner detected. Build your cowboy.") + crlf + crlf)
@@ -55,14 +67,22 @@ func RunCharacterCreation(r *bufio.Reader, out func(string)) (CharSpec, error) {
 		out("  " + style(gold, itoa(i+1)+")") + " " + style(green, c.Name) +
 			style(dim, "  [B"+itoa(c.Body)+" R"+itoa(c.Reflexes)+" I"+itoa(c.Intelligence)+"] — "+c.Desc) + crlf)
 	}
-	out(crlf + style(green, "Choose a class [1-"+itoa(len(classes))+"]: "))
-	line, err := ReadLine(r, out)
-	if err != nil {
-		return CharSpec{}, err
-	}
-	chosen := classes[0]
-	if n, e := strconv.Atoi(strings.TrimSpace(line)); e == nil && n >= 1 && n <= len(classes) {
-		chosen = classes[n-1]
+	out(crlf + style(green, "Choose a class [1-"+itoa(len(classes))+"] (Q quits): "))
+	var chosen Class
+	for {
+		line, err := ReadLine(r, out)
+		if err != nil {
+			return CharSpec{}, err
+		}
+		if isQuit(line) {
+			out(style(dim, "Jacking out — NO CARRIER") + crlf)
+			return CharSpec{}, ErrQuit
+		}
+		if n, e := strconv.Atoi(strings.TrimSpace(line)); e == nil && n >= 1 && n <= len(classes) {
+			chosen = classes[n-1]
+			break
+		}
+		out(style(red, "Enter a number 1-"+itoa(len(classes))+" (or Q to quit): "))
 	}
 	out(style(neon, "You are a "+chosen.Name+".") + crlf)
 
@@ -100,16 +120,18 @@ func askPoints(r *bufio.Reader, out func(string), label string, remaining int) (
 		return 0, nil
 	}
 	out(style(green, "Points into "+label+" (0-"+itoa(remaining)+"): "))
-	line, err := ReadLine(r, out)
-	if err != nil {
-		return 0, err
+	for {
+		line, err := ReadLine(r, out)
+		if err != nil {
+			return 0, err
+		}
+		if isQuit(line) {
+			out(style(dim, "Jacking out — NO CARRIER") + crlf)
+			return 0, ErrQuit
+		}
+		if n, e := strconv.Atoi(strings.TrimSpace(line)); e == nil && n >= 0 && n <= remaining {
+			return n, nil
+		}
+		out(style(red, "Enter a number 0-"+itoa(remaining)+" (or Q to quit): "))
 	}
-	n, e := strconv.Atoi(strings.TrimSpace(line))
-	if e != nil || n < 0 {
-		n = 0
-	}
-	if n > remaining {
-		n = remaining
-	}
-	return n, nil
 }

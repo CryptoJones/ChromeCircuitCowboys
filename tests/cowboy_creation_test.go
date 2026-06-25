@@ -28,19 +28,37 @@ func TestCowboyCharacterCreation(t *testing.T) {
 	}
 }
 
-func TestCowboyCreationDefaultsOnGarbage(t *testing.T) {
-	// Bad class + non-numeric point entries -> hacker, no points spent.
-	in := bufio.NewReader(strings.NewReader("99\r\nxyz\r\nnope\r\n"))
-	spec, err := cowboy.RunCharacterCreation(in, func(string) {})
+func TestCowboyCreationRejectsGarbageThenAccepts(t *testing.T) {
+	// Garbage class + non-numeric point entries must RE-PROMPT (never silently
+	// pick a class or eat points), then accept the valid follow-up.
+	// class: 99 (out of range) -> z (invalid) -> 2 (Enforcer)
+	// BODY:  h (invalid) -> 3        REFLEXES: y (invalid) -> 1
+	in := bufio.NewReader(strings.NewReader("99\r\nz\r\n2\r\nh\r\n3\r\ny\r\n1\r\n"))
+	var out strings.Builder
+	spec, err := cowboy.RunCharacterCreation(in, func(s string) { out.WriteString(s) })
 	if err != nil {
 		t.Fatal(err)
 	}
-	if spec.ClassID != "hacker" {
-		t.Fatalf("garbage class should default to hacker, got %q", spec.ClassID)
+	if spec.ClassID != "enforcer" {
+		t.Fatalf("class = %q, want enforcer after re-prompts", spec.ClassID)
 	}
-	// Hacker base is B8 R9 I13; garbage allocations add 0 to B/R, leftover to I.
-	if spec.Body != 8 || spec.Reflexes != 9 || spec.Intelligence != 13+cowboy.SkillPoints {
-		t.Fatalf("unexpected defaulted stats: %+v", spec)
+	// Enforcer base B13 R11 I6 + (3 BODY, 1 REFLEXES, 2 leftover INT).
+	if spec.Body != 16 || spec.Reflexes != 12 || spec.Intelligence != 8 {
+		t.Fatalf("stats = B%d R%d I%d, want B16 R12 I8", spec.Body, spec.Reflexes, spec.Intelligence)
+	}
+	if !strings.Contains(out.String(), "Enter a number") {
+		t.Error("invalid input should have re-prompted")
+	}
+}
+
+func TestCowboyCreationQuit(t *testing.T) {
+	// Typing Q at any creation prompt jacks out (ErrQuit), which the caller turns
+	// into a clean disconnect.
+	for _, seq := range []string{"q\r\n", "2\r\nq\r\n", "2\r\n3\r\nquit\r\n"} {
+		in := bufio.NewReader(strings.NewReader(seq))
+		if _, err := cowboy.RunCharacterCreation(in, func(string) {}); err != cowboy.ErrQuit {
+			t.Fatalf("seq %q: want ErrQuit, got %v", seq, err)
+		}
 	}
 }
 

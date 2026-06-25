@@ -24,7 +24,7 @@ import (
 
 // version is this build's release version (compared against the configured
 // update feed, if any).
-const version = "1.0.2"
+const version = "1.0.3"
 
 func main() {
 	addr := flag.String("addr", "127.0.0.1:4000", "TCP listen address for BBS bridge")
@@ -256,6 +256,11 @@ func serve(nc net.Conn, events chan event) {
 	c.out("\r\n" + prompt)
 	name, err := cowboy.ReadLine(r, c.out)
 	if err != nil {
+		events <- event{typ: evClose, c: c}
+		return
+	}
+	if t := strings.ToLower(strings.TrimSpace(name)); t == "q" || t == "quit" {
+		c.out("\r\nNO CARRIER\r\n")
 		events <- event{typ: evClose, c: c}
 		return
 	}
