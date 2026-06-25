@@ -53,10 +53,20 @@ func TestGenQuestDoc(t *testing.T) {
 		}
 		b.WriteString("\n")
 	}
-	section("Street bounties", func(q Quest) bool { return q.Giver == "" })
+	section("Street bounties", func(q Quest) bool { return q.Giver == "" && q.Pool == "" })
 	section("Meatspace — the underground descent", func(q Quest) bool { return strings.HasPrefix(q.ID, "ug") })
 	section("Netspace — the Net ascent", func(q Quest) bool { return strings.HasPrefix(q.ID, "net") })
-	b.WriteString("*Proudly Made in Nebraska. Go Big Red! 🌽 <https://xkcd.com/2347/>*\n")
+	// RP-ring rumors are scattered randomly across the ring givers each session.
+	b.WriteString("## RP rings — roving rumors (randomized, no progression)\n\n")
+	for _, q := range quests {
+		if q.Pool != "ring" {
+			continue
+		}
+		fmt.Fprintf(&b, "- **%s** _(L%d+)_ — %s\n", q.Name, q.MinLevel, q.Desc)
+		b.WriteString("    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session\n")
+		fmt.Fprintf(&b, "    - target: %s ×%d · reward: +%d XP, €$%d\n", target(q), q.Count, q.XP, q.Eddies)
+	}
+	b.WriteString("\n*Proudly Made in Nebraska. Go Big Red! 🌽 <https://xkcd.com/2347/>*\n")
 
 	if err := os.WriteFile("../docs/quests.md", []byte(b.String()), 0644); err != nil {
 		t.Fatalf("write quests doc: %v", err)
@@ -84,6 +94,19 @@ func TestQuestsWellFormed(t *testing.T) {
 		}
 		if q.Giver != "" && rooms[q.Giver] == nil {
 			t.Errorf("quest %q giver room %q does not exist", q.ID, q.Giver)
+		}
+	}
+	for _, room := range ringGiverRooms {
+		if rooms[room] == nil {
+			t.Errorf("ring giver room %q does not exist", room)
+		}
+	}
+	// Every ring rumor must be reachable: a fresh world scatters them so each
+	// ring giver offers at least one.
+	w := NewWorld(NewMemStore())
+	for _, room := range ringGiverRooms {
+		if len(w.ringOffer[room]) == 0 {
+			t.Errorf("ring giver %q offers no rumors after assignment", room)
 		}
 	}
 }

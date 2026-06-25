@@ -20,6 +20,7 @@ type Quest struct {
 	MinLevel  int
 	Giver     string // room id where this quest is offered ("" = generic street brokers)
 	GiverName string // the quest-giver NPC, for flavor
+	Pool      string // "ring" = a roving RP-ring rumor (scattered across ring givers, see assignRingQuests)
 }
 
 var quests = []Quest{
@@ -102,6 +103,35 @@ var quests = []Quest{
 	{ID: "net10_final", Name: "The Ultimate Gift", Target: "nz10_5_bot_m", Count: 1, XP: 4500, Eddies: 3000, MinLevel: 91,
 		Giver: "nz10_1_top", GiverName: "the Absolute Codex",
 		Desc: "Finish the ascent — overwrite the Final Compilation, your own source code, and broadcast the Codex."},
+
+	// ===================== RP RINGS — roving "rumor" bounties =====================
+	// Low-level, standalone, repeatable; Pool "ring" so they're scattered randomly
+	// across the ring givers each session. Each carries an easter egg nodding to one
+	// of the two PvE paths.
+	{ID: "ring_busker", Pool: "ring", Name: "Busker's Lost Loop", Target: "ring_scavver", Count: 1, XP: 60, Eddies: 40, MinLevel: 1,
+		Desc: "A scrap-drone swallowed the busker's favorite data-loop on the belt. Smash it open and get it back — the jingle glitches into a Kurokawa logo, which is just weird."},
+	{ID: "ring_tagwar", Pool: "ring", Name: "Tag War Truce", Target: "ring_ganger", Count: 3, XP: 90, Eddies: 55, MinLevel: 2,
+		Desc: "Taggers are carving up the Sprawlbelt. Drop 3 to hold the truce. One swears the real muscle is 'down in the Wasteland, running with the Scrap-Hounds.'"},
+	{ID: "ring_wireheads", Pool: "ring", Name: "Wirehead Roundup", Target: "ring_junkie", Count: 3, XP: 70, Eddies: 40, MinLevel: 1,
+		Desc: "Clear 3 wireheads blissed out on a leaked braindance loop. The medic says the footage is stolen surveillance — branded EREBUS."},
+	{ID: "ring_ghostwire", Pool: "ring", Name: "Ghost on the Wire", Target: "ring_scavver", Count: 2, XP: 110, Eddies: 70, MinLevel: 3,
+		Desc: "Something jacked out of a data-port and rode the ring as a scrap-drone swarm. Purge 2. The bartender mutters it 'smells like a GigaMesh job.'"},
+	{ID: "ring_palm", Pool: "ring", Name: "The Palm Reading", Target: "ring_hustler", Count: 1, XP: 60, Eddies: 45, MinLevel: 1,
+		Desc: "A hustler swiped the fortune-teller's 'lucky' cortex-chip. Get it back and she'll read your fate: 'you will descend, and you will ascend.'"},
+	{ID: "ring_noodle", Pool: "ring", Name: "Noodle Run", Target: "ring_ganger", Count: 2, XP: 85, Eddies: 50, MinLevel: 2,
+		Desc: "The cook's broth-cache got jacked by taggers. Recover it — drop 2. He grumbles the Night Market's gone soft since the Strip got fancy."},
+	{ID: "ring_cores", Pool: "ring", Name: "Core Salvage", Target: "ring_scavver", Count: 4, XP: 150, Eddies: 100, MinLevel: 4,
+		Desc: "The scrap-trader wants 4 drone-cores. He swears these models 'crawled up out of the Sump' — pull them and cash in."},
+	{ID: "ring_maglev", Pool: "ring", Name: "The Maglev Ghost", Target: "ring_junkie", Count: 2, XP: 80, Eddies: 45, MinLevel: 2,
+		Desc: "Two wireheads keep spooking riders: a runner jacked in at the data-port and 'never came back to his body.' Quiet them down."},
+	{ID: "ring_promenade", Pool: "ring", Name: "Peace on the Promenade", Target: "ring_hustler", Count: 2, XP: 65, Eddies: 45, MinLevel: 1,
+		Desc: "The Rolling Rose's bouncer wants 2 hustlers off the belt before they fleece the regulars blind."},
+	{ID: "ring_lostfound", Pool: "ring", Name: "Lost & Found", Target: "ring_scavver", Count: 1, XP: 60, Eddies: 40, MinLevel: 1,
+		Desc: "A kid's drone-toy got swept into a scrap-drone. Recover it — it's a tiny replica of some giant 'sky-loom' the kid swears she saw in a dream."},
+	{ID: "ring_tab", Pool: "ring", Name: "The Bartender's Tab", Target: "ring_ganger", Count: 1, XP: 80, Eddies: 60, MinLevel: 2,
+		Desc: "Collect the Rolling Rose's tab from a tagger who skipped out. He blames 'a bad run against some reconfiguring Gauntlet ICE.'"},
+	{ID: "ring_patrol", Pool: "ring", Name: "Belt Patrol", Target: "ring_junkie", Count: 3, XP: 100, Eddies: 60, MinLevel: 3,
+		Desc: "Keep the loop calm — clear 3 belt strays so the RP crowd can breathe and the rumors keep flowing."},
 }
 
 // questsHere returns the bounties offered to p in their current room: the
@@ -112,7 +142,16 @@ func (w *World) questsHere(p *Player) []Quest {
 	room := p.RoomID
 	streetBroker := room == "chrome_bar" || room == "market"
 	var out []Quest
+	// Roving RP-ring rumors scattered to this giver this session.
+	for _, idx := range w.ringOffer[room] {
+		out = append(out, quests[idx])
+	}
+	// Story givers + generic street bounties (ring-pool quests are surfaced only
+	// via ringOffer above, never here).
 	for _, q := range quests {
+		if q.Pool == "ring" {
+			continue
+		}
 		if q.Giver == room || (q.Giver == "" && streetBroker) {
 			out = append(out, q)
 		}

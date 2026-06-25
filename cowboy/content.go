@@ -41,6 +41,7 @@ func buildRooms() map[string]*Room {
 	rooms = append(rooms, zoneRooms...)
 	netRooms, _ := buildNetZones()
 	rooms = append(rooms, netRooms...)
+	rooms = append(rooms, buildRingRooms()...) // street-level RP transit rings
 
 	m := make(map[string]*Room, len(rooms))
 	for _, r := range rooms {
@@ -51,6 +52,8 @@ func buildRooms() map[string]*Room {
 	m["back_alley"].Exits["down"] = "z1_01"
 	m["z1_01"].Exits["up"] = "back_alley"
 	m["nz1_1_top"].Exits["up"] = "data_port"
+	// Neon Alley steps NORTH up onto the Inner Circuit (the RP transit rings).
+	m["neon_alley"].Exits["north"] = "ic_1"
 	return m
 }
 
@@ -68,6 +71,8 @@ func buildMobTemplates() map[string]*MobTemplate {
 	// Authored Net hostiles + data-caches (L1-99 Net ascent).
 	_, netMobs := buildNetZones()
 	defs = append(defs, netMobs...)
+	// Light strays on the RP transit rings.
+	defs = append(defs, buildRingMobs()...)
 	// The multi-stage "Gauntlet" ICE: a reconfiguring lattice in the first Net
 	// node's core. Only the white shell spawns (Home set); on "death" each stage
 	// morphs into the next, harder one, and only the final lethal lock pays out.

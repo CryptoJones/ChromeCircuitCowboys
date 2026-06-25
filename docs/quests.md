@@ -89,4 +89,43 @@ _Generated from `cowboy/quests.go`. Accept a bounty in its giver's room (`ACCEPT
     - giver: the Absolute Codex — `nz10_1_top` (The Returning Tide :: Shell)
     - target: the Final Compilation ×1 · reward: +4500 XP, €$3000
 
+## RP rings — roving rumors (randomized, no progression)
+
+- **Busker's Lost Loop** _(L1+)_ — A scrap-drone swallowed the busker's favorite data-loop on the belt. Smash it open and get it back — the jingle glitches into a Kurokawa logo, which is just weird.
+    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session
+    - target: a scrap-scrounger drone ×1 · reward: +60 XP, €$40
+- **Tag War Truce** _(L2+)_ — Taggers are carving up the Sprawlbelt. Drop 3 to hold the truce. One swears the real muscle is 'down in the Wasteland, running with the Scrap-Hounds.'
+    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session
+    - target: a turf-tagger ×3 · reward: +90 XP, €$55
+- **Wirehead Roundup** _(L1+)_ — Clear 3 wireheads blissed out on a leaked braindance loop. The medic says the footage is stolen surveillance — branded EREBUS.
+    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session
+    - target: a strung-out wirehead ×3 · reward: +70 XP, €$40
+- **Ghost on the Wire** _(L3+)_ — Something jacked out of a data-port and rode the ring as a scrap-drone swarm. Purge 2. The bartender mutters it 'smells like a GigaMesh job.'
+    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session
+    - target: a scrap-scrounger drone ×2 · reward: +110 XP, €$70
+- **The Palm Reading** _(L1+)_ — A hustler swiped the fortune-teller's 'lucky' cortex-chip. Get it back and she'll read your fate: 'you will descend, and you will ascend.'
+    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session
+    - target: a three-card hustler ×1 · reward: +60 XP, €$45
+- **Noodle Run** _(L2+)_ — The cook's broth-cache got jacked by taggers. Recover it — drop 2. He grumbles the Night Market's gone soft since the Strip got fancy.
+    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session
+    - target: a turf-tagger ×2 · reward: +85 XP, €$50
+- **Core Salvage** _(L4+)_ — The scrap-trader wants 4 drone-cores. He swears these models 'crawled up out of the Sump' — pull them and cash in.
+    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session
+    - target: a scrap-scrounger drone ×4 · reward: +150 XP, €$100
+- **The Maglev Ghost** _(L2+)_ — Two wireheads keep spooking riders: a runner jacked in at the data-port and 'never came back to his body.' Quiet them down.
+    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session
+    - target: a strung-out wirehead ×2 · reward: +80 XP, €$45
+- **Peace on the Promenade** _(L1+)_ — The Rolling Rose's bouncer wants 2 hustlers off the belt before they fleece the regulars blind.
+    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session
+    - target: a three-card hustler ×2 · reward: +65 XP, €$45
+- **Lost & Found** _(L1+)_ — A kid's drone-toy got swept into a scrap-drone. Recover it — it's a tiny replica of some giant 'sky-loom' the kid swears she saw in a dream.
+    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session
+    - target: a scrap-scrounger drone ×1 · reward: +60 XP, €$40
+- **The Bartender's Tab** _(L2+)_ — Collect the Rolling Rose's tab from a tagger who skipped out. He blames 'a bad run against some reconfiguring Gauntlet ICE.'
+    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session
+    - target: a turf-tagger ×1 · reward: +80 XP, €$60
+- **Belt Patrol** _(L3+)_ — Keep the loop calm — clear 3 belt strays so the RP crowd can breathe and the rumors keep flowing.
+    - giver: scattered across the ring givers (Inner Circuit / Sprawlbelt), shuffled each session
+    - target: a strung-out wirehead ×3 · reward: +100 XP, €$60
+
 *Proudly Made in Nebraska. Go Big Red! 🌽 <https://xkcd.com/2347/>*
