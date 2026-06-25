@@ -171,6 +171,9 @@ func (w *World) lookText(p *Player) {
 	if r.Medic {
 		p.send(style(gold, "A Emergency Medic's chair waits here. INSTALL salvaged cyberware.") + crlf)
 	}
+	if len(w.questsHere(p)) > 0 {
+		p.send(style(gold, "Someone here is hiring — type QUESTS.") + crlf)
+	}
 	// Exits.
 	var dirs []string
 	for _, d := range []string{"north", "south", "east", "west", "up", "down", "in", "out"} {
