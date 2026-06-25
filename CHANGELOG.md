@@ -5,6 +5,44 @@ All notable changes to **Chrome Circuit Cowboys** are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning: [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-06-25
+
+A massive content release: both 1–99 progression paths are now hand-authored
+worlds, with story quests, a roleplay zone, and a recall.
+
+### Added
+- **The underground descent (meatspace L1-99).** Replaced the placeholder band
+  spine with ~143 authored rooms across 10 story arcs — the Neon Wasteland down to
+  the Geo-Anchor Vault — with per-band foes, an arc boss each (Razorback Kane …
+  the Loom Masterframe), varied room directions, and hidden ceiling/floor **loot
+  caches** (`up`/`down`) that refill on cooldown.
+- **The Net ascent (cyberspace L1-99).** Replaced the placeholder Net spine with
+  ~150 authored rooms — 50 areas × 3 layers (Shell / Breach / Core) — so netspace
+  moves in all **six directions** (`up`/`down` between layers, N/S/E/W between
+  areas). 10 arcs from the Neon Underbelly up to the Living Library, with ICE
+  foes, data-caches (RAM + scrip), and band-scaled deck/RAM vendors.
+- **Story quest-givers & bounties** for every level section: the plot NPCs
+  (Marcus, Cipher, Silas, Dr. Vance, Fixer-7, Mr. Lattice, Ravel …) hire you to
+  take down their arc's boss. Giver-gated `ACCEPT`; `CLAIM` at any broker.
+- **The RP transit rings** — a fast, RP-safe **Inner Circuit** and a longer
+  **Sprawlbelt** loop (off Neon Alley, `north`) — plus 12 standalone, randomized,
+  repeatable **rumor bounties** scattered across the ring NPCs fresh each session
+  (no linear progression), each an easter egg to one of the PvE paths.
+- **HOME recall.** `home` / `rest` now jacks a ~10-second teleport to your
+  Re-Clone Bay from anywhere, broken by a hostile hit or by moving. Closes #4.
+
+### Fixed
+- **Netrunners can reach the Net.** The Data Port jacks straight into the first
+  Net node, closing the long-standing "can't reach the Net" gap.
+
+### Changed
+- The world map changed, so a returning character whose saved location no longer
+  exists simply wakes in their Re-Clone Bay — stats, gear, and progress are kept.
+- The multi-stage Gauntlet ICE was preserved and re-homed in the first Net node's
+  core; the old placeholder generators and safehouse tiers were retired.
+
+[2.0.0]: https://github.com/CryptoJones/ChromeCircuitCowboys/releases/tag/v2.0.0
+
 ## [1.0.5] - 2026-06-25
 
 ### Changed

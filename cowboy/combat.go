@@ -2,10 +2,22 @@ package cowboy
 
 import "strings"
 
+// breakRecall interrupts a runner's HOME recall when they take a hit.
+func (w *World) breakRecall(p *Player) {
+	if p.homing > 0 {
+		p.homing = 0
+		p.send(style(red, "Your recall shatters — you're under fire!") + crlf)
+	}
+}
+
 // engage targets a hostile (a mob, or — in the Net — another runner for PvP) and
 // starts a fight. Rounds resolve on Tick, MajorMUD-style.
 func (w *World) engage(p *Player, arg string) {
 	arg = strings.ToLower(strings.TrimSpace(arg))
+	if p.homing > 0 { // throwing the first punch breaks your own recall
+		p.homing = 0
+		p.send(style(dim, "Your recall breaks as you move on a target.") + crlf)
+	}
 
 	// Targeting another runner? PvP is live everywhere EXCEPT the safe zone
 	// outside the clone pods — draw there and a security drone flatlines you.
@@ -116,9 +128,28 @@ func (w *World) Tick() {
 	w.aggro()
 	w.resolveCombat()
 	w.resolvePvP()
+	w.tickRecall() // after combat, so a hit this tick interrupts before the recall lands
 	w.respawnDead()
 	w.expireShields()
 	w.regen()
+}
+
+// tickRecall counts down HOME recalls and, when one completes, phases the runner
+// back to their Re-Clone Bay. A hit (resolveCombat/resolvePvP) or a move zeroes
+// homing before this runs, so only an uninterrupted cast lands.
+func (w *World) tickRecall() {
+	for _, p := range w.players {
+		if p.homing <= 0 {
+			continue
+		}
+		p.homing--
+		if p.homing <= 0 {
+			w.broadcast(p.RoomID, p, style(dim, p.Name+" phases out in a wash of static.")+crlf)
+			p.RoomID = startRoom
+			p.send(style(neon, "*** Recall complete — you blink into your Re-Clone Bay. ***") + crlf)
+			w.lookText(p)
+		}
+	}
 }
 
 // expireShields counts down the Mirror program's damage shield.
@@ -196,6 +227,7 @@ func (w *World) resolveCombat() {
 			if w.toHit(m.tmpl.Damage/2, playerAC(p)) {
 				d := applyShield(p, dmg(m.tmpl.Damage, playerAC(p)))
 				p.HP -= d
+				w.breakRecall(p)
 				p.send(style(red, m.tmpl.Name+" hits you for "+itoa(d)+".") + crlf)
 				if p.HP <= 0 {
 					w.flatline(p, m)
@@ -223,6 +255,7 @@ func (w *World) resolvePvP() {
 		if w.toHit(p.Reflexes, playerAC(d)) {
 			hit := applyShield(d, dmg(w.playerSwing(p), playerAC(d)))
 			d.HP -= hit
+			w.breakRecall(d)
 			p.send(style(green, "You breach "+d.Name+"'s deck for "+itoa(hit)+".") + crlf)
 			d.send(style(red, p.Name+" breaches your deck for "+itoa(hit)+".") + crlf)
 			if d.HP <= 0 {
