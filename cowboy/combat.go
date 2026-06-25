@@ -263,8 +263,12 @@ func (w *World) killMob(p *Player, m *Mob) {
 	xp := w.vary(m.tmpl.XP)
 	scrip := w.vary(m.tmpl.Eddies)
 	ice := m.tmpl.ICE
+	loot := map[string]int{}
+	for k, v := range m.tmpl.Drops { // seeded item drops (loot caches, boss kit)
+		loot[k] = v
+	}
 	w.corpses = append(w.corpses, &Corpse{
-		Owner: m.tmpl.Name, RoomID: m.RoomID, Loot: map[string]int{}, Scrip: scrip, mob: m, IsICE: ice,
+		Owner: m.tmpl.Name, RoomID: m.RoomID, Loot: loot, Scrip: scrip, mob: m, IsICE: ice,
 	})
 	p.send(style(hot, "*** "+m.tmpl.Name+" is destroyed! ***") + crlf)
 	drop := "Its body drops €$" + itoa(scrip) + " scrip - LOOT it."

@@ -61,7 +61,8 @@ type MobTemplate struct {
 	Aggressive bool // attacks players on sight
 	ICE        bool // a Net construct: shatters into "broken shards" (not a body) and "regenerates"
 	Home       string
-	Next       string // multi-stage ICE: on "death" it morphs into this template instead of dying
+	Next       string         // multi-stage ICE: on "death" it morphs into this template instead of dying
+	Drops      map[string]int // item drops seeded into the corpse on death (e.g. loot-cache consumables)
 }
 
 // Mob is a live instance of a MobTemplate in the world.
