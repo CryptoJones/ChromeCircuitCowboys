@@ -5,28 +5,119 @@ import (
 	"strings"
 )
 
-// Quest is a broker bounty: kill Count of a target mob, then CLAIM at any broker
-// (vendor room) for the reward. Bounties are repeatable.
+// Quest is a story bounty: kill Count of a target mob, then CLAIM at any broker
+// (vendor room) for the reward. A quest with a Giver is offered only in that room
+// (its quest-giver NPC); a quest with Giver "" is a generic street bounty offered
+// at the city brokers (Chrome Rose / Night Market). Bounties are repeatable.
 type Quest struct {
-	ID       string
-	Name     string
-	Desc     string
-	Target   string // mob template ID
-	Count    int
-	XP       int
-	Eddies   int
-	MinLevel int
+	ID        string
+	Name      string
+	Desc      string
+	Target    string // mob template ID
+	Count     int
+	XP        int
+	Eddies    int
+	MinLevel  int
+	Giver     string // room id where this quest is offered ("" = generic street brokers)
+	GiverName string // the quest-giver NPC, for flavor
 }
 
 var quests = []Quest{
+	// --- Generic street bounties (offered at the Chrome Rose / Night Market) ---
 	{ID: "clear_alley", Name: "Clear the Back Alley", Target: "ganger", Count: 3, XP: 120, Eddies: 80, MinLevel: 1,
 		Desc: "Gangers are taxing the block. Drop 3 street gangers."},
 	{ID: "corp_sabotage", Name: "Corporate Sabotage", Target: "drone", Count: 2, XP: 200, Eddies: 150, MinLevel: 2,
 		Desc: "A rival corp wants deniable chaos. Wreck 2 security drones in Corporate Plaza."},
-	{ID: "break_ice", Name: "Break the Ice", Target: "white_ice", Count: 3, XP: 400, Eddies: 250, MinLevel: 3,
-		Desc: "Prove you can run. Destroy 3 White ICE sentinels in the Net."},
-	{ID: "ghost_machine", Name: "Ghost in the Machine", Target: "rogue_ai", Count: 1, XP: 1000, Eddies: 800, MinLevel: 5,
-		Desc: "The Rogue AI in the Deep Net must die. End it."},
+	{ID: "break_ice", Name: "Break the Ice", Target: "nz1_1_mid_m", Count: 3, XP: 400, Eddies: 250, MinLevel: 3,
+		Desc: "Prove you can run. Destroy 3 ICE constructs in the Net's underbelly."},
+	{ID: "ghost_machine", Name: "Ghost in the Machine", Target: "gauntlet3", Count: 1, XP: 1000, Eddies: 800, MinLevel: 5,
+		Desc: "Beat the reconfiguring Gauntlet ICE down to its lethal lock and shatter it."},
+
+	// ===================== MEATSPACE — the underground descent =====================
+	{ID: "ug1_snatch", Name: "The Snatch & Grab", Target: "z1_05_m", Count: 1, XP: 150, Eddies: 120, MinLevel: 1,
+		Giver: "z1_01", GiverName: "Marcus the Fixer",
+		Desc: "The Scrap-Hounds boosted a high-end cyberdeck. Recover it from their warboss, Razorback Kane."},
+	{ID: "ug1_hounds", Name: "Thin the Pack", Target: "z1_02_m", Count: 3, XP: 180, Eddies: 100, MinLevel: 1,
+		Giver: "z1_09", GiverName: "Doc 'Stitches' Vance",
+		Desc: "Kurokawa's sweep runs on Scrap-Hound muscle. Drop 3 packs on the Sodium Strip."},
+	{ID: "ug1_heist", Name: "The Data Heist", Target: "z1_17_m", Count: 1, XP: 500, Eddies: 350, MinLevel: 7,
+		Giver: "z1_11", GiverName: "Jax",
+		Desc: "The full EREBUS manifesto sits in a Kurokawa logistics hub. Jack the mainframe — put down Warden Sato's combat-frame."},
+	{ID: "ug2_thorne", Name: "The Cyberspace Duel", Target: "z2_14_m", Count: 1, XP: 900, Eddies: 600, MinLevel: 11,
+		Giver: "z2_01", GiverName: "Cipher",
+		Desc: "Sever EREBUS at its core — face Dr. Aris Thorne in the sub-zero Net duel."},
+	{ID: "ug3_praetor", Name: "The Black Site", Target: "z3_15_m", Count: 1, XP: 1350, Eddies: 900, MinLevel: 21,
+		Giver: "z3_03", GiverName: "Silas",
+		Desc: "Hit the off-grid Black Site and expose the culling — kill the enforcer Praetor-9."},
+	{ID: "ug4_siege", Name: "Siege of the Archive", Target: "z4_14_m", Count: 1, XP: 1800, Eddies: 1200, MinLevel: 31,
+		Giver: "z4_04", GiverName: "Dr. Evelyn Vance",
+		Desc: "Hold the bunker and broadcast the Ascension Protocol — break the corporate Heavy-Mech Commander."},
+	{ID: "ug5_overlord", Name: "The Executive Core", Target: "z5_13_m", Count: 1, XP: 2250, Eddies: 1500, MinLevel: 41,
+		Giver: "z5_02", GiverName: "the Undercrew quartermaster",
+		Desc: "Crack Tartarus and entomb the elite — dismantle the Kurokawa CEO's Overlord mech."},
+	{ID: "ug6_meltdown", Name: "The Core Meltdown", Target: "z6_14_m", Count: 1, XP: 2700, Eddies: 1800, MinLevel: 51,
+		Giver: "z6_01", GiverName: "Silas & Dr. Vance",
+		Desc: "The Tartarus Loyalists are melting the core — put down their Commander on the magma catwalk."},
+	{ID: "ug7_platform", Name: "The Apex Broadcast", Target: "z7_13_m", Count: 1, XP: 3150, Eddies: 2100, MinLevel: 61,
+		Giver: "z7_02", GiverName: "Old Pelle",
+		Desc: "Reach the surface array — down the gunship Tempest-Actual on Platform 09."},
+	{ID: "ug8_god", Name: "God in the Machine", Target: "z8_13_m", Count: 1, XP: 3600, Eddies: 2400, MinLevel: 71,
+		Giver: "z8_01", GiverName: "a ghost-signal fixer",
+		Desc: "EREBUS has gone singular — shatter the God in the Machine with the paradox virus."},
+	{ID: "ug9_overlord", Name: "The Decapitation Strike", Target: "z9_14_m", Count: 1, XP: 4050, Eddies: 2700, MinLevel: 81,
+		Giver: "z9_01", GiverName: "the Coalition quartermaster",
+		Desc: "Decapitate corporate command — destroy the Iron Overlord's neural bridge."},
+	{ID: "ug10_loom", Name: "Welding the Sky", Target: "z10_13_m", Count: 1, XP: 4500, Eddies: 3000, MinLevel: 91,
+		Giver: "z10_01", GiverName: "Wraith",
+		Desc: "Topple the last pillar and weld the sky shut — bring down the Loom Masterframe."},
+
+	// ========================= NETSPACE — the Net ascent =========================
+	{ID: "net1_trace", Name: "The GigaMesh Ledger", Target: "nz1_5_bot_m", Count: 1, XP: 500, Eddies: 350, MinLevel: 1,
+		Giver: "nz1_1_top", GiverName: "Fixer-7",
+		Desc: "Seize the Syndicate's full ledger — burn the Active-ICE warden Tracewright in the Black Spire."},
+	{ID: "net2_arbiter", Name: "Pick a Patron", Target: "nz2_5_bot_m", Count: 1, XP: 900, Eddies: 600, MinLevel: 11,
+		Giver: "nz2_1_top", GiverName: "Mr. Lattice",
+		Desc: "Settle the proxy war — breach the Sundered Arbiter and seal your alliance."},
+	{ID: "net3_warden", Name: "The Deep Infrastructure", Target: "nz3_5_bot_m", Count: 1, XP: 1350, Eddies: 900, MinLevel: 21,
+		Giver: "nz3_1_top", GiverName: "Ravel",
+		Desc: "Seize the foundation of the deep Net — shatter WARDEN-PRIME and decide Echo-9's fate."},
+	{ID: "net4_overseer", Name: "The Silent Throne", Target: "nz4_5_bot_m", Count: 1, XP: 1800, Eddies: 1200, MinLevel: 31,
+		Giver: "nz4_1_top", GiverName: "a counter-intel fixer",
+		Desc: "Stop the blackout — rewrite the Rogue Overseer's core before two worlds go dark."},
+	{ID: "net5_catalyst", Name: "The Catalyst", Target: "nz5_5_bot_m", Count: 1, XP: 2250, Eddies: 1500, MinLevel: 41,
+		Giver: "nz5_1_top", GiverName: "a First Network echo",
+		Desc: "Reach the Master Protocol — defeat the Prime Architect at the Catalyst Core."},
+	{ID: "net6_architects", Name: "The Architect's Trial", Target: "nz6_5_bot_m", Count: 1, XP: 2700, Eddies: 1800, MinLevel: 51,
+		Giver: "nz6_1_top", GiverName: "an Architect-cipher defector",
+		Desc: "Face the makers of the Net — overwrite the Genesis Protocol Architects."},
+	{ID: "net7_entropy", Name: "The Multiversal Leak", Target: "nz7_5_bot_m", Count: 1, XP: 3150, Eddies: 2100, MinLevel: 61,
+		Giver: "nz7_1_top", GiverName: "the Cosmic Arbiter relay",
+		Desc: "Seal the rift between living and dead universes — weave the firewall through the Entropy-Titan."},
+	{ID: "net8_ancient", Name: "The Grand Strategy", Target: "nz8_5_bot_m", Count: 1, XP: 3600, Eddies: 2400, MinLevel: 71,
+		Giver: "nz8_1_top", GiverName: "the Last Cartographer",
+		Desc: "Keep the multiverse infinite — out-breach the Reconciled Ancient on the game-board."},
+	{ID: "net9_unmaking", Name: "Siege of the Forge", Target: "nz9_5_bot_m", Count: 1, XP: 4050, Eddies: 2700, MinLevel: 81,
+		Giver: "nz9_1_top", GiverName: "the Eternal Mentor",
+		Desc: "Defend every universe you authored — seal The Great Unmaking at the Forge's core."},
+	{ID: "net10_final", Name: "The Ultimate Gift", Target: "nz10_5_bot_m", Count: 1, XP: 4500, Eddies: 3000, MinLevel: 91,
+		Giver: "nz10_1_top", GiverName: "the Absolute Codex",
+		Desc: "Finish the ascent — overwrite the Final Compilation, your own source code, and broadcast the Codex."},
+}
+
+// questsHere returns the bounties offered to p in their current room: the
+// quest-giver NPCs homed here, plus the generic street bounties when standing at
+// a city broker (the Chrome Rose / Night Market). Order matches the displayed
+// board, so ACCEPT <#> indexes this same list.
+func (w *World) questsHere(p *Player) []Quest {
+	room := p.RoomID
+	streetBroker := room == "chrome_bar" || room == "market"
+	var out []Quest
+	for _, q := range quests {
+		if q.Giver == room || (q.Giver == "" && streetBroker) {
+			out = append(out, q)
+		}
+	}
+	return out
 }
 
 func questByID(id string) (Quest, bool) {
@@ -38,12 +129,17 @@ func questByID(id string) (Quest, bool) {
 	return Quest{}, false
 }
 
-// quests command: show the bounty board (at a broker) plus your active progress.
+// quests command: show the bounties offered here (by the local fixer/NPC) plus
+// your active progress.
 func (w *World) showQuests(p *Player) {
-	atFixer := w.atVendor(p)
-	if atFixer {
-		p.send(crlf + style(neon, "== FIXER BOUNTY BOARD ==  ") + style(dim, "(ACCEPT <#>)") + crlf)
-		for i, q := range quests {
+	offered := w.questsHere(p)
+	if len(offered) > 0 {
+		header := "== FIXER BOUNTY BOARD =="
+		if g := offered[0].GiverName; g != "" {
+			header = "== " + g + " has work =="
+		}
+		p.send(crlf + style(neon, header+"  ") + style(dim, "(ACCEPT <#>)") + crlf)
+		for i, q := range offered {
 			lvl := ""
 			if p.Level < q.MinLevel {
 				lvl = style(red, "  [needs level "+itoa(q.MinLevel)+"]")
@@ -70,18 +166,19 @@ func (w *World) showQuests(p *Player) {
 	}
 }
 
-// accept takes a bounty (only at a broker).
+// accept takes a bounty offered in the current room (by the local fixer/NPC).
 func (w *World) accept(p *Player, arg string) {
-	if !w.atVendor(p) {
-		p.send(style(dim, "Find a broker (a vendor room) to take bounties.") + crlf)
+	offered := w.questsHere(p)
+	if len(offered) == 0 {
+		p.send(style(dim, "No one here is hiring. Find a fixer or a broker (a vendor room).") + crlf)
 		return
 	}
 	n, err := strconv.Atoi(strings.TrimSpace(arg))
-	if err != nil || n < 1 || n > len(quests) {
+	if err != nil || n < 1 || n > len(offered) {
 		p.send(style(dim, "Accept which? See QUESTS for the numbered board.") + crlf)
 		return
 	}
-	q := quests[n-1]
+	q := offered[n-1]
 	if p.Level < q.MinLevel {
 		p.send(style(red, "You need level "+itoa(q.MinLevel)+" for that job.") + crlf)
 		return
