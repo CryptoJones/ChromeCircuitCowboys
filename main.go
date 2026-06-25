@@ -24,7 +24,7 @@ import (
 
 // version is this build's release version (compared against the configured
 // update feed, if any).
-const version = "1.0.1"
+const version = "1.0.2"
 
 func main() {
 	addr := flag.String("addr", "127.0.0.1:4000", "TCP listen address for BBS bridge")
@@ -201,6 +201,31 @@ func activeConns() []*conn {
 	return out
 }
 
+// readHandleHint reads the OPTIONAL reciprocal handshake the host sends right
+// after our caps=handle advertisement: ESC ] ABBS;handle=<h> BEL. Returns the
+// handle, or "" if nothing arrives in a short window (so a direct nc/telnet
+// caller, or a host that pushes no handle, just sees the normal prompt). It
+// never consumes bytes that aren't the sentinel.
+func readHandleHint(nc net.Conn, r *bufio.Reader) string {
+	const pfx = "\x1b]ABBS;handle="
+	_ = nc.SetReadDeadline(time.Now().Add(700 * time.Millisecond))
+	defer nc.SetReadDeadline(time.Time{})
+	peek, err := r.Peek(len(pfx))
+	if err != nil || string(peek) != pfx {
+		return "" // no sentinel — leave whatever arrived for the prompt
+	}
+	_, _ = r.Discard(len(pfx))
+	var h []byte
+	for i := 0; i < 64; i++ {
+		b, e := r.ReadByte()
+		if e != nil || b == 0x07 {
+			break
+		}
+		h = append(h, b)
+	}
+	return strings.TrimSpace(string(h))
+}
+
 func serve(nc net.Conn, events chan event) {
 	c := &conn{nc: nc, outCh: make(chan string, 512)}
 	connMu.Lock()
@@ -218,14 +243,26 @@ func serve(nc net.Conn, events chan event) {
 	}()
 
 	r := bufio.NewReader(nc)
-	// Advertise our version to the BBS host as the very FIRST bytes (ABBS Door
-	// Spec §2.2). OSC-framed (ESC ] ABBS;version=<ver> BEL) so the host strips it
-	// and shows it on the launch line; a terminal reached directly just swallows
-	// the sequence, so a raw nc/telnet session sees nothing.
-	c.out("\x1b]ABBS;version=" + version + "\x07")
-	c.out("\r\n" + "Handle (your runner name): ")
+	// Advertise our version + the "handle" capability as the very FIRST bytes
+	// (ABBS Door Spec §2.2). OSC-framed, so a terminal reached directly just
+	// swallows it. Because we asked for "handle", the host pushes the caller's
+	// BBS handle back; we read it and default the name prompt to it.
+	c.out("\x1b]ABBS;version=" + version + ";caps=handle\x07")
+	deflt := readHandleHint(nc, r)
+	prompt := "Handle (your runner name): "
+	if deflt != "" {
+		prompt = "Handle [" + deflt + "] (Enter to use): "
+	}
+	c.out("\r\n" + prompt)
 	name, err := cowboy.ReadLine(r, c.out)
-	if err != nil || len(name) == 0 {
+	if err != nil {
+		events <- event{typ: evClose, c: c}
+		return
+	}
+	if strings.TrimSpace(name) == "" {
+		name = deflt // hit Enter on the prompt -> use the BBS handle
+	}
+	if strings.TrimSpace(name) == "" {
 		events <- event{typ: evClose, c: c}
 		return
 	}

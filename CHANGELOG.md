@@ -5,6 +5,20 @@ All notable changes to **Chrome Circuit Cowboys** are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning: [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-06-24
+
+### Added
+- **Default runner name = your BBS handle.** The door advertises `caps=handle`
+  in its handshake; the BBS pushes your handle back, so the name prompt shows
+  `Handle [YourHandle] (Enter to use):` — just hit Enter to use it.
+- **Numbered vendor list + quantity buys.** `LIST` numbers each ware, and
+  `BUY <#|name> [qty]` lets you buy several at once (`buy 3 4` = four of item 3;
+  default 1). Weapons/decks stay one-time upgrades.
+
+### Docs
+- `docs/world-map.drawio` + `world-map.png` — Cyberdeck-dark level-area map of
+  the dual meatspace/Net paths (L1–99) for theming reference.
+
 ## [1.0.1] - 2026-06-24
 
 ### Added

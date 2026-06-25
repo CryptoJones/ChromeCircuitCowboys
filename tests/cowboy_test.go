@@ -475,7 +475,7 @@ func TestCowboyBuyRespectsCarryCap(t *testing.T) {
 	}
 	b.Reset()
 	w.Command(p, "buy stimpak")
-	if !strings.Contains(b.String(), "pack is full") {
+	if !strings.Contains(b.String(), "won't fit") {
 		t.Fatalf("buy at cap should be refused; got:\n%s", b.String())
 	}
 }
