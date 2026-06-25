@@ -355,6 +355,10 @@ func (w *World) move(p *Player, dir string) {
 		p.send(style(hot, "You're in combat! Break the connection with FLEE first.") + crlf)
 		return
 	}
+	if p.homing > 0 { // moving breaks a recall cast
+		p.homing = 0
+		p.send(style(dim, "Your recall fizzles as you move.") + crlf)
+	}
 	r := w.room(p.RoomID)
 	dest, ok := r.Exits[dir]
 	if !ok {
@@ -367,22 +371,31 @@ func (w *World) move(p *Player, dir string) {
 	w.lookText(p)
 }
 
-// goHome steps into your capsule pod — but only from the street (Neon Alley), so
-// it's a convenience, not a teleport/escape. Like any move, it's combat-blocked.
+// recallTicks is the cast time of a HOME recall — ~10 seconds at the default 2s
+// world tick. The recall completes on tickRecall (combat.go); it is broken if the
+// runner is hit by a hostile or moves before it lands.
+const recallTicks = 5
+
+// goHome jacks a RECALL protocol: a timed teleport back to your Re-Clone Bay from
+// ANYWHERE. It takes recallTicks to land and is interrupted by a mob/PvP hit or by
+// moving — so it's an escape you have to survive, not an instant bail. (To just
+// step into your pod from the street, go IN at Neon Alley.)
 func (w *World) goHome(p *Player) {
-	if p.RoomID == "capsule" {
-		p.send(style(dim, "You're already in your pod.") + crlf)
+	if p.RoomID == startRoom {
+		p.send(style(dim, "You're already in your Re-Clone Bay.") + crlf)
 		return
 	}
 	if p.fighting != nil || p.pvpTarget != nil {
-		p.send(style(hot, "You're in combat! Break the connection with FLEE first.") + crlf)
+		p.send(style(hot, "You can't focus a recall mid-fight — break it with FLEE first.") + crlf)
 		return
 	}
-	if p.RoomID != "neon_alley" {
-		p.send(style(dim, "Your capsule hotel is off Neon Alley — get to the street, then HOME (or go IN).") + crlf)
+	if p.homing > 0 {
+		p.send(style(dim, "You're already jacking a recall — hold still.") + crlf)
 		return
 	}
-	w.move(p, "in")
+	p.homing = recallTicks
+	p.send(style(neon, "You jack a recall protocol. Hold still (~10s) and you'll phase home to your Re-Clone Bay — a hit or a move breaks it.") + crlf)
+	w.broadcast(p.RoomID, p, style(dim, p.Name+" flickers — phasing out.")+crlf)
 }
 
 // loot strips every flatlined body in the room into your pack. Items are
@@ -479,7 +492,8 @@ func (w *World) give(p *Player, arg string) {
 func helpText() string {
 	return crlf + style(neon, "== Chrome Circuit Cowboys — commands ==") + crlf +
 		"  Movement : N S E W U D  (or north/south/... or the arrow keys)\r\n" +
-		"  home / in / out — your private capsule pod (off Neon Alley); spawn-safe\r\n" +
+		"  home / rest    — RECALL to your Re-Clone Bay (~10s cast; a hit or a move breaks it)\r\n" +
+		"  in / out        — step into/out of your capsule pod from Neon Alley\r\n" +
 		"  look (l)        — examine your location\r\n" +
 		"  attack <foe>    — engage a hostile (alias kill/breach)\r\n" +
 		"  flee            — try to break a fight and bolt\r\n" +

@@ -31,6 +31,7 @@ type Player struct {
 	partyInvite  *Player        // pending crew invite from this leader (nil = none); consent before joining
 	shieldTicks  int            // remaining ticks of the mirror program's damage shield
 	shieldAmt    int            // flat damage reduction while shielded
+	homing       int            // ticks left on a recall-home cast (0 = not recalling)
 	dirty        bool           // output was sent since the last prompt (gates tick re-prompts)
 	out          func(string)   // content output sink (set by the server; nil-safe via send)
 	prompter     func(string)   // optional dedicated prompt sink (managed-prompt I/O); falls back to out
