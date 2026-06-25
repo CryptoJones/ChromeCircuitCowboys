@@ -23,6 +23,7 @@ type World struct {
 	store        Persistence
 	roll         func(n int) int // returns 0..n-1; injectable for tests
 	respawnTicks int
+	ringOffer    map[string][]int // ring-giver room -> indices into quests (randomized per session)
 }
 
 // corpsesIn returns the bodys lying in a room.
@@ -64,6 +65,7 @@ func NewWorld(store Persistence) *World {
 			w.spawn(t)
 		}
 	}
+	w.assignRingQuests() // scatter the RP ring "rumor" bounties across the ring givers
 	return w
 }
 
