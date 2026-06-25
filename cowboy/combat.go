@@ -262,11 +262,16 @@ func (w *World) killMob(p *Player, m *Mob) {
 	// what lets the area respawn the mob.
 	xp := w.vary(m.tmpl.XP)
 	scrip := w.vary(m.tmpl.Eddies)
+	ice := m.tmpl.ICE
 	w.corpses = append(w.corpses, &Corpse{
-		Owner: m.tmpl.Name, RoomID: m.RoomID, Loot: map[string]int{}, Scrip: scrip, mob: m,
+		Owner: m.tmpl.Name, RoomID: m.RoomID, Loot: map[string]int{}, Scrip: scrip, mob: m, IsICE: ice,
 	})
 	p.send(style(hot, "*** "+m.tmpl.Name+" is destroyed! ***") + crlf)
-	p.send(style(gold, "You gain "+itoa(xp)+" XP. Its body drops €$"+itoa(scrip)+" scrip - LOOT it.") + crlf)
+	drop := "Its body drops €$" + itoa(scrip) + " scrip - LOOT it."
+	if ice {
+		drop = "It shatters into broken shards holding €$" + itoa(scrip) + " scrip - LOOT them."
+	}
+	p.send(style(gold, "You gain "+itoa(xp)+" XP. "+drop) + crlf)
 	w.broadcast(p.RoomID, p, style(dim, p.Name+" destroys "+m.tmpl.Name+".")+crlf)
 	w.creditQuestKill(p, m.tmpl.ID)
 	w.awardXP(p, xp) // XP shared with crew in the room; handles level-ups
