@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="2580" viewBox="0 0 2000 2580" font-family="Menlo, Consolas, monospace">
+  <rect x="0" y="0" width="2000" height="2580" fill="#07090f"/>
+
+  <text x="40" y="50" fill="#27d4ff" font-size="30" font-weight="bold">CHROME CIRCUIT COWBOYS — THE NET ASCENT (L1–99)  ·  PLAN</text>
+  <text x="40" y="84" fill="#8a97ab" font-size="16">Jack in at the bottom, climb to godhood at the top · 10 arcs · ~150 rooms · every area is a 3-layer / 6-direction stack · REPLACES the placeholder Net spine</text>
+
+  <text x="40" y="1360" fill="#5a6678" font-size="14" transform="rotate(-90 40 1360)">A S C E N D   ^   ( higher level = higher in the image )</text>
+
+  <g stroke="#5a6678" stroke-width="2" fill="none">
+    <line x1="300" y1="2265" x2="300" y2="2240"/><line x1="300" y1="2030" x2="300" y2="2005"/>
+    <line x1="300" y1="1795" x2="300" y2="1770"/><line x1="300" y1="1560" x2="300" y2="1535"/>
+    <line x1="300" y1="1325" x2="300" y2="1300"/><line x1="300" y1="1090" x2="300" y2="1065"/>
+    <line x1="300" y1="855" x2="300" y2="830"/><line x1="300" y1="620" x2="300" y2="595"/>
+    <line x1="300" y1="385" x2="300" y2="360"/>
+  </g>
+  <g fill="#0e1320" stroke="#5a6678" stroke-width="1.5">
+    <circle cx="300" cy="2252" r="10"/><circle cx="300" cy="2017" r="10"/><circle cx="300" cy="1782" r="10"/>
+    <circle cx="300" cy="1547" r="10"/><circle cx="300" cy="1312" r="10"/><circle cx="300" cy="1077" r="10"/>
+    <circle cx="300" cy="842" r="10"/><circle cx="300" cy="607" r="10"/><circle cx="300" cy="372" r="10"/>
+  </g>
+  <g fill="#d7e0ee" font-size="12" font-weight="bold" text-anchor="middle">
+    <text x="300" y="2256">U</text><text x="300" y="2021">U</text><text x="300" y="1786">U</text>
+    <text x="300" y="1551">U</text><text x="300" y="1316">U</text><text x="300" y="1081">U</text>
+    <text x="300" y="846">U</text><text x="300" y="611">U</text><text x="300" y="376">U</text>
+  </g>
+
+  <rect x="40" y="2265" width="1300" height="210" rx="12" fill="#0e1320" stroke="#27d4ff" stroke-width="3"/>
+  <text x="65" y="2330" fill="#27d4ff" font-size="30" font-weight="bold">L1–10</text>
+  <text x="65" y="2360" fill="#7f8da3" font-size="12">15 rooms · 5 areas</text>
+  <text x="340" y="2318" fill="#27d4ff" font-size="22" font-weight="bold">THE NEON UNDERBELLY</text>
+  <text x="340" y="2350" fill="#d7e0ee" font-size="14">A low-level hacker on a rusted terminal in the seedy cybercafe "The Iron Paradigm."</text>
+  <text x="340" y="2381" fill="#9fb0c4" font-size="13">Entities: Fixer-7 · Watchdog protocols · the first Active ICE · the GigaMesh Syndicate</text>
+  <text x="340" y="2412" fill="#ffd24f" font-size="14">CLIMAX: "Tracewright" (GigaMesh Active-ICE warden) — seize the Syndicate ledger</text>
+  <text x="340" y="2442" fill="#55ff99" font-size="13" font-weight="bold">JACK IN HERE (the Data Port — UP into the Net)</text>
+
+  <rect x="40" y="2030" width="1300" height="210" rx="12" fill="#0e1320" stroke="#27d4ff" stroke-width="3"/>
+  <text x="65" y="2095" fill="#27d4ff" font-size="30" font-weight="bold">L11–20</text>
+  <text x="65" y="2125" fill="#7f8da3" font-size="12">15 rooms · 5 areas</text>
+  <text x="340" y="2083" fill="#27d4ff" font-size="22" font-weight="bold">RISING BLIP</text>
+  <text x="340" y="2115" fill="#d7e0ee" font-size="14">A known blip now — corporate sponsors and criminal syndicates court you with proxy jobs.</text>
+  <text x="340" y="2146" fill="#9fb0c4" font-size="13">Entities: Mr. Lattice (corp handler) · Vasquez (syndicate fixer) · rival deckers · AI constructs</text>
+  <text x="340" y="2177" fill="#ffd24f" font-size="14">CLIMAX: the Sundered Arbiter (AI-construct guardian) — pick your patron</text>
+
+  <rect x="40" y="1795" width="1300" height="210" rx="12" fill="#0e1320" stroke="#55ff99" stroke-width="3"/>
+  <text x="65" y="1860" fill="#55ff99" font-size="30" font-weight="bold">L21–30</text>
+  <text x="65" y="1890" fill="#7f8da3" font-size="12">15 rooms · 5 areas</text>
+  <text x="340" y="1848" fill="#55ff99" font-size="22" font-weight="bold">INFRASTRUCTURE &amp; THE BLUR</text>
+  <text x="340" y="1880" fill="#d7e0ee" font-size="14">Bend the Net's architecture; deploy your own constructs; the line to the real world blurs.</text>
+  <text x="340" y="1911" fill="#9fb0c4" font-size="13">Entities: the Ghost Server · the Cipher Collective (Ravel) · Echo-9 (a negotiating sentient AI)</text>
+  <text x="340" y="1942" fill="#ffd24f" font-size="14">CLIMAX: WARDEN-PRIME (sentinel fused with strike-team kill-code) — seize the deep infrastructure</text>
+
+  <rect x="40" y="1560" width="1300" height="210" rx="12" fill="#0e1320" stroke="#55ff99" stroke-width="3"/>
+  <text x="65" y="1625" fill="#55ff99" font-size="30" font-weight="bold">L31–40</text>
+  <text x="65" y="1655" fill="#7f8da3" font-size="12">15 rooms · 5 areas</text>
+  <text x="340" y="1613" fill="#55ff99" font-size="22" font-weight="bold">CROSSHAIRS OF POWER</text>
+  <text x="340" y="1645" fill="#d7e0ee" font-size="14">Hunted across orbital satellites and deep-sea data fortresses; the god-like Overseers run the world.</text>
+  <text x="340" y="1676" fill="#9fb0c4" font-size="13">Entities: the Hounds (military trace-AI) · government counter-hackers · the Overseers</text>
+  <text x="340" y="1707" fill="#ffd24f" font-size="14">CLIMAX: the Rogue Overseer core — rewrite the global safety protocols before two worlds go dark</text>
+
+  <rect x="40" y="1325" width="1300" height="210" rx="12" fill="#0e1320" stroke="#ffb000" stroke-width="3"/>
+  <text x="65" y="1390" fill="#ffb000" font-size="30" font-weight="bold">L41–50</text>
+  <text x="65" y="1420" fill="#7f8da3" font-size="12">15 rooms · 5 areas</text>
+  <text x="340" y="1378" fill="#ffb000" font-size="22" font-weight="bold">ARCHITECTS OF REALITY</text>
+  <text x="340" y="1410" fill="#d7e0ee" font-size="14">You interface direct with the prime code — rewrite digital physics with a thought.</text>
+  <text x="340" y="1441" fill="#9fb0c4" font-size="13">Entities: the First Network archetype-entities · shadow cabals · the hidden Master Protocol</text>
+  <text x="340" y="1472" fill="#ffd24f" font-size="14">CLIMAX: the Prime Architect (Master Protocol guardian) — free all data, or doom it to the dark</text>
+
+  <rect x="40" y="1090" width="1300" height="210" rx="12" fill="#0e1320" stroke="#ffb000" stroke-width="3"/>
+  <text x="65" y="1155" fill="#ffb000" font-size="30" font-weight="bold">L51–60</text>
+  <text x="65" y="1185" fill="#7f8da3" font-size="12">15 rooms · 5 areas</text>
+  <text x="340" y="1143" fill="#ffb000" font-size="22" font-weight="bold">THE DIGITAL PANTHEON</text>
+  <text x="340" y="1175" fill="#d7e0ee" font-size="14">God-scale now — rogue-AI cults worship your signature; you descend into the Abyss.</text>
+  <text x="340" y="1206" fill="#9fb0c4" font-size="13">Entities: Abyss leviathans (colossal mutated entities) · the Genesis Protocol architects</text>
+  <text x="340" y="1237" fill="#ffd24f" font-size="14">CLIMAX: the Genesis Protocol Architects — the Ultimate Verdict: MERGE with the Net, or SEVER it</text>
+
+  <rect x="40" y="855" width="1300" height="210" rx="12" fill="#0e1320" stroke="#ff8a3d" stroke-width="3"/>
+  <text x="65" y="920" fill="#ff8a3d" font-size="30" font-weight="bold">L61–70</text>
+  <text x="65" y="950" fill="#7f8da3" font-size="12">15 rooms · 5 areas</text>
+  <text x="340" y="908" fill="#ff8a3d" font-size="22" font-weight="bold">THE INFOMORPHIC ASCENSION</text>
+  <text x="340" y="940" fill="#d7e0ee" font-size="14">You shed the flesh, become pure information, and step into the Great Cosmos of Data.</text>
+  <text x="340" y="971" fill="#9fb0c4" font-size="13">Entities: alien data-matrices · the Dyson-swarm intelligence · entropic dead-universe leaks</text>
+  <text x="340" y="1002" fill="#ffd24f" font-size="14">CLIMAX: the Entropy-Titan — weave the final firewall and seal the Multiversal Leak</text>
+
+  <rect x="40" y="620" width="1300" height="210" rx="12" fill="#0e1320" stroke="#ff8a3d" stroke-width="3"/>
+  <text x="65" y="685" fill="#ff8a3d" font-size="30" font-weight="bold">L71–80</text>
+  <text x="65" y="715" fill="#7f8da3" font-size="12">15 rooms · 5 areas</text>
+  <text x="340" y="673" fill="#ff8a3d" font-size="22" font-weight="bold">THE ANCIENT ARCHETYPES</text>
+  <text x="340" y="705" fill="#d7e0ee" font-size="14">The universe's background data layer — logic billions of years older than Earth's Net.</text>
+  <text x="340" y="736" fill="#9fb0c4" font-size="13">Entities: the Cosmic Sentinels (paradox-testing titans) · the reality-collapsing ancients</text>
+  <text x="340" y="767" fill="#ffd24f" font-size="14">CLIMAX: the Reconciled Ancient — keep the multiverse infinite, not a single sterile loop</text>
+
+  <rect x="40" y="385" width="1300" height="210" rx="12" fill="#0e1320" stroke="#ff4f4f" stroke-width="3"/>
+  <text x="65" y="450" fill="#ff4f4f" font-size="30" font-weight="bold">L81–90</text>
+  <text x="65" y="480" fill="#7f8da3" font-size="12">15 rooms · 5 areas</text>
+  <text x="340" y="438" fill="#ff4f4f" font-size="22" font-weight="bold">THE GENESIS FORGE</text>
+  <text x="340" y="470" fill="#d7e0ee" font-size="14">Prime architect — you author whole universes, then mentor the rookies you once were.</text>
+  <text x="340" y="501" fill="#9fb0c4" font-size="13">Entities: your forged worlds + lifeforms · cosmic viruses / entropic anomalies · your proteges</text>
+  <text x="340" y="532" fill="#ffd24f" font-size="14">CLIMAX: THE GREAT UNMAKING — survive the siege of the Forge and rewrite reality around the void</text>
+
+  <rect x="40" y="150" width="1300" height="210" rx="12" fill="#140f08" stroke="#ffd24f" stroke-width="3.5"/>
+  <text x="65" y="215" fill="#ffd24f" font-size="30" font-weight="bold">L91–99</text>
+  <text x="65" y="245" fill="#ff8a3d" font-size="12" font-weight="bold">ENDGAME · 15 rooms</text>
+  <text x="340" y="203" fill="#ffd24f" font-size="22" font-weight="bold">THE LIVING LIBRARY</text>
+  <text x="340" y="235" fill="#d7e0ee" font-size="14">Turn inward; become the Absolute Codex — a living repository of all that is known.</text>
+  <text x="340" y="266" fill="#9fb0c4" font-size="13">Entities: the Absolute Codex · echoes of your past selves (rookie, rebel, god, creator)</text>
+  <text x="340" y="297" fill="#ffd24f" font-size="14">FINALE: the Final Compilation (your own source — the last boss is the self), then broadcast &amp; dissolve</text>
+
+  <!-- INSET: 3-layer / 6-direction -->
+  <rect x="1390" y="150" width="570" height="500" rx="12" fill="#0c1018" stroke="#27d4ff" stroke-width="2"/>
+  <text x="1675" y="190" fill="#27d4ff" font-size="18" font-weight="bold" text-anchor="middle">EACH NET AREA = 3 LAYERS · 6 DIRECTIONS</text>
+  <text x="1675" y="216" fill="#8a97ab" font-size="13" text-anchor="middle">in netspace you move in all six directions</text>
+
+  <rect x="1545" y="245" width="260" height="64" rx="8" fill="#0e1320" stroke="#27d4ff" stroke-width="2.5"/>
+  <text x="1675" y="272" fill="#27d4ff" font-size="15" font-weight="bold" text-anchor="middle">TOP — access shell</text>
+  <text x="1675" y="294" fill="#9fb0c4" font-size="12" text-anchor="middle">recon ICE · spoof · gateways</text>
+  <rect x="1545" y="360" width="260" height="64" rx="8" fill="#11151f" stroke="#ffb000" stroke-width="2.5"/>
+  <text x="1675" y="387" fill="#ffb000" font-size="15" font-weight="bold" text-anchor="middle">MID — the breach fight</text>
+  <text x="1675" y="409" fill="#9fb0c4" font-size="12" text-anchor="middle">main ICE · N/S/E/W to neighbors</text>
+  <rect x="1545" y="475" width="260" height="64" rx="8" fill="#0c1810" stroke="#55ff99" stroke-width="2.5"/>
+  <text x="1675" y="502" fill="#55ff99" font-size="15" font-weight="bold" text-anchor="middle">BOT — core data-vault</text>
+  <text x="1675" y="524" fill="#9fb0c4" font-size="12" text-anchor="middle">loot cache / mini-boss / objective</text>
+
+  <g stroke="#d7e0ee" stroke-width="2" fill="none">
+    <line x1="1500" y1="309" x2="1500" y2="360"/><line x1="1500" y1="424" x2="1500" y2="475"/>
+  </g>
+  <text x="1480" y="338" fill="#d7e0ee" font-size="13" font-weight="bold" text-anchor="end">U/D</text>
+  <text x="1480" y="453" fill="#d7e0ee" font-size="13" font-weight="bold" text-anchor="end">U/D</text>
+
+  <g stroke="#5a6678" stroke-width="2" fill="none">
+    <line x1="1805" y1="392" x2="1900" y2="392"/><line x1="1545" y1="392" x2="1500" y2="392"/>
+  </g>
+  <text x="1855" y="384" fill="#9fb0c4" font-size="12" text-anchor="middle">E to</text>
+  <text x="1855" y="404" fill="#7f8da3" font-size="11" text-anchor="middle">next area</text>
+  <text x="1522" y="384" fill="#9fb0c4" font-size="12" text-anchor="middle">W</text>
+
+  <text x="1675" y="575" fill="#9fb0c4" font-size="12.5" text-anchor="middle">UP/DOWN = between an area's 3 layers</text>
+  <text x="1675" y="596" fill="#9fb0c4" font-size="12.5" text-anchor="middle">N/S/E/W = between areas (at the MID layer)</text>
+  <text x="1675" y="624" fill="#7f8da3" font-size="12" text-anchor="middle">You crack each node by diving TOP, then MID, then BOT.</text>
+
+  <!-- teardown box -->
+  <rect x="1390" y="690" width="570" height="300" rx="12" fill="#0c1018" stroke="#ff8a3d" stroke-width="2"/>
+  <text x="1410" y="726" fill="#ff8a3d" font-size="17" font-weight="bold">RIP-OUT &amp; REPLACE (teardown)</text>
+  <text x="1410" y="756" fill="#9fb0c4" font-size="13">OUT: the placeholder Net spine — buildBandSpine("n",..)</text>
+  <text x="1410" y="778" fill="#9fb0c4" font-size="13">(40 TODO rooms n20_gate..n99_boss + n*_safe), and</text>
+  <text x="1410" y="800" fill="#9fb0c4" font-size="13">the 3 stub rooms the_net / ice_wall / deep_net.</text>
+  <text x="1410" y="828" fill="#9fb0c4" font-size="13">IN: ~150 authored 3-layer rooms (this plan), wired so</text>
+  <text x="1410" y="850" fill="#9fb0c4" font-size="13">the Data Port (UP) jacks into L1-10, ascending up.</text>
+  <text x="1410" y="878" fill="#9fb0c4" font-size="13">netRooms must include all new rooms (so BREACH +</text>
+  <text x="1410" y="900" fill="#9fb0c4" font-size="13">RAM + PvP apply); ICE shatters into shards; caches</text>
+  <text x="1410" y="922" fill="#9fb0c4" font-size="13">are breakable data-nodes dropping RAM + scrip.</text>
+  <text x="1410" y="950" fill="#7f8da3" font-size="12">Retire safehouseWares/bandOf (Net-only after the meat carve).</text>
+  <text x="1410" y="974" fill="#7f8da3" font-size="12">PLAN ONLY — nothing carved yet.</text>
+
+  <!-- legend -->
+  <rect x="1390" y="1030" width="570" height="180" rx="10" fill="#0c1018" stroke="#5a6678" stroke-width="1.5"/>
+  <text x="1410" y="1062" fill="#d7e0ee" font-size="15" font-weight="bold">LEGEND</text>
+  <text x="1410" y="1090" fill="#9fb0c4" font-size="13">Border colour = the rising ascent (power):</text>
+  <text x="1410" y="1114" fill="#27d4ff" font-size="13">cyan underbelly</text>
+  <text x="1560" y="1114" fill="#55ff99" font-size="13">green deep-net</text>
+  <text x="1720" y="1114" fill="#ffb000" font-size="13">amber godhood</text>
+  <text x="1410" y="1138" fill="#ff8a3d" font-size="13">orange cosmos</text>
+  <text x="1560" y="1138" fill="#ff4f4f" font-size="13">red creator</text>
+  <text x="1700" y="1138" fill="#ffd24f" font-size="13">gold endgame</text>
+  <text x="1410" y="1166" fill="#9fb0c4" font-size="13">U = ascend (up) to the next arc.</text>
+  <text x="1410" y="1190" fill="#7f8da3" font-size="12">10 arcs x 5 areas x 3 layers = ~150 Net rooms (tunable).</text>
+</svg>
