@@ -24,7 +24,7 @@ import (
 
 // version is this build's release version (compared against the configured
 // update feed, if any).
-const version = "1.0.0"
+const version = "1.0.1"
 
 func main() {
 	addr := flag.String("addr", "127.0.0.1:4000", "TCP listen address for BBS bridge")
@@ -218,6 +218,11 @@ func serve(nc net.Conn, events chan event) {
 	}()
 
 	r := bufio.NewReader(nc)
+	// Advertise our version to the BBS host as the very FIRST bytes (ABBS Door
+	// Spec §2.2). OSC-framed (ESC ] ABBS;version=<ver> BEL) so the host strips it
+	// and shows it on the launch line; a terminal reached directly just swallows
+	// the sequence, so a raw nc/telnet session sees nothing.
+	c.out("\x1b]ABBS;version=" + version + "\x07")
 	c.out("\r\n" + "Handle (your runner name): ")
 	name, err := cowboy.ReadLine(r, c.out)
 	if err != nil || len(name) == 0 {

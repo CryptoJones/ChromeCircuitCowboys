@@ -250,18 +250,41 @@ func (w *World) killMob(p *Player, m *Mob) {
 	}
 	m.dead = true
 	m.HP = 0
-	m.respawnIn = w.respawnTicks
+	m.awaitingLoot = true // respawn stays GATED until someone loots the body
 	if m.target != nil {
 		m.target.fighting = nil
 		m.target = nil
 	}
 	p.fighting = nil
-	p.Eddies += m.tmpl.Eddies // loot goes to the killer
+
+	// Rewards are randomized (75%-125% of the template). XP is awarded on the
+	// kill; the scrip drops with the body and must be LOOTed — and looting is
+	// what lets the area respawn the mob.
+	xp := w.vary(m.tmpl.XP)
+	scrip := w.vary(m.tmpl.Eddies)
+	ice := m.tmpl.ICE
+	w.corpses = append(w.corpses, &Corpse{
+		Owner: m.tmpl.Name, RoomID: m.RoomID, Loot: map[string]int{}, Scrip: scrip, mob: m, IsICE: ice,
+	})
 	p.send(style(hot, "*** "+m.tmpl.Name+" is destroyed! ***") + crlf)
-	p.send(style(gold, "You gain "+itoa(m.tmpl.XP)+" XP and €$"+itoa(m.tmpl.Eddies)+" scrip.") + crlf)
+	drop := "Its body drops €$" + itoa(scrip) + " scrip - LOOT it."
+	if ice {
+		drop = "It shatters into broken shards holding €$" + itoa(scrip) + " scrip - LOOT them."
+	}
+	p.send(style(gold, "You gain "+itoa(xp)+" XP. "+drop) + crlf)
 	w.broadcast(p.RoomID, p, style(dim, p.Name+" destroys "+m.tmpl.Name+".")+crlf)
 	w.creditQuestKill(p, m.tmpl.ID)
-	w.awardXP(p, m.tmpl.XP) // XP shared with crew in the room; handles level-ups
+	w.awardXP(p, xp) // XP shared with crew in the room; handles level-ups
+}
+
+// vary returns base scaled by a random ~75%-125% so kill rewards aren't fixed.
+// It uses the injectable roll, so tests stay deterministic. Non-positive bases
+// (e.g. the non-final Gauntlet stages) pass straight through.
+func (w *World) vary(base int) int {
+	if base <= 0 {
+		return base
+	}
+	return base - base/4 + w.roll(base/2+1)
 }
 
 // flatline handles player death by a mob: half HP, respawn at the start, and a
@@ -380,6 +403,9 @@ func (w *World) respawnDead() {
 	for _, m := range w.mobs {
 		if !m.dead {
 			continue
+		}
+		if m.awaitingLoot {
+			continue // body not yet looted — hold the respawn (set by loot)
 		}
 		m.respawnIn--
 		if m.respawnIn <= 0 {

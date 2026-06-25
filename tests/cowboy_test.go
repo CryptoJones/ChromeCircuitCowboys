@@ -64,11 +64,16 @@ func TestCowboyCombatKillAndReward(t *testing.T) {
 	for i := 0; i < 8 && p.XP == 0; i++ {
 		w.Tick()
 	}
-	if p.XP != 25 {
-		t.Fatalf("XP after killing ganger = %d, want 25", p.XP)
+	if p.XP < 19 || p.XP > 31 {
+		t.Fatalf("XP after killing ganger = %d, want randomized 19-31 (base 25)", p.XP)
 	}
-	if p.Eddies != 60 { // 50 start + 10 bounty
-		t.Fatalf("eddies = %d, want 60", p.Eddies)
+	// Scrip is no longer instant — it drops with the body and must be looted.
+	if p.Eddies != 50 {
+		t.Fatalf("eddies before loot = %d, want 50 (scrip is on the body, not instant)", p.Eddies)
+	}
+	w.Command(p, "loot")
+	if p.Eddies <= 50 {
+		t.Fatalf("loot recovered no scrip from the ganger's body: eddies = %d", p.Eddies)
 	}
 	if !strings.Contains(buf.String(), "destroyed") {
 		t.Error("kill message missing")

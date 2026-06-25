@@ -20,8 +20,8 @@ type Player struct {
 	Intelligence int // (flavor + future deck mechanics)
 	WeaponBonus  int // from a purchased weapon (e.g. ICE-breaker)
 	WeaponName   string
-	RAM          int // netrun resource: powers breaches in the Net; regenerates out of combat
-	DeckBonus    int // bonus MaxRAM from a purchased cyberdeck (permanent)
+	RAM          int            // netrun resource: powers breaches in the Net; regenerates out of combat
+	DeckBonus    int            // bonus MaxRAM from a purchased cyberdeck (permanent)
 	Inv          map[string]int // item name -> qty (carried; capped by level)
 	Stash        map[string]int // item name -> qty stored at your Re-Clone Bay (uncapped, persists)
 	Quests       map[string]int // active questID -> kills so far (>= Count means ready to claim)
@@ -58,20 +58,22 @@ type MobTemplate struct {
 	AC         int // armor class (to-hit difficulty + light damage soak)
 	XP         int
 	Eddies     int
-	Aggressive bool   // attacks players on sight
+	Aggressive bool // attacks players on sight
+	ICE        bool // a Net construct: shatters into "broken shards" (not a body) and "regenerates"
 	Home       string
 	Next       string // multi-stage ICE: on "death" it morphs into this template instead of dying
 }
 
 // Mob is a live instance of a MobTemplate in the world.
 type Mob struct {
-	tmpl      *MobTemplate // current template (may be a later stage after a morph)
-	origin    *MobTemplate // the spawn template — restored on respawn so multi-stage ICE resets
-	HP        int
-	RoomID    string
-	target    *Player
-	respawnIn int // ticks until this dead mob respawns (0 = alive)
-	dead      bool
+	tmpl         *MobTemplate // current template (may be a later stage after a morph)
+	origin       *MobTemplate // the spawn template — restored on respawn so multi-stage ICE resets
+	HP           int
+	RoomID       string
+	target       *Player
+	respawnIn    int // ticks until this dead mob respawns (0 = alive)
+	dead         bool
+	awaitingLoot bool // dead body not yet looted — respawn stays gated until it is
 }
 
 // Room is one location in the city/net.
@@ -81,7 +83,7 @@ type Room struct {
 	Desc    string
 	Exits   map[string]string // direction -> room id
 	Vendor  bool              // a shop operates here
-	Medic  bool              // a Emergency Medic operates here — re-install salvaged cyberware
+	Medic   bool              // a Emergency Medic operates here — re-install salvaged cyberware
 	Private bool              // a per-runner capsule pod — occupants are isolated (no one shares it)
 	Safe    bool              // no-violence zone (outside the clone pods): a security drone flatlines PvP aggressors
 }
@@ -93,6 +95,9 @@ type Corpse struct {
 	Owner  string
 	RoomID string
 	Loot   map[string]int // ware name -> qty (consumables usable on loot; cyberware needs Emergency Medic INSTALL)
+	Scrip  int            // scrip carried by the body (mob loot); 0 for runner corpses
+	mob    *Mob           // the slain mob this body belongs to (nil for runner corpses); looting it ungates respawn
+	IsICE  bool           // ICE construct's "broken shards" (salvage), not a flatlined body
 }
 
 // SavedPlayer is the persisted slice of a Player (progress survives logout).

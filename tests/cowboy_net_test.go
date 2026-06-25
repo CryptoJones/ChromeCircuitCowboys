@@ -106,6 +106,8 @@ func TestCowboyGauntletRespawnsAsFirstForm(t *testing.T) {
 	}
 	mark := buf.Len()
 
+	// The slain lock drops a body; its respawn is GATED until looted.
+	w.Command(p, "loot")
 	// Tick past the respawn cooldown; the player is still in the Lattice, so the
 	// reinitialize broadcast (in ice_wall) reaches them with the FIRST-form name.
 	for i := 0; i < 30; i++ {

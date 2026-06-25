@@ -5,6 +5,24 @@ All notable changes to **Chrome Circuit Cowboys** are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning: [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-06-24
+
+### Added
+- **Resident-door version handshake** — advertises the game version to the host
+  as the first bytes on connect (OSC `ESC ] ABBS;version=<v> BEL`), so the BBS
+  shows it on the launch line (ABBS Door Spec §2.2).
+- **Dual-path world skeleton (L11–99)** — placeholder meatspace + Net progression
+  bands hang off Back Alley and the Deep Net; level cap raised **50 → 99**. Rooms
+  are TODO placeholders (no monsters yet) pending per-band theming.
+
+### Changed
+- **Randomized kill rewards** — XP and scrip now roll ~75–125% of each mob's base.
+- **Mobs drop a lootable body; respawn is gated until it's looted** — no spawning
+  over an unlooted corpse. ICE constructs shatter into **broken shards** you
+  *salvage* (not a body), with the same loot-gated regeneration.
+
+[1.0.1]: https://github.com/CryptoJones/ChromeCircuitCowboys/releases/tag/v1.0.1
+
 ## [1.0.0] - 2026-06-24
 
 First standalone release — carved out of AdmiralBBS into its own repo (the door

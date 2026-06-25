@@ -185,9 +185,13 @@ func (w *World) lookText(p *Player) {
 	for _, m := range w.liveMobsIn(p.RoomID) {
 		p.send(style(hot, m.tmpl.Name+" is here.") + crlf)
 	}
-	// Flatlined bodies (corpses) waiting to be looted.
+	// Flatlined bodies / shattered ICE waiting to be looted.
 	for _, c := range w.corpsesIn(p.RoomID) {
-		p.send(style(dim, c.Owner+"'s flatlined body lies here. (LOOT)") + crlf)
+		if c.IsICE {
+			p.send(style(dim, "Broken shards of "+c.Owner+" glitter here. (LOOT)") + crlf)
+		} else {
+			p.send(style(dim, c.Owner+"'s flatlined body lies here. (LOOT)") + crlf)
+		}
 	}
 }
 
@@ -386,8 +390,13 @@ func (w *World) loot(p *Player) {
 		return
 	}
 	total := 0
+	scrip := 0
+	ice := false
 	var cyber []string
 	for _, c := range cs {
+		if c.IsICE {
+			ice = true
+		}
 		for name, qty := range c.Loot {
 			if qty <= 0 {
 				continue
@@ -398,18 +407,43 @@ func (w *World) loot(p *Player) {
 				cyber = append(cyber, name)
 			}
 		}
+		scrip += c.Scrip
+		if c.mob != nil {
+			// Looting a slain mob ungates its respawn — meat bodies and ICE shards
+			// alike; the area refills after the normal cooldown, never before.
+			c.mob.awaitingLoot = false
+			c.mob.respawnIn = w.respawnTicks
+		}
 	}
 	w.removeCorpsesIn(p.RoomID)
-	if total == 0 {
-		p.send(style(dim, "The body is already stripped bare.") + crlf)
+	if total == 0 && scrip == 0 {
+		if ice {
+			p.send(style(dim, "The shards are inert — nothing to salvage.") + crlf)
+		} else {
+			p.send(style(dim, "The body is already stripped bare.") + crlf)
+		}
 		return
 	}
-	p.send(style(green, "You strip the body — its gear is now in your pack.") + crlf)
-	if len(cyber) > 0 {
-		p.send(style(neon, "Salvaged cyberware: ") + strings.Join(cyber, ", ") +
-			style(dim, " — INSTALL it at a Emergency Medic to use it again.") + crlf)
+	if scrip > 0 {
+		p.Eddies += scrip
+		if ice {
+			p.send(style(gold, "You salvage €$"+itoa(scrip)+" scrip from the broken shards.") + crlf)
+		} else {
+			p.send(style(gold, "You recover €$"+itoa(scrip)+" scrip from the body.") + crlf)
+		}
 	}
-	w.broadcast(p.RoomID, p, style(dim, p.Name+" loots a flatlined body.")+crlf)
+	if total > 0 {
+		p.send(style(green, "You strip the body — its gear is now in your pack.") + crlf)
+		if len(cyber) > 0 {
+			p.send(style(neon, "Salvaged cyberware: ") + strings.Join(cyber, ", ") +
+				style(dim, " — INSTALL it at a Emergency Medic to use it again.") + crlf)
+		}
+	}
+	if ice {
+		w.broadcast(p.RoomID, p, style(dim, p.Name+" picks through the broken shards.")+crlf)
+	} else {
+		w.broadcast(p.RoomID, p, style(dim, p.Name+" loots a flatlined body.")+crlf)
+	}
 }
 
 // give hands an inventory item to another runner in the room (e.g. returning a

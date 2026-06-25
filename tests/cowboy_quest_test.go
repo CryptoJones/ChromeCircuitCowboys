@@ -8,13 +8,15 @@ import (
 )
 
 // killGangersInAlley drives auto-combat in the back alley until the player has
-// scored n ganger kills toward the clear_alley bounty (aggressive gangers
-// re-engage on respawn, so ticking is enough). Assumes p is in back_alley.
+// scored n ganger kills toward the clear_alley bounty. A slain mob now drops a
+// body and its respawn is GATED until looted, so we loot each kill to let the
+// next ganger spawn. Assumes p is in back_alley.
 func killGangersInAlley(t *testing.T, w *cowboy.World, p *cowboy.Player, n int) {
 	t.Helper()
 	for i := 0; i < 600 && p.Quests["clear_alley"] < n; i++ {
 		w.Command(p, "attack ganger")
 		w.Tick()
+		w.Command(p, "loot") // collect the body so the alley can respawn the next ganger
 		if p.HP <= 0 {
 			t.Fatalf("player unexpectedly died at kill %d", p.Quests["clear_alley"])
 		}
