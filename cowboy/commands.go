@@ -473,7 +473,7 @@ func (w *World) give(p *Player, arg string) {
 
 func helpText() string {
 	return crlf + style(neon, "== Chrome Circuit Cowboys — commands ==") + crlf +
-		"  Movement : N S E W U D  (or north/south/...)\r\n" +
+		"  Movement : N S E W U D  (or north/south/... or the arrow keys)\r\n" +
 		"  home / in / out — your private capsule pod (off Neon Alley); spawn-safe\r\n" +
 		"  look (l)        — examine your location\r\n" +
 		"  attack <foe>    — engage a hostile (alias kill/breach)\r\n" +
