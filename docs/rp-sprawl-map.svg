@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2500" height="2600" viewBox="0 0 2500 2600" font-family="Menlo, Consolas, monospace">
+  <rect x="0" y="0" width="2500" height="2600" fill="#07090f"/>
+
+  <!-- title -->
+  <text x="40" y="52" fill="#27d4ff" font-size="33" font-weight="bold">CHROME CIRCUIT COWBOYS — RP SPRAWL: EXPRESS SPOKES + BACKDROP LOOPS  (PROPOSAL)</text>
+  <text x="40" y="88" fill="#8a97ab" font-size="17">Districts ring the OUTSIDE of the beltway · green express spokes = fast center-to-block travel · both loops = pure roleplay backdrop</text>
+
+  <!-- outer loop name -->
+  <text x="1250" y="150" fill="#ffb000" font-size="21" font-weight="bold" text-anchor="middle">◷ THE SPRAWLBELT · outer RP loop · 5–10 rooms per leg  (~68 backdrop rooms)</text>
+
+  <!-- NETRUN + TRINKETS callout (top-left) -->
+  <rect x="40" y="180" width="660" height="150" rx="10" fill="#0c1018" stroke="#27d4ff" stroke-width="2"/>
+  <text x="60" y="212" fill="#27d4ff" font-size="17" font-weight="bold">EVERY DISTRICT IS NETRUN-READY + RP-STOCKED</text>
+  <text x="60" y="244" fill="#9fb0c4" font-size="14">⌁ ≥1 public DATA PORT — jack in to run the Net from meatspace</text>
+  <text x="60" y="272" fill="#9fb0c4" font-size="14">▣ roving JUNK VENDORS — low-priced trinkets (€$1–20),</text>
+  <text x="78" y="296" fill="#9fb0c4" font-size="14">pure roleplay props, no combat value</text>
+  <text x="60" y="320" fill="#7f8da3" font-size="12">(sprinkled across the districts AND both backdrop loops)</text>
+
+  <!-- ===== LOOP RINGS ===== -->
+  <circle cx="1250" cy="1300" r="640" fill="none" stroke="#ffb000" stroke-width="5" stroke-dasharray="16 11"/>
+  <circle cx="1250" cy="1300" r="330" fill="none" stroke="#27d4ff" stroke-width="5"/>
+
+  <!-- ===== EXPRESS SPOKES (center -> each district, fast travel; under boxes) ===== -->
+  <g stroke="#55ff99" stroke-width="4" fill="none">
+    <line x1="1250" y1="1300" x2="1250" y2="300"/>
+    <line x1="1250" y1="1300" x2="1893" y2="534"/>
+    <line x1="1250" y1="1300" x2="2235" y2="1126"/>
+    <line x1="1250" y1="1300" x2="2116" y2="1800"/>
+    <line x1="1250" y1="1300" x2="1592" y2="2240"/>
+    <line x1="1250" y1="1300" x2="908" y2="2240"/>
+    <line x1="1250" y1="1300" x2="384" y2="1800"/>
+    <line x1="1250" y1="1300" x2="265" y2="1126"/>
+    <line x1="1250" y1="1300" x2="607" y2="534"/>
+  </g>
+
+  <!-- ===== STATION DOTS (where spokes cross the loops = on/off-ramps) ===== -->
+  <g fill="#27d4ff">
+    <circle cx="1250" cy="970" r="8"/><circle cx="1462" cy="1047" r="8"/><circle cx="1575" cy="1243" r="8"/>
+    <circle cx="1536" cy="1465" r="8"/><circle cx="1363" cy="1610" r="8"/><circle cx="1137" cy="1610" r="8"/>
+    <circle cx="964" cy="1465" r="8"/><circle cx="925" cy="1243" r="8"/><circle cx="1038" cy="1047" r="8"/>
+  </g>
+  <g fill="#ffb000">
+    <circle cx="1250" cy="660" r="9"/><circle cx="1661" cy="810" r="9"/><circle cx="1880" cy="1189" r="9"/>
+    <circle cx="1804" cy="1620" r="9"/><circle cx="1469" cy="1901" r="9"/><circle cx="1031" cy="1901" r="9"/>
+    <circle cx="696" cy="1620" r="9"/><circle cx="620" cy="1189" r="9"/><circle cx="839" cy="810" r="9"/>
+  </g>
+
+  <!-- ===== LEG-LENGTH LABELS ===== -->
+  <g fill="#27d4ff" font-size="16" font-weight="bold" text-anchor="middle">
+    <text x="1390" y="915">2–3</text>
+    <text x="1514" y="1614">2–3</text>
+    <text x="986" y="1614">2–3</text>
+    <text x="895" y="1095">2–3</text>
+  </g>
+  <g fill="#ffb000" font-size="17" font-weight="bold" text-anchor="middle">
+    <text x="1882" y="935">5–10</text>
+    <text x="1250" y="2035">5–10</text>
+    <text x="781" y="1859">5–10</text>
+    <text x="618" y="935">5–10</text>
+  </g>
+
+  <!-- inner loop name -->
+  <text x="1250" y="1600" fill="#27d4ff" font-size="20" font-weight="bold" text-anchor="middle">◷ THE INNER CIRCUIT · inner RP loop · 2–3 rooms/leg  (~22 rooms)</text>
+
+  <!-- ===== DISTRICT BOXES (outside the outer loop) ===== -->
+  <!-- k0 Neon Bazaar -->
+  <rect x="1100" y="235" width="300" height="130" rx="10" fill="#11151f" stroke="#ffb000" stroke-width="2.5"/>
+  <text x="1250" y="290" fill="#ffb000" font-size="19" font-weight="bold" text-anchor="middle">NEON BAZAAR</text>
+  <text x="1250" y="318" fill="#d7e0ee" font-size="13" text-anchor="middle">25 rooms · grey-market</text>
+  <text x="1250" y="340" fill="#9fb0c4" font-size="11" text-anchor="middle">light: pickpocket/scavver</text>
+
+  <!-- k1 Watering Holes -->
+  <rect x="1743" y="469" width="300" height="130" rx="10" fill="#11151f" stroke="#27d4ff" stroke-width="2.5"/>
+  <text x="1893" y="524" fill="#27d4ff" font-size="19" font-weight="bold" text-anchor="middle">THE WATERING HOLES</text>
+  <text x="1893" y="552" fill="#d7e0ee" font-size="13" text-anchor="middle">25 rooms · bars &amp; fixers</text>
+  <text x="1893" y="574" fill="#9fb0c4" font-size="11" text-anchor="middle">mostly safe</text>
+
+  <!-- k2 The Pulse -->
+  <rect x="2085" y="1061" width="300" height="130" rx="10" fill="#11151f" stroke="#ffb000" stroke-width="2.5"/>
+  <text x="2235" y="1116" fill="#ffb000" font-size="19" font-weight="bold" text-anchor="middle">THE PULSE</text>
+  <text x="2235" y="1144" fill="#d7e0ee" font-size="13" text-anchor="middle">25 rooms · clubs</text>
+  <text x="2235" y="1166" fill="#9fb0c4" font-size="11" text-anchor="middle">light: bouncer/dealer</text>
+
+  <!-- k3 Velvet Quarter -->
+  <rect x="1966" y="1735" width="300" height="130" rx="10" fill="#11151f" stroke="#ffb000" stroke-width="2.5"/>
+  <text x="2116" y="1790" fill="#ffb000" font-size="19" font-weight="bold" text-anchor="middle">VELVET QUARTER</text>
+  <text x="2116" y="1818" fill="#d7e0ee" font-size="13" text-anchor="middle">25 rooms · red-light</text>
+  <text x="2116" y="1840" fill="#9fb0c4" font-size="11" text-anchor="middle">light: bouncer/hustler</text>
+
+  <!-- k4 The Gutters -->
+  <rect x="1442" y="2175" width="300" height="130" rx="10" fill="#1a0f0f" stroke="#ff4f4f" stroke-width="2.5"/>
+  <text x="1592" y="2230" fill="#ff4f4f" font-size="19" font-weight="bold" text-anchor="middle">THE GUTTERS</text>
+  <text x="1592" y="2258" fill="#d7e0ee" font-size="13" text-anchor="middle">25 rooms · combat fringe</text>
+  <text x="1592" y="2280" fill="#ff4f4f" font-size="11" text-anchor="middle">most mobs (still L1-11)</text>
+
+  <!-- k5 Wharf &amp; Old Town -->
+  <rect x="758" y="2175" width="300" height="130" rx="10" fill="#0c1418" stroke="#55ff99" stroke-width="2.5"/>
+  <text x="908" y="2230" fill="#55ff99" font-size="18" font-weight="bold" text-anchor="middle">WHARF &amp; OLD TOWN</text>
+  <text x="908" y="2258" fill="#d7e0ee" font-size="13" text-anchor="middle">25 rooms · docks + shrine</text>
+  <text x="908" y="2280" fill="#9fb0c4" font-size="11" text-anchor="middle">Old Town fully safe</text>
+
+  <!-- k6 Chrome Alley -->
+  <rect x="234" y="1735" width="300" height="130" rx="10" fill="#11151f" stroke="#ffb000" stroke-width="2.5"/>
+  <text x="384" y="1790" fill="#ffb000" font-size="19" font-weight="bold" text-anchor="middle">CHROME ALLEY</text>
+  <text x="384" y="1818" fill="#d7e0ee" font-size="13" text-anchor="middle">25 rooms · body-mod / EMs</text>
+  <text x="384" y="1840" fill="#9fb0c4" font-size="11" text-anchor="middle">light: junkie/scavver</text>
+
+  <!-- k7 Noodle Row -->
+  <rect x="115" y="1061" width="300" height="130" rx="10" fill="#0c1810" stroke="#55ff99" stroke-width="2.5"/>
+  <text x="265" y="1116" fill="#55ff99" font-size="19" font-weight="bold" text-anchor="middle">NOODLE ROW</text>
+  <text x="265" y="1144" fill="#d7e0ee" font-size="13" text-anchor="middle">25 rooms · food / heart</text>
+  <text x="265" y="1166" fill="#55ff99" font-size="11" text-anchor="middle">RP-safe haven</text>
+
+  <!-- k8 Verticage Arcology -->
+  <rect x="457" y="469" width="300" height="130" rx="10" fill="#11151f" stroke="#ffb000" stroke-width="2.5"/>
+  <text x="607" y="524" fill="#ffb000" font-size="18" font-weight="bold" text-anchor="middle">VERTICAGE ARCOLOGY</text>
+  <text x="607" y="552" fill="#d7e0ee" font-size="13" text-anchor="middle">25 rooms · residential tower</text>
+  <text x="607" y="574" fill="#9fb0c4" font-size="11" text-anchor="middle">light: ganger/maint-drone</text>
+
+  <!-- ===== THE STRIP (center hub) ===== -->
+  <rect x="1080" y="1225" width="340" height="150" rx="12" fill="#0a1420" stroke="#55ff99" stroke-width="3.5"/>
+  <text x="1250" y="1270" fill="#55ff99" font-size="21" font-weight="bold" text-anchor="middle">THE STRIP &amp; AVENUES</text>
+  <text x="1250" y="1296" fill="#d7e0ee" font-size="13" text-anchor="middle">25 rooms · central hub</text>
+  <text x="1250" y="1318" fill="#9fb0c4" font-size="12" text-anchor="middle">Crossroads Beacon · universal meet-up</text>
+  <text x="1250" y="1342" fill="#55ff99" font-size="12" text-anchor="middle">express spokes fan out to every district</text>
+  <text x="1250" y="1362" fill="#7f8da3" font-size="11" text-anchor="middle">Neon Alley adjoins here</text>
+
+  <!-- ===== LEGEND BAR ===== -->
+  <rect x="40" y="2400" width="2420" height="150" rx="8" fill="#0c1018" stroke="#5a6678" stroke-width="1.5"/>
+  <text x="60" y="2430" fill="#d7e0ee" font-size="16" font-weight="bold">LEGEND</text>
+
+  <line x1="60" y1="2456" x2="120" y2="2456" stroke="#55ff99" stroke-width="4"/>
+  <text x="132" y="2461" fill="#9fb0c4" font-size="14">Express spoke — FAST travel, The Strip to each district (crosses both loops)</text>
+  <line x1="60" y1="2488" x2="120" y2="2488" stroke="#27d4ff" stroke-width="5"/>
+  <text x="132" y="2493" fill="#9fb0c4" font-size="14">Inner Circuit — RP backdrop loop · 2–3 rooms between spokes</text>
+  <line x1="60" y1="2520" x2="120" y2="2520" stroke="#ffb000" stroke-width="5" stroke-dasharray="16 11"/>
+  <text x="132" y="2525" fill="#9fb0c4" font-size="14">Sprawlbelt — RP backdrop loop · 5–10 rooms between spokes</text>
+
+  <rect x="950" y="2447" width="20" height="14" rx="3" fill="#0c1810" stroke="#55ff99" stroke-width="2.5"/>
+  <text x="980" y="2459" fill="#9fb0c4" font-size="14">RP-safe haven / hub</text>
+  <rect x="950" y="2480" width="20" height="14" rx="3" fill="#11151f" stroke="#27d4ff" stroke-width="2.5"/>
+  <text x="980" y="2492" fill="#9fb0c4" font-size="14">mostly safe</text>
+  <rect x="950" y="2513" width="20" height="14" rx="3" fill="#11151f" stroke="#ffb000" stroke-width="2.5"/>
+  <text x="980" y="2525" fill="#9fb0c4" font-size="14">light mobs (L1-11)</text>
+  <rect x="1280" y="2513" width="20" height="14" rx="3" fill="#1a0f0f" stroke="#ff4f4f" stroke-width="2.5"/>
+  <text x="1310" y="2525" fill="#9fb0c4" font-size="14">roughest · most mobs</text>
+
+  <text x="1620" y="2459" fill="#7f8da3" font-size="13">● = on/off-ramp where a spoke crosses a loop.</text>
+  <text x="1620" y="2487" fill="#7f8da3" font-size="13">Districts hang OUTSIDE the beltway; loops are wander-able</text>
+  <text x="1620" y="2511" fill="#7f8da3" font-size="13">RP space between them.</text>
+  <text x="1620" y="2537" fill="#8a97ab" font-size="13">250 district + ~22 inner + ~68 outer ≈ <tspan fill="#d7e0ee" font-weight="bold">340 rooms</tspan> (tunable)</text>
+</svg>
