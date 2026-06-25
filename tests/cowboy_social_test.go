@@ -8,9 +8,9 @@ import (
 )
 
 func routeToDeepNet(w *cowboy.World, p *cowboy.Player) {
-	routeToNet(w, p)     // -> the_net
-	w.Command(p, "down") // ice_wall
-	w.Command(p, "down") // deep_net
+	routeToNet(w, p)     // -> nz1_1_top (Net access shell)
+	w.Command(p, "down") // nz1_1_mid (breach layer)
+	w.Command(p, "down") // nz1_1_bot (node core — the Gauntlet ICE)
 }
 
 func TestCowboyProgramsRAMAndGates(t *testing.T) {
@@ -19,9 +19,10 @@ func TestCowboyProgramsRAMAndGates(t *testing.T) {
 	out, buf := sink()
 	p := w.Connect("Case", out)
 	routeToNet(w, p)
+	w.Command(p, "down") // nz1_1_mid — engage the ICE patrolling the breach layer
 	p.Intelligence, p.MaxHP, p.HP, p.RAM = 40, 2000, 2000, 20
 
-	w.Command(p, "attack ice") // engage White ICE
+	w.Command(p, "attack") // engage the ICE
 	ramBefore := p.RAM
 	w.Command(p, "run hammer") // costs 4 RAM
 	if p.RAM != ramBefore-4 {
@@ -60,12 +61,15 @@ func TestCowboyMirrorShieldReducesDamage(t *testing.T) {
 	out, _ := sink()
 	p := w.Connect("Case", out)
 	routeToDeepNet(w, p)
-	if p.RoomID != "deep_net" {
-		t.Fatalf("expected deep_net, at %s", p.RoomID)
+	if p.RoomID != "nz1_1_bot" {
+		t.Fatalf("expected nz1_1_bot, at %s", p.RoomID)
 	}
-	p.Intelligence, p.MaxHP, p.RAM = 40, 4000, 80
+	// Low Intelligence so our breach doesn't kill the Gauntlet between the two
+	// measured rounds (a kill would morph it into a harder-hitting stage and
+	// confound the shield comparison).
+	p.Intelligence, p.MaxHP, p.RAM = 8, 4000, 80
 	p.HP = p.MaxHP
-	w.Command(p, "attack black") // engage Black ICE (survives several rounds)
+	w.Command(p, "attack gauntlet") // engage the Gauntlet ICE (survives several rounds)
 
 	// One round with no shield.
 	hp0 := p.HP

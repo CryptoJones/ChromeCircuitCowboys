@@ -2,11 +2,13 @@ package cowboy
 
 import "strings"
 
-// netRooms are inside the Net: here your attack is a netrun BREACH driven by
-// Intelligence, not a meatspace strike driven by Body.
-var netRooms = map[string]bool{"the_net": true, "ice_wall": true, "deep_net": true}
-
-func (w *World) inNet(p *Player) bool { return netRooms[p.RoomID] }
+// inNet reports whether the player is inside the Net — where attacks are netrun
+// BREACHes driven by Intelligence (and spend RAM), not meatspace strikes driven
+// by Body. Every authored Net room carries the Net flag (see netzones.go).
+func (w *World) inNet(p *Player) bool {
+	r := w.room(p.RoomID)
+	return r != nil && r.Net
+}
 
 // effAttack is the player's damage this round, route-dependent (breach vs melee).
 func (w *World) effAttack(p *Player) int {
