@@ -259,6 +259,11 @@ func serve(nc net.Conn, events chan event) {
 		events <- event{typ: evClose, c: c}
 		return
 	}
+	if t := strings.ToLower(strings.TrimSpace(name)); t == "q" || t == "quit" {
+		c.out("\r\nNO CARRIER\r\n")
+		events <- event{typ: evClose, c: c}
+		return
+	}
 	if strings.TrimSpace(name) == "" {
 		name = deflt // hit Enter on the prompt -> use the BBS handle
 	}
