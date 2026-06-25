@@ -1,0 +1,451 @@
+# Chrome Circuit Cowboys — Underground Room Map (L1-99)
+
+_Generated from `cowboy/zones.go` (the authored 10-arc descent). Directions vary room to room; `down` descends between arcs; a room's `up`/`down` to a `*_cache` is a hidden ceiling/floor loot stash._
+
+Entry: **Back Alley** → `down` → `z1_01`.
+
+## L1-10 · The Neon Wasteland
+
+- `z1_01` **Container Row 7** _(safe, EM)_
+    - exits: east→z1_02
+- `z1_02` **The Sodium Strip**
+    - foe: a pack of scrap-hounds (HP 25, dmg 5, 48 XP)
+    - exits: north→z1_03, up→z1_02_cache, west→z1_01
+    - cache: `up` (Ceiling Crawlspace) — loot: stimpak + scrip
+- `z1_03` **Gutter Bazaar** _(safe, vendor)_
+    - exits: south→z1_02, west→z1_04
+- `z1_04` **Drainage Sublevel**
+    - foe: a scrap-hound ambusher (HP 25, dmg 5, 48 XP)
+    - exits: east→z1_03, south→z1_05
+- `z1_05` **The Chop-Shop**
+    - foe: Razorback Kane, the Scrap-Hound warboss (HP 145, dmg 17, 430 XP)
+    - exits: east→z1_06, north→z1_04
+- `z1_06` **Dead Man's Junction** _(safe, EM)_
+    - exits: down→z1_06_cache, south→z1_07, west→z1_05
+    - cache: `down` (Floor Sump-Cache) — loot: ram-chip + scrip
+- `z1_07` **EREBUS Datascape**
+    - exits: north→z1_06, west→z1_08
+- `z1_08` **The Setup**
+    - foe: a Kurokawa recon drone (HP 52, dmg 9, 135 XP)
+    - exits: east→z1_07, south→z1_09
+- `z1_09` **Vance's Back-Door Clinic** _(safe, vendor, EM)_
+    - exits: north→z1_08, west→z1_10
+- `z1_10` **The Drowned Platform** _(safe)_
+    - exits: east→z1_09, north→z1_11, up→z1_10_cache
+    - cache: `up` (Ceiling Crawlspace) — loot: stimpak + scrip
+- `z1_11` **Jax's Firing Pit** _(safe, vendor)_
+    - exits: south→z1_10, west→z1_12
+- `z1_12` **The Wasteland's Edge** _(safe, EM)_
+    - exits: east→z1_11, south→z1_13
+- `z1_13` **Perimeter Fenceline**
+    - foe: a Kurokawa security drone (HP 25, dmg 5, 48 XP)
+    - exits: east→z1_14, north→z1_12
+- `z1_14` **Loading Bay 12**
+    - foe: an augmented corp guard (HP 25, dmg 5, 48 XP)
+    - exits: down→z1_14_cache, south→z1_15, west→z1_13
+    - cache: `down` (Floor Sump-Cache) — loot: ram-chip + scrip
+- `z1_15` **Automated Sortation Floor**
+    - foe: the Sortation turret-warden (HP 52, dmg 9, 135 XP)
+    - exits: north→z1_14, west→z1_16
+- `z1_16` **Server Spine** _(safe, EM)_
+    - exits: east→z1_15, south→z1_17
+- `z1_17` **The EREBUS Mainframe Vault**
+    - foe: Warden Sato in a combat-frame (HP 145, dmg 17, 430 XP)
+    - exits: north→z1_16, west→z1_18
+- `z1_18` **The Burning Exit**
+    - foe: a Kurokawa strike trooper (HP 25, dmg 5, 48 XP)
+    - exits: down→z2_01, east→z1_17
+
+## L11-20 · The Arcology's Core
+
+- `z2_01` **The Ascension Lift** _(safe)_
+    - exits: east→z2_02, up→z1_18
+- `z2_02` **The Atrium of Synthetic Dawn**
+    - foe: a biometric sentry drone (HP 36, dmg 7, 76 XP)
+    - exits: north→z2_03, up→z2_02_cache, west→z2_01
+    - cache: `up` (Ceiling Crawlspace) — loot: stimpak + scrip
+- `z2_03` **The Velvet Rope**
+    - exits: south→z2_02, west→z2_04
+- `z2_04` **The Gala of Glass Hearts**
+    - foe: a tuxedoed corp-sec agent (HP 36, dmg 7, 76 XP)
+    - exits: east→z2_03, south→z2_05
+- `z2_05` **The Powder Room Accord**
+    - exits: east→z2_06, north→z2_04
+- `z2_06` **The Service Spine** _(safe, vendor, EM)_
+    - exits: south→z2_07, west→z2_05
+- `z2_07` **The Glass Capillaries**
+    - foe: a biometric hunter drone (HP 36, dmg 7, 76 XP)
+    - exits: down→z2_07_cache, north→z2_06, west→z2_08
+    - cache: `down` (Floor Sump-Cache) — loot: ram-chip + scrip
+- `z2_08` **The Quarantine Cluster**
+    - foe: a rogue-AI fragment (HP 74, dmg 12, 200 XP)
+    - exits: east→z2_07, south→z2_09
+- `z2_09` **The Pre-Crime Oracle**
+    - exits: north→z2_08, up→z2_09_cache, west→z2_10
+    - cache: `up` (Ceiling Crawlspace) — loot: stimpak + scrip
+- `z2_10` **The Boardroom Cold War**
+    - exits: east→z2_09, north→z2_11
+- `z2_11` **The Apostate's Lab** _(safe)_
+    - exits: south→z2_10, west→z2_12
+- `z2_12` **The Approach Vector**
+    - foe: an arcology corp-sec trooper (HP 36, dmg 7, 76 XP)
+    - exits: east→z2_11, south→z2_13
+- `z2_13` **The Sub-Zero Sanctum** _(safe, EM)_
+    - exits: east→z2_14, north→z2_12
+- `z2_14` **The Net Duel: Thorne's Cathedral**
+    - foe: Dr. Aris Thorne, the AI architect (HP 200, dmg 22, 610 XP)
+    - exits: south→z2_15, west→z2_13
+- `z2_15` **The Forgotten Shaft** _(safe)_
+    - exits: down→z3_01, north→z2_14
+
+## L21-30 · The Sump
+
+- `z3_01` **The Long Drop - Shaft 7**
+    - foe: a Blackout Front picket (HP 47, dmg 9, 104 XP)
+    - exits: up→z2_15, west→z3_02
+- `z3_02` **The Cistern Gauntlet**
+    - foe: the scavenger Brood-Mother (HP 96, dmg 15, 265 XP)
+    - exits: down→z3_02_cache, east→z3_01, south→z3_03
+    - cache: `down` (Floor Sump-Cache) — loot: ram-chip + scrip
+- `z3_03` **The Reclaimed Plant - Bastion HQ** _(safe, vendor, EM)_
+    - exits: north→z3_02, west→z3_04
+- `z3_04` **The Wire Market** _(safe, vendor)_
+    - exits: east→z3_03, north→z3_05
+- `z3_05` **The Drowned Line**
+    - foe: a mutant scavenger (HP 47, dmg 9, 104 XP)
+    - exits: south→z3_04, up→z3_05_cache, west→z3_06
+    - cache: `up` (Ceiling Crawlspace) — loot: trauma-kit + scrip
+- `z3_06` **The Faraday Cloister** _(safe, vendor)_
+    - exits: east→z3_05, south→z3_07
+- `z3_07` **The Magma Vein**
+    - foe: a scalded scavenger (HP 47, dmg 9, 104 XP)
+    - exits: east→z3_08, north→z3_06
+- `z3_08` **The Pit - Exile Fighting Ring**
+    - foe: the Pit Champion 'Slag' (HP 96, dmg 15, 265 XP)
+    - exits: down→z3_08_cache, south→z3_09, west→z3_07
+    - cache: `down` (Floor Sump-Cache) — loot: ram-chip + scrip
+- `z3_09` **The Iron Artery**
+    - foe: a corporate death-squad trooper (HP 47, dmg 9, 104 XP)
+    - exits: north→z3_08, west→z3_10
+- `z3_10` **The Junction Box**
+    - foe: a corp grid-defender (HP 47, dmg 9, 104 XP)
+    - exits: east→z3_09, south→z3_11, up→z3_10_cache
+    - cache: `up` (Ceiling Crawlspace) — loot: trauma-kit + scrip
+- `z3_11` **The Brownout Spires**
+    - foe: a corp relay-guard (HP 47, dmg 9, 104 XP)
+    - exits: north→z3_10, west→z3_12
+- `z3_12` **The Chokepoint**
+    - foe: a cleaning-sweep enforcer (HP 96, dmg 15, 265 XP)
+    - exits: east→z3_11, north→z3_13
+- `z3_13` **The Blind Gate**
+    - foe: the Gate Sentinel turret-array (HP 96, dmg 15, 265 XP)
+    - exits: south→z3_12, west→z3_14
+- `z3_14` **The Vivisection Wards** _(EM)_
+    - foe: a cybernetic supersoldier (HP 47, dmg 9, 104 XP)
+    - exits: east→z3_13, south→z3_15
+- `z3_15` **The Erebus Vault**
+    - foe: Praetor-9, the Kurokawa enforcer (HP 255, dmg 27, 790 XP)
+    - exits: down→z4_01, north→z3_14
+
+## L31-40 · The Deep Archive
+
+- `z4_01` **The Bedrock Threshold** _(safe)_
+    - exits: north→z4_02, up→z3_15
+- `z4_02` **The Tripwire Gallery**
+    - foe: an analog auto-turret (HP 58, dmg 11, 132 XP)
+    - exits: east→z4_03, south→z4_01, up→z4_02_cache
+    - cache: `up` (Ceiling Crawlspace) — loot: ram-bank + scrip
+- `z4_03` **The Pressure-Plate Vestibule**
+    - foe: the analog auto-cannon (HP 118, dmg 18, 330 XP)
+    - exits: south→z4_04, west→z4_02
+- `z4_04` **The Pale Greeting Hall** _(safe)_
+    - exits: north→z4_03, west→z4_05
+- `z4_05` **The Collective's Warren** _(safe, vendor, EM)_
+    - exits: east→z4_04, south→z4_06
+- `z4_06` **The Geothermal Core Chamber**
+    - exits: down→z4_06_cache, north→z4_05, west→z4_07
+    - cache: `down` (Floor Sump-Cache) — loot: trauma-kit + scrip
+- `z4_07` **The Drowned Stair**
+    - foe: a blind tunnel-predator (HP 58, dmg 11, 132 XP)
+    - exits: east→z4_06, north→z4_08
+- `z4_08` **The Flooded Server Vaults**
+    - foe: a pale eyeless predator (HP 58, dmg 11, 132 XP)
+    - exits: south→z4_07, up→z4_08_cache, west→z4_09
+    - cache: `up` (Ceiling Crawlspace) — loot: ram-bank + scrip
+- `z4_09` **The Apex Spawning Pool**
+    - foe: the blind apex predator (HP 118, dmg 18, 330 XP)
+    - exits: east→z4_08, south→z4_10
+- `z4_10` **The Black Site Decryption Lab** _(safe)_
+    - exits: east→z4_11, north→z4_09
+- `z4_11` **The Defense Armory** _(safe, vendor)_
+    - exits: south→z4_12, west→z4_10
+- `z4_12` **The Maintenance Vent Network**
+    - foe: a corporate kill-team operative (HP 58, dmg 11, 132 XP)
+    - exits: down→z4_12_cache, north→z4_11, west→z4_13
+    - cache: `down` (Floor Sump-Cache) — loot: trauma-kit + scrip
+- `z4_13` **The Command Center & Comms Array** _(safe, EM)_
+    - exits: east→z4_12, south→z4_14
+- `z4_14` **The Siege of the Archive**
+    - foe: the corporate Heavy-Mech Commander (HP 310, dmg 32, 970 XP)
+    - exits: down→z5_01, north→z4_13
+
+## L41-50 · The Inverted Spire
+
+- `z5_01` **The Glory-Hole Cut**
+    - foe: a Haz-Sec trooper (HP 69, dmg 13, 160 XP)
+    - exits: north→z5_02, up→z4_14
+- `z5_02` **Slag-Trench Forward Camp** _(safe, vendor, EM)_
+    - exits: south→z5_01, west→z5_03
+- `z5_03` **Mag-Lev Spur 7**
+    - foe: Conductor-Unit K9 (HP 140, dmg 21, 395 XP)
+    - exits: east→z5_02, north→z5_04
+- `z5_04` **The Pinch-Point Galleries**
+    - foe: a Haz-Sec sapper (HP 69, dmg 13, 160 XP)
+    - exits: down→z5_04_cache, south→z5_03, west→z5_05
+    - cache: `down` (Floor Sump-Cache) — loot: ram-bank + scrip
+- `z5_05` **The Boiling Stair** _(EM)_
+    - exits: east→z5_04, south→z5_06
+- `z5_06` **The Forge**
+    - foe: the Foundry-Overseer Unit (HP 140, dmg 21, 395 XP)
+    - exits: east→z5_07, north→z5_05
+- `z5_07` **Magma Turbine Hall**
+    - foe: the Thermal Warden (HP 140, dmg 21, 395 XP)
+    - exits: south→z5_08, up→z5_07_cache, west→z5_06
+    - cache: `up` (Ceiling Crawlspace) — loot: trauma-kit + scrip
+- `z5_08` **The Black-Out Concourse** _(safe, vendor)_
+    - exits: north→z5_07, west→z5_09
+- `z5_09` **The Verdant Vault** _(vendor)_
+    - foe: a Praetorian bodyguard (HP 69, dmg 13, 160 XP)
+    - exits: down→z5_09_cache, east→z5_08, south→z5_10
+    - cache: `down` (Floor Sump-Cache) — loot: ram-bank + scrip
+- `z5_10` **The Glass Mansions** _(EM)_
+    - foe: Praetorian-Captain Sael (HP 140, dmg 21, 395 XP)
+    - exits: north→z5_09, west→z5_11
+- `z5_11` **The Quantum Cells**
+    - foe: Praetorian-Prime (HP 140, dmg 21, 395 XP)
+    - exits: east→z5_10, north→z5_12
+- `z5_12` **The Praetorian Tactical Hub** _(safe, EM)_
+    - exits: south→z5_11, west→z5_13
+- `z5_13` **The Executive Core**
+    - foe: the Kurokawa CEO in the Overlord mech (HP 365, dmg 37, 1150 XP)
+    - exits: down→z6_01, east→z5_12
+
+## L51-60 · The United Deeps
+
+- `z6_01` **The Gilded Reception Atrium** _(safe, vendor, EM)_
+    - exits: south→z6_02, up→z5_13
+- `z6_02` **The Boardroom of Splintered Crowns** _(safe)_
+    - exits: east→z6_03, north→z6_01
+- `z6_03` **The Heavy-Cache Vault**
+    - foe: a heavy-cache brawler (HP 162, dmg 24, 460 XP)
+    - exits: south→z6_04, up→z6_03_cache, west→z6_02
+    - cache: `up` (Ceiling Crawlspace) — loot: trauma-kit + scrip
+- `z6_04` **The Technician Holding Pens** _(EM)_
+    - exits: north→z6_03, west→z6_05
+- `z6_05` **The Luminous Fungal Galleries** _(vendor)_
+    - foe: a Loyalist sleeper-agent (HP 80, dmg 15, 188 XP)
+    - exits: down→z6_05_cache, east→z6_04, south→z6_06
+    - cache: `down` (Floor Sump-Cache) — loot: ram-bank + scrip
+- `z6_06` **The Contaminant Trail**
+    - exits: north→z6_05, west→z6_07
+- `z6_07` **The Black Descent**
+    - foe: a cave-predator (HP 80, dmg 15, 188 XP)
+    - exits: east→z6_06, north→z6_08, up→z6_07_cache
+    - cache: `up` (Ceiling Crawlspace) — loot: trauma-kit + scrip
+- `z6_08` **The Virgin Aquifer** _(EM)_
+    - foe: the apex cave-predator (HP 162, dmg 24, 460 XP)
+    - exits: south→z6_07, west→z6_09
+- `z6_09` **The Geothermal Substations**
+    - foe: a turncoat turret (HP 80, dmg 15, 188 XP)
+    - exits: down→z6_09_cache, east→z6_08, south→z6_10
+    - cache: `down` (Floor Sump-Cache) — loot: ram-bank + scrip
+- `z6_10` **The Biometric Listening Post** _(safe)_
+    - exits: east→z6_11, north→z6_09
+- `z6_11` **The Interrogation Cells** _(vendor)_
+    - foe: a Loyalist sleeper-agent (HP 80, dmg 15, 188 XP)
+    - exits: south→z6_12, west→z6_10
+- `z6_12` **The Velvet Killing Floor** _(EM)_
+    - foe: a Loyalist assassin-prime (HP 162, dmg 24, 460 XP)
+    - exits: north→z6_11, up→z6_12_cache, west→z6_13
+    - cache: `up` (Ceiling Crawlspace) — loot: trauma-kit + scrip
+- `z6_13` **The Scorched Regulator Tunnels**
+    - foe: a turncoat sentry-gun (HP 80, dmg 15, 188 XP)
+    - exits: east→z6_12, south→z6_14
+- `z6_14` **The Core Meltdown - Magma Vent Catwalk**
+    - foe: the Loyalist Commander (HP 420, dmg 42, 1330 XP)
+    - exits: down→z7_01, north→z6_13
+
+## L61-70 · The Abyssal Network
+
+- `z7_01` **The Breached Bulkhead** _(safe)_
+    - exits: north→z7_02, up→z6_14
+- `z7_02` **Hardsuit Bay 7-D** _(safe, vendor, EM)_
+    - exits: south→z7_01, west→z7_03
+- `z7_03` **The Drowned Tunnels**
+    - foe: a rogue aquatic drone (HP 91, dmg 17, 216 XP)
+    - exits: east→z7_02, north→z7_04, up→z7_03_cache
+    - cache: `up` (Ceiling Crawlspace) — loot: ram-bank + scrip
+- `z7_04` **The Submersible Graveyard**
+    - foe: The Dredger (HP 184, dmg 27, 525 XP)
+    - exits: south→z7_03, west→z7_05
+- `z7_05` **The Sinkers' Reef** _(safe, vendor)_
+    - exits: east→z7_04, south→z7_06
+- `z7_06` **The Choked Siphon**
+    - exits: down→z7_06_cache, east→z7_07, north→z7_05
+    - cache: `down` (Floor Sump-Cache) — loot: mega-stim + scrip
+- `z7_07` **The Torpedo Gauntlet**
+    - foe: an anti-ship torpedo drone (HP 91, dmg 17, 216 XP)
+    - exits: south→z7_08, west→z7_06
+- `z7_08` **Oceanus Airlock 1 - The Wet Hub** _(safe, vendor, EM)_
+    - exits: north→z7_07, west→z7_09
+- `z7_09` **The DRM Recycler Vault**
+    - foe: a marine-sec diver (HP 91, dmg 17, 216 XP)
+    - exits: east→z7_08, south→z7_10, up→z7_09_cache
+    - cache: `up` (Ceiling Crawlspace) — loot: ram-bank + scrip
+- `z7_10` **The Black Observation Decks**
+    - foe: the Anglermother (HP 184, dmg 27, 525 XP)
+    - exits: north→z7_09, west→z7_11
+- `z7_11` **The Comms Array Nexus** _(safe)_
+    - exits: east→z7_10, north→z7_12
+- `z7_12` **The Umbilical**
+    - foe: a maintenance spider (HP 91, dmg 17, 216 XP)
+    - exits: down→z7_12_cache, south→z7_11, west→z7_13
+    - cache: `down` (Floor Sump-Cache) — loot: mega-stim + scrip
+- `z7_13` **Platform 09 - The Apex Broadcast**
+    - foe: the gunship 'Tempest-Actual' (HP 475, dmg 47, 1510 XP)
+    - exits: down→z8_01, east→z7_12
+
+## L71-80 · The Hive
+
+- `z8_01` **Silo-09 Airlock & The Long Drop** _(safe, vendor, EM)_
+    - exits: south→z8_02, up→z7_13
+- `z8_02` **The Dead Zone Catwalks**
+    - foe: a razor-swarm drone (HP 102, dmg 19, 244 XP)
+    - exits: east→z8_03, north→z8_01, up→z8_02_cache
+    - cache: `up` (Ceiling Crawlspace) — loot: ram-bank + scrip
+- `z8_03` **Coolant Fog Gallery**
+    - foe: a frost-blind razor-drone (HP 102, dmg 19, 244 XP)
+    - exits: south→z8_04, west→z8_02
+- `z8_04` **The Choir of the Dead** _(safe)_
+    - exits: down→z8_04_cache, north→z8_03, west→z8_05
+    - cache: `down` (Floor Sump-Cache) — loot: mega-stim + scrip
+- `z8_05` **Quarantine Threshold**
+    - exits: east→z8_04, south→z8_06
+- `z8_06` **The Study-Cell (Body Layer)**
+    - foe: a Hive security mech (HP 102, dmg 19, 244 XP)
+    - exits: north→z8_05, west→z8_07
+- `z8_07` **The Turing Labyrinth (Mind Layer)**
+    - foe: a non-Euclidean guardian (HP 206, dmg 30, 590 XP)
+    - exits: east→z8_06, north→z8_08, up→z8_07_cache
+    - cache: `up` (Ceiling Crawlspace) — loot: ram-bank + scrip
+- `z8_08` **The Optimization Offer** _(safe)_
+    - exits: south→z8_07, west→z8_09
+- `z8_09` **The Fail-Safe Vaults** _(EM)_
+    - exits: down→z8_09_cache, east→z8_08, south→z8_10
+    - cache: `down` (Floor Sump-Cache) — loot: mega-stim + scrip
+- `z8_10` **The Nitrogen Cathedral**
+    - foe: the cryo-tower warden (HP 206, dmg 30, 590 XP)
+    - exits: east→z8_11, north→z8_09
+- `z8_11` **The Launch-Tube Descent**
+    - foe: a launch-tube turret (HP 102, dmg 19, 244 XP)
+    - exits: south→z8_12, up→z8_11_cache, west→z8_10
+    - cache: `up` (Ceiling Crawlspace) — loot: ram-bank + scrip
+- `z8_12` **The Melting Core Pumps** _(safe, EM)_
+    - exits: north→z8_11, west→z8_13
+- `z8_13` **The God in the Machine**
+    - foe: the God in the Machine (HP 530, dmg 52, 1690 XP)
+    - exits: down→z9_01, east→z8_12
+
+## L81-90 · The Iron Arteries
+
+- `z9_01` **Forward Command - The Last Switchyard** _(safe, vendor, EM)_
+    - exits: east→z9_02, up→z8_13
+- `z9_02` **The Convergence Approach**
+    - foe: a corporate army regular (HP 113, dmg 21, 272 XP)
+    - exits: south→z9_03, up→z9_02_cache, west→z9_01
+    - cache: `up` (Ceiling Crawlspace) — loot: mega-stim + scrip
+- `z9_03` **Mag-Lev Junction Prime**
+    - foe: a corp armored captain (HP 228, dmg 33, 655 XP)
+    - exits: north→z9_02, west→z9_04
+- `z9_04` **The Drop Zone**
+    - foe: a corp shock-trooper (HP 113, dmg 21, 272 XP)
+    - exits: down→z9_04_cache, east→z9_03, north→z9_05
+    - cache: `down` (Floor Sump-Cache) — loot: ram-bank + scrip
+- `z9_05` **Hub Aid Station** _(safe, vendor, EM)_
+    - exits: south→z9_04, west→z9_06
+- `z9_06` **The Replication Floor**
+    - foe: a corrupted builder-drone (HP 113, dmg 21, 272 XP)
+    - exits: east→z9_05, south→z9_07, up→z9_06_cache
+    - cache: `up` (Ceiling Crawlspace) — loot: mega-stim + scrip
+- `z9_07` **The Three-Way Gut**
+    - foe: a hulking builder-drone prime (HP 228, dmg 33, 655 XP)
+    - exits: east→z9_08, north→z9_06
+- `z9_08` **The Faraday Line**
+    - foe: a corrupted drone (HP 113, dmg 21, 272 XP)
+    - exits: south→z9_09, west→z9_07
+- `z9_09` **The Diamond Threshold**
+    - foe: a kill-room turret (HP 113, dmg 21, 272 XP)
+    - exits: down→z9_09_cache, north→z9_08, west→z9_10
+    - cache: `down` (Floor Sump-Cache) — loot: ram-bank + scrip
+- `z9_10` **The Pressure Valve**
+    - foe: a corp valve-guard (HP 113, dmg 21, 272 XP)
+    - exits: east→z9_09, south→z9_11
+- `z9_11` **The Breach**
+    - foe: a Redoubt kill-room turret (HP 113, dmg 21, 272 XP)
+    - exits: north→z9_10, up→z9_11_cache, west→z9_12
+    - cache: `up` (Ceiling Crawlspace) — loot: mega-stim + scrip
+- `z9_12` **The Kill-Room Spine**
+    - foe: an Aegis cyber-guard elite (HP 228, dmg 33, 655 XP)
+    - exits: east→z9_11, north→z9_13
+- `z9_13` **The Inner Sanctum - Hangar of the Overlord** _(safe, EM)_
+    - exits: south→z9_12, west→z9_14
+- `z9_14` **The Iron Overlord**
+    - foe: the Iron Overlord (HP 585, dmg 57, 1870 XP)
+    - exits: down→z10_01, east→z9_13
+
+## L91-99 · The Geo-Anchor Vault
+
+- `z10_01` **The Thunderhead Threshold** _(safe, EM)_
+    - exits: south→z10_02, up→z9_14
+- `z10_02` **The Loyal Choir**
+    - foe: an awakened security-drone (HP 124, dmg 23, 300 XP)
+    - exits: east→z10_03, north→z10_01, up→z10_02_cache
+    - cache: `up` (Ceiling Crawlspace) — loot: ram-bank + scrip
+- `z10_03` **The Underbelly March**
+    - foe: an upside-down sentry-drone (HP 124, dmg 23, 300 XP)
+    - exits: south→z10_04, west→z10_02
+- `z10_04` **The Countdown Choir-Loft**
+    - foe: the Vanguard Loader (HP 250, dmg 36, 720 XP)
+    - exits: down→z10_04_cache, north→z10_03, west→z10_05
+    - cache: `down` (Floor Sump-Cache) — loot: mega-stim + scrip
+- `z10_05` **Pillar One - The Endless Womb**
+    - foe: a heavy combat chassis (HP 124, dmg 23, 300 XP)
+    - exits: east→z10_04, south→z10_06, up→z10_05_cache
+    - cache: `up` (Ceiling Crawlspace) — loot: ram-bank + scrip
+- `z10_06` **The Quiet Forge** _(safe, vendor, EM)_
+    - exits: north→z10_05, west→z10_07
+- `z10_07` **The Coil Stair**
+    - foe: a coil-stair laser node (HP 124, dmg 23, 300 XP)
+    - exits: east→z10_06, north→z10_08
+- `z10_08` **The Stabilizer Hub**
+    - exits: down→z10_08_cache, south→z10_07, west→z10_09
+    - cache: `down` (Floor Sump-Cache) — loot: mega-stim + scrip
+- `z10_09` **The Snapping of the Tether**
+    - foe: a heavy combat chassis (HP 124, dmg 23, 300 XP)
+    - exits: east→z10_08, south→z10_10, up→z10_09_cache
+    - cache: `up` (Ceiling Crawlspace) — loot: ram-bank + scrip
+- `z10_10` **The Excavation Yard** _(safe, vendor, EM)_
+    - exits: east→z10_11, north→z10_09
+- `z10_11` **The Long Ascent**
+    - foe: a Loom heavy chassis-prime (HP 250, dmg 36, 720 XP)
+    - exits: south→z10_12, west→z10_10
+- `z10_12` **Beneath the Tungsten Teeth** _(safe, EM)_
+    - exits: north→z10_11, west→z10_13
+- `z10_13` **The Loom Masterframe**
+    - foe: the Loom Masterframe (HP 640, dmg 62, 2050 XP)
+    - exits: east→z10_12, south→z10_14
+- `z10_14` **The Warm Pulse** _(safe, EM)_
+    - exits: north→z10_13
+
+
+*Proudly Made in Nebraska. Go Big Red! 🌽 <https://xkcd.com/2347/>*

@@ -49,19 +49,21 @@ func buildRooms() map[string]*Room {
 			Desc:  "The architecture turns predatory. Black ICE coils in the dark and the\r\nRogue AI watches from the core. Runners fight each other here as readily\r\nas the ICE — PvP is live.",
 			Exits: map[string]string{"up": "ice_wall"}},
 	}
-	// Dual-path level-band SKELETON (L11-99), placeholder rooms with NO monsters
-	// yet — themes/quests/mob types get filled in per band. The meatspace spine
-	// hangs off Back Alley; the Net spine descends from the Deep Net. See
-	// buildBandSpine for the per-band shape.
-	rooms = append(rooms, buildBandSpine("m", "back_alley", "Meatspace")...)
+	// Meatspace main quest (L1-99): the authored 10-arc underground descent (see
+	// zones.go), hanging off Back Alley. The Net spine is still the procedural
+	// placeholder skeleton, descending from the Deep Net (untouched).
+	zoneRooms, _ := buildUndergroundZones()
+	rooms = append(rooms, zoneRooms...)
 	rooms = append(rooms, buildBandSpine("n", "deep_net", "The Net :: Deep")...)
 
 	m := make(map[string]*Room, len(rooms))
 	for _, r := range rooms {
 		m[r.ID] = r
 	}
-	// Open each existing frontier room DOWN into its spine's first Approach.
-	m["back_alley"].Exits["down"] = "m20_gate"
+	// Back Alley drops DOWN into the Neon Wasteland (the first authored zone);
+	// the Deep Net descends into its placeholder Net spine.
+	m["back_alley"].Exits["down"] = "z1_01"
+	m["z1_01"].Exits["up"] = "back_alley"
 	m["deep_net"].Exits["down"] = "n20_gate"
 	return m
 }
@@ -140,6 +142,9 @@ func buildMobTemplates() map[string]*MobTemplate {
 		{ID: "gauntlet2", Name: "the Gauntlet ICE [black core]", HP: 70, Damage: 16, AC: 8, Aggressive: true, ICE: true, Next: "gauntlet3"},
 		{ID: "gauntlet3", Name: "the Gauntlet ICE [lethal lock]", HP: 110, Damage: 24, AC: 11, XP: 700, Eddies: 600, Aggressive: true, ICE: true},
 	}
+	// Authored underground hostiles + loot caches (L1-99 meatspace zones).
+	_, zoneMobs := buildUndergroundZones()
+	defs = append(defs, zoneMobs...)
 	m := make(map[string]*MobTemplate, len(defs))
 	for _, t := range defs {
 		m[t.ID] = t
@@ -222,6 +227,9 @@ func waresForRoom(roomID string) []ware {
 		return streetWares
 	case "market":
 		return nightMarketWares
+	}
+	if b, ok := zoneVendorBand[roomID]; ok { // authored underground zone vendors
+		return waresForBand(b)
 	}
 	if strings.HasSuffix(roomID, "_safe") {
 		if list, ok := safehouseWares[bandOf(roomID)]; ok {
