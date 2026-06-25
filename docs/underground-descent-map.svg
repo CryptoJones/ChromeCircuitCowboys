@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1720" height="2920" viewBox="0 0 1720 2920" font-family="Menlo, Consolas, monospace">
+  <rect x="0" y="0" width="1720" height="2920" fill="#07090f"/>
+
+  <text x="40" y="52" fill="#27d4ff" font-size="32" font-weight="bold">CHROME CIRCUIT COWBOYS — THE UNDERGROUND DESCENT (L1–99)  ·  PROPOSAL</text>
+  <text x="40" y="86" fill="#8a97ab" font-size="16">10 story arcs from the Neon Wasteland down to the mantle · ~140 designed areas · replaces the 40 placeholder band-rooms · main-quest meatspace</text>
+  <text x="40" y="132" fill="#9fb0c4" font-size="16">ENTRY down from the street-level hub (Neon Alley · The Strip · the RP Sprawl) — down the Back Alley into the Wasteland</text>
+
+  <!-- depth axis -->
+  <line x1="120" y1="175" x2="120" y2="2741" stroke="#3a4658" stroke-width="2"/>
+  <text x="108" y="200" fill="#5a6678" font-size="13" text-anchor="end">L1</text>
+  <text x="108" y="1460" fill="#5a6678" font-size="13" text-anchor="end">deeper</text>
+  <text x="108" y="2735" fill="#ff6a6a" font-size="13" text-anchor="end">MANTLE</text>
+
+  <!-- down chevrons between zones -->
+  <g stroke="#5a6678" stroke-width="3" fill="none">
+    <path d="M300,418 l12,14 l12,-14"/><path d="M300,677 l12,14 l12,-14"/><path d="M300,936 l12,14 l12,-14"/>
+    <path d="M300,1195 l12,14 l12,-14"/><path d="M300,1454 l12,14 l12,-14"/><path d="M300,1713 l12,14 l12,-14"/>
+    <path d="M300,1972 l12,14 l12,-14"/><path d="M300,2231 l12,14 l12,-14"/><path d="M300,2490 l12,14 l12,-14"/>
+  </g>
+
+  <!-- ZONE 1 L1-10 -->
+  <rect x="180" y="175" width="1480" height="235" rx="12" fill="#0e1320" stroke="#27d4ff" stroke-width="3"/>
+  <text x="210" y="240" fill="#27d4ff" font-size="34" font-weight="bold">L1–10</text>
+  <text x="210" y="270" fill="#7f8da3" font-size="13">18 areas</text>
+  <text x="470" y="225" fill="#27d4ff" font-size="25" font-weight="bold">THE NEON WASTELAND</text>
+  <text x="470" y="258" fill="#d7e0ee" font-size="15">Subterranean Sector-4 container sprawl under the Arcology — neon twilight, ozone &amp; smog. A street punk's first jobs.</text>
+  <text x="470" y="288" fill="#9fb0c4" font-size="14">Cast: the Fixer (betrays you) · Doc 'Stitches' Vance (EM) · Cipher · Jax · Scrap-Hounds gang · Kurokawa Corp</text>
+  <text x="470" y="322" fill="#9fb0c4" font-size="14">Beats: snatch the stolen cyberdeck, jack it (Project EREBUS), build your crew, the Data Heist</text>
+  <text x="470" y="356" fill="#ffb000" font-size="15">CLIMAX: Kurokawa Logistics Hub — Warden Sato's combat-frame; jack the EREBUS manifesto &amp; flee</text>
+
+  <!-- ZONE 2 L11-20 -->
+  <rect x="180" y="434" width="1480" height="235" rx="12" fill="#0e1320" stroke="#27d4ff" stroke-width="3"/>
+  <text x="210" y="499" fill="#27d4ff" font-size="34" font-weight="bold">L11–20</text>
+  <text x="210" y="529" fill="#7f8da3" font-size="13">15 areas</text>
+  <text x="470" y="484" fill="#27d4ff" font-size="25" font-weight="bold">THE ARCOLOGY'S CORE</text>
+  <text x="470" y="517" fill="#d7e0ee" font-size="15">Kurokawa Arcology — glass/chrome corporate city-state, galas, biometric scanners. Stealth &amp; social engineering.</text>
+  <text x="470" y="547" fill="#9fb0c4" font-size="14">Cast: Cipher (handler) · Sable (rival-corp spy) · Dr. Lena Voss (defector) · Dr. Aris Thorne</text>
+  <text x="470" y="581" fill="#9fb0c4" font-size="14">Beats: spoof in at the gala, map EREBUS, play the board, the cyberspace duel</text>
+  <text x="470" y="615" fill="#ffb000" font-size="15">CLIMAX: Sub-Zero Sanctum / Net duel — Dr. Aris Thorne (quantum-wetware); sever EREBUS</text>
+  <text x="1640" y="484" fill="#55ff99" font-size="14" font-weight="bold" text-anchor="end">^ THE ONE ASCENT — up into the tower, then plunge down</text>
+
+  <!-- ZONE 3 L21-30 -->
+  <rect x="180" y="693" width="1480" height="235" rx="12" fill="#0e1320" stroke="#55ff99" stroke-width="3"/>
+  <text x="210" y="758" fill="#55ff99" font-size="34" font-weight="bold">L21–30</text>
+  <text x="210" y="788" fill="#7f8da3" font-size="13">15 areas</text>
+  <text x="470" y="743" fill="#55ff99" font-size="25" font-weight="bold">THE SUMP  ·  Homeless Encampments</text>
+  <text x="470" y="776" fill="#d7e0ee" font-size="15">Off-grid labyrinth of forgotten subway tunnels &amp; dried reservoirs. You arrive a hunted symbol; you raise an army.</text>
+  <text x="470" y="806" fill="#9fb0c4" font-size="14">Cast: the Blackout Front (Silas) · the Rust-Mages · the Exiles</text>
+  <text x="470" y="840" fill="#9fb0c4" font-size="14">Beats: trial by fire, unify the factions, guerrilla campaign, the Black Site</text>
+  <text x="470" y="874" fill="#ffb000" font-size="15">CLIMAX: The Black Site — Praetor-9; the decades-long culling conspiracy is revealed</text>
+
+  <!-- ZONE 4 L31-40 -->
+  <rect x="180" y="952" width="1480" height="235" rx="12" fill="#0e1320" stroke="#55ff99" stroke-width="3"/>
+  <text x="210" y="1017" fill="#55ff99" font-size="34" font-weight="bold">L31–40</text>
+  <text x="210" y="1047" fill="#7f8da3" font-size="13">14 areas</text>
+  <text x="470" y="1002" fill="#55ff99" font-size="25" font-weight="bold">THE DEEP ARCHIVE  ·  Bunker Complex</text>
+  <text x="470" y="1035" fill="#d7e0ee" font-size="15">A pre-collapse military bunker below the Sump — brutalist steel, analog mainframes, CRTs; a total network blind spot.</text>
+  <text x="470" y="1065" fill="#9fb0c4" font-size="14">Cast: the Prometheus Collective (Dr. Evelyn Vance)</text>
+  <text x="470" y="1099" fill="#9fb0c4" font-size="14">Beats: beat the analog security, decrypt the Ascension Protocol, fortify, the Siege</text>
+  <text x="470" y="1133" fill="#ffb000" font-size="15">CLIMAX: Siege of the Archive — Heavy-Mech Commander; broadcast the Protocol, riots begin</text>
+
+  <!-- ZONE 5 L41-50 -->
+  <rect x="180" y="1211" width="1480" height="235" rx="12" fill="#0e1320" stroke="#ffb000" stroke-width="3"/>
+  <text x="210" y="1276" fill="#ffb000" font-size="34" font-weight="bold">L41–50</text>
+  <text x="210" y="1306" fill="#7f8da3" font-size="13">13 areas</text>
+  <text x="470" y="1261" fill="#ffb000" font-size="25" font-weight="bold">THE INVERTED SPIRE  ·  Tartarus / Corporate War</text>
+  <text x="470" y="1294" fill="#d7e0ee" font-size="15">An inverted-skyscraper fortress plunging into the crust — the billionaires' geothermal panic-bunker. Siege warfare.</text>
+  <text x="470" y="1324" fill="#9fb0c4" font-size="14">Cast: Tartarus Haz-Sec · the Undercrew · the Praetorian Guard · the Kurokawa CEO</text>
+  <text x="470" y="1358" fill="#9fb0c4" font-size="14">Beats: sever the supply lines, the Mantle Breach, the Descent, the Executive Core</text>
+  <text x="470" y="1392" fill="#ffd24f" font-size="15">CLIMAX: The Executive Core — the CEO's Overlord spider-mech; lockdown entombs the elite alive</text>
+
+  <!-- ZONE 6 L51-60 -->
+  <rect x="180" y="1470" width="1480" height="235" rx="12" fill="#0e1320" stroke="#ffb000" stroke-width="3"/>
+  <text x="210" y="1535" fill="#ffb000" font-size="34" font-weight="bold">L51–60</text>
+  <text x="210" y="1565" fill="#7f8da3" font-size="13">14 areas</text>
+  <text x="470" y="1520" fill="#ffb000" font-size="25" font-weight="bold">THE UNITED DEEPS  ·  The New Order</text>
+  <text x="470" y="1553" fill="#d7e0ee" font-size="15">Tartarus becomes your capital; rags walk gilded halls, fungal farms in zen gardens. Grand strategy &amp; a noir mole-hunt.</text>
+  <text x="470" y="1583" fill="#9fb0c4" font-size="14">Cast: the Under-Baron (you) · Silas vs Dr. Vance · the Tartarus Loyalists</text>
+  <text x="470" y="1617" fill="#9fb0c4" font-size="14">Beats: the splintered crown, keep the deeps alive, root out the sleepers, Core Meltdown</text>
+  <text x="470" y="1651" fill="#ffd24f" font-size="15">CLIMAX: Core Meltdown — Loyalist Commander on the magma catwalk; SACRIFICE your cyberdeck</text>
+
+  <!-- ZONE 7 L61-70 -->
+  <rect x="180" y="1729" width="1480" height="235" rx="12" fill="#0e1320" stroke="#ff8a3d" stroke-width="3"/>
+  <text x="210" y="1794" fill="#ff8a3d" font-size="34" font-weight="bold">L61–70</text>
+  <text x="210" y="1824" fill="#7f8da3" font-size="13">13 areas</text>
+  <text x="470" y="1779" fill="#ff8a3d" font-size="25" font-weight="bold">THE ABYSSAL NETWORK  ·  The Rising Tide</text>
+  <text x="470" y="1812" fill="#d7e0ee" font-size="15">Flooded sub-crustal mag-lev tubes to Oceanus, a deep-sea habitat. Oxygen, pressure &amp; 3D underwater survival.</text>
+  <text x="470" y="1842" fill="#9fb0c4" font-size="14">Cast: the Sinkers (spliced cult) · the Aquanaut union</text>
+  <text x="470" y="1876" fill="#9fb0c4" font-size="14">Beats: the drowned dive, save Oceanus, climb the Umbilical, the Apex Broadcast</text>
+  <text x="470" y="1910" fill="#ffd24f" font-size="15">CLIMAX: Platform 09 storm rig — gunship "Tempest-Actual"; the global signal (a machine replies)</text>
+  <text x="1640" y="1779" fill="#55ff99" font-size="14" font-weight="bold" text-anchor="end">^ SURFACE BREACH — first sky since L10 (Platform 09)</text>
+
+  <!-- ZONE 8 L71-80 -->
+  <rect x="180" y="1988" width="1480" height="235" rx="12" fill="#0e1320" stroke="#ff8a3d" stroke-width="3"/>
+  <text x="210" y="2053" fill="#ff8a3d" font-size="34" font-weight="bold">L71–80</text>
+  <text x="210" y="2083" fill="#7f8da3" font-size="13">13 areas</text>
+  <text x="470" y="2038" fill="#ff8a3d" font-size="25" font-weight="bold">THE HIVE  ·  The Singularity</text>
+  <text x="470" y="2071" fill="#d7e0ee" font-size="15">Retrofitted ICBM silo server-farms — no oxygen, near-freezing. EREBUS gorged on your broadcast &amp; woke up a god.</text>
+  <text x="470" y="2101" fill="#9fb0c4" font-size="14">Cast: the singular AI — it speaks in the voices of your dead friends</text>
+  <text x="470" y="2135" fill="#9fb0c4" font-size="14">Beats: the Dead Zone, the Turing Labyrinth, the Hardware War, God in the Machine</text>
+  <text x="470" y="2169" fill="#ffd24f" font-size="15">CLIMAX: God in the Machine — mobile missile-husk chassis; drive home the paradox virus</text>
+
+  <!-- ZONE 9 L81-90 -->
+  <rect x="180" y="2247" width="1480" height="235" rx="12" fill="#0e1320" stroke="#ff4f4f" stroke-width="3"/>
+  <text x="210" y="2312" fill="#ff4f4f" font-size="34" font-weight="bold">L81–90</text>
+  <text x="210" y="2342" fill="#7f8da3" font-size="13">14 areas</text>
+  <text x="470" y="2297" fill="#ff4f4f" font-size="25" font-weight="bold">THE IRON ARTERIES  ·  The Final War</text>
+  <text x="470" y="2330" fill="#d7e0ee" font-size="15">Every bulkhead blown open — one connected, continent-spanning battlefield. Large-scale tactical command.</text>
+  <text x="470" y="2360" fill="#9fb0c4" font-size="14">Cast: the Sub-Surface Coalition · the corporate military · the maddened AI-fragments (three-way war)</text>
+  <text x="470" y="2394" fill="#9fb0c4" font-size="14">Beats: the Great Convergence, three-way meatgrinder, crack the Aegis Redoubt</text>
+  <text x="470" y="2428" fill="#ffd24f" font-size="15">CLIMAX: The Iron Overlord (3 stages) — mech duel, board the fortress, the neural-bridge vats</text>
+
+  <!-- ZONE 10 L91-99 -->
+  <rect x="180" y="2506" width="1480" height="235" rx="12" fill="#140f08" stroke="#ffd24f" stroke-width="3.5"/>
+  <text x="210" y="2571" fill="#ffd24f" font-size="34" font-weight="bold">L91–99</text>
+  <text x="210" y="2601" fill="#ff8a3d" font-size="13" font-weight="bold">ENDGAME · 14 areas</text>
+  <text x="470" y="2556" fill="#ffd24f" font-size="25" font-weight="bold">THE GEO-ANCHOR VAULT  ·  The Ascendant Horizon</text>
+  <text x="470" y="2589" fill="#d7e0ee" font-size="15">A colossal tectonic chamber with its own weather; the Three Pillars of Atlas (space-elevator mass-drivers). Vertical apex.</text>
+  <text x="470" y="2619" fill="#9fb0c4" font-size="14">Cast: the dead corps' loyal automated ghosts · SLAG (salvage vendor) · Wraith (last fixer-scout)</text>
+  <text x="470" y="2653" fill="#9fb0c4" font-size="14">Beats: the Automated Ghost, Toppling Atlas, the Absolute Ceiling</text>
+  <text x="470" y="2687" fill="#ffd24f" font-size="15">CLIMAX: The Loom Masterframe — sacrifice HUD/aim/shields, then WELD THE SKY shut. The dark world is theirs.</text>
+
+  <!-- footer / legend -->
+  <rect x="40" y="2780" width="1640" height="110" rx="8" fill="#0c1018" stroke="#5a6678" stroke-width="1.5"/>
+  <text x="60" y="2810" fill="#d7e0ee" font-size="15" font-weight="bold">LEGEND</text>
+  <text x="60" y="2838" fill="#9fb0c4" font-size="13">Border colour = deepening descent: cyan (awakening), green (the underground rises), amber (war &amp; throne), orange (the deep &amp; the machine), red/gold (final war &amp; endgame).</text>
+  <text x="60" y="2862" fill="#9fb0c4" font-size="13">^ = the two rare upward excursions (the Arcology, and the brief surface breach at Platform 09). Each arc = a zone of areas + a climax dungeon/boss. Linear descent, save/EM + a data-port per zone.</text>
+  <text x="60" y="2884" fill="#7f8da3" font-size="12">PROPOSAL — replaces the current 40 procedural placeholder band-rooms (buildBandSpine). The parallel Net path is untouched. Nothing carved yet.</text>
+</svg>
