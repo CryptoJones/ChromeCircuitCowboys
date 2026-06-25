@@ -386,6 +386,7 @@ func (w *World) loot(p *Player) {
 		return
 	}
 	total := 0
+	scrip := 0
 	var cyber []string
 	for _, c := range cs {
 		for name, qty := range c.Loot {
@@ -398,16 +399,29 @@ func (w *World) loot(p *Player) {
 				cyber = append(cyber, name)
 			}
 		}
+		scrip += c.Scrip
+		if c.mob != nil {
+			// Looting a mob's body ungates its respawn — the area can refill now
+			// (after the normal cooldown), never before.
+			c.mob.awaitingLoot = false
+			c.mob.respawnIn = w.respawnTicks
+		}
 	}
 	w.removeCorpsesIn(p.RoomID)
-	if total == 0 {
+	if total == 0 && scrip == 0 {
 		p.send(style(dim, "The body is already stripped bare.") + crlf)
 		return
 	}
-	p.send(style(green, "You strip the body — its gear is now in your pack.") + crlf)
-	if len(cyber) > 0 {
-		p.send(style(neon, "Salvaged cyberware: ") + strings.Join(cyber, ", ") +
-			style(dim, " — INSTALL it at a Emergency Medic to use it again.") + crlf)
+	if scrip > 0 {
+		p.Eddies += scrip
+		p.send(style(gold, "You recover €$"+itoa(scrip)+" scrip from the body.") + crlf)
+	}
+	if total > 0 {
+		p.send(style(green, "You strip the body — its gear is now in your pack.") + crlf)
+		if len(cyber) > 0 {
+			p.send(style(neon, "Salvaged cyberware: ") + strings.Join(cyber, ", ") +
+				style(dim, " — INSTALL it at a Emergency Medic to use it again.") + crlf)
+		}
 	}
 	w.broadcast(p.RoomID, p, style(dim, p.Name+" loots a flatlined body.")+crlf)
 }
