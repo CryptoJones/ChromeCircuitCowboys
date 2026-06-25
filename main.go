@@ -226,6 +226,48 @@ func readHandleHint(nc net.Conn, r *bufio.Reader) string {
 	return strings.TrimSpace(string(h))
 }
 
+// readArrow consumes an escape sequence after ESC and returns the movement
+// direction for an arrow key (Up/Down/Right/Left -> north/south/east/west), or
+// "" for any other sequence (which it consumes and ignores). Handles both CSI
+// (ESC [ A) and SS3 (ESC O A) forms.
+func readArrow(r *bufio.Reader) string {
+	b, err := r.ReadByte()
+	if err != nil {
+		return ""
+	}
+	if b != '[' && b != 'O' { // lone ESC / Alt-combo — push the byte back as input
+		_ = r.UnreadByte()
+		return ""
+	}
+	n := 0
+	var final byte
+	for i := 0; i < 8; i++ {
+		fb, e := r.ReadByte()
+		if e != nil {
+			return ""
+		}
+		n++
+		if fb >= 0x40 && fb <= 0x7e { // final byte of the sequence
+			final = fb
+			break
+		}
+	}
+	if n != 1 { // a plain arrow is a single final byte; modified/other keys aren't
+		return ""
+	}
+	switch final {
+	case 'A':
+		return "north"
+	case 'B':
+		return "south"
+	case 'C':
+		return "east"
+	case 'D':
+		return "west"
+	}
+	return ""
+}
+
 func serve(nc net.Conn, events chan event) {
 	c := &conn{nc: nc, outCh: make(chan string, 512)}
 	connMu.Lock()
@@ -329,6 +371,18 @@ func serve(nc net.Conn, events chan event) {
 			// ignore
 		case 0xff: // telnet IAC — skip it and its command byte
 			_, _ = r.ReadByte()
+		case 0x1b: // ESC — an arrow key becomes a movement command
+			if dir := readArrow(r); dir != "" {
+				c.mu.Lock()
+				moved := len(c.inLine) == 0 // only when not mid-typing a command
+				if moved {
+					c.raw("\r\n")
+				}
+				c.mu.Unlock()
+				if moved {
+					events <- event{typ: evLine, c: c, line: dir}
+				}
+			}
 		default:
 			if b >= 0x20 && b < 0x7f {
 				c.mu.Lock()
