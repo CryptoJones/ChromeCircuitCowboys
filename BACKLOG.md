@@ -2,35 +2,35 @@
 
 Ideas and tasks not yet scheduled.
 
-- [ ] Secret (HELP-hidden) command to display the current room's ID ([#28](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/28))
-- [ ] Rename the `back_alley` room's display name "Back Alley" → "Underground Entrance" ([#29](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/29))
-- [ ] Character sheet: spell out "AC" as "Armor Class" ([#30](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/30))
-- [ ] Character sheet: always show character points (0 if none) + bold "You have character points to spend." note ([#31](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/31))
-- [ ] Some quests award a character point, class-flavored ([#32](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/32))
-- [ ] Hacking mini-game at data terminals everywhere in meatspace ([#33](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/33))
-- [ ] Scatter data terminals across ~1-in-4 surface rooms, randomized (not a predictable pattern) ([#34](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/34))
+- [x] Secret (HELP-hidden) command to display the current room's ID ([#28](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/28)) — _shipped v2.3.0_
+- [x] Rename the `back_alley` room's display name "Back Alley" → "Underground Entrance" ([#29](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/29)) — _shipped v2.3.0_
+- [x] Character sheet: spell out "AC" as "Armor Class" ([#30](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/30)) — _shipped v2.3.0_
+- [x] Character sheet: always show character points (0 if none) + bold "You have character points to spend." note ([#31](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/31)) — _shipped v2.3.0_
+- [x] Some quests award a character point, class-flavored ([#32](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/32)) — _shipped v2.3.0_
+- [x] Hacking mini-game at data terminals everywhere in meatspace ([#33](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/33)) — _shipped v2.3.0_
+- [x] Scatter data terminals across ~1-in-4 surface rooms, randomized (not a predictable pattern) ([#34](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/34)) — _shipped v2.3.0_
 - [ ] Rewrite every room description (more vivid) via Violet Lotus on ronin28, with per-area plot context from the Obsidian Vault ([#35](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/35)) — _do via plan mode_
 - [ ] `TALK` takes input (e.g. `talk "hi"`) with random responses — modular for future growth ([#36](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/36)) — _do via plan mode_
 - [ ] AI characters that act as players to populate empty servers (so solo players aren't lonely) ([#37](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/37)) — _do via plan mode_
-- [ ] Switchable colorblind-friendly palette (Claude Code's), light + dark — accessibility ([#38](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/38))
+- [x] Switchable colorblind-friendly palette (Claude Code's), light + dark — accessibility ([#38](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/38)) — _shipped v2.3.0_
 - [ ] Expand all NPCs' default responses via Violet Lotus (they're too terse) ([#39](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/39)) — _do via plan mode_
-- [ ] Sell unwanted items for scrip at vendors (`SELL`) ([#40](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/40))
-- [ ] Multiple players can attack the same mob at once (shared combat + reward model) ([#41](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/41))
-- [ ] Party follow: members move with the leader ([#42](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/42))
-- [ ] Quick party-chat shortcut (single-char prefix) that propagates to all crew ([#43](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/43))
-- [ ] Clan system + party/clan reward bonuses (1.8x for clanmates, on top of a party bonus) ([#44](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/44))
-- [ ] Party-vs-party sparring in the gym (team duels, non-lethal) ([#45](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/45))
-- [ ] Container text: stop saying "You lunge at the container" — randomized container verbs (pry/crack/jimmy/…) ([#46](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/46))
-- [ ] Lighten the dark-grey (dim) text in the default color scheme ([#47](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/47))
-- [ ] Unsafe logout penalty: lose 5% HP + "X did Y while you were sleeping for Z damage" on return ([#48](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/48))
-- [ ] Block BUYING unusable items (but allow looting + selling them) + always explain why USE fails ([#49](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/49))
-- [ ] Party loot drops include something for each class in the party ([#50](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/50))
-- [ ] `DROP` / `GET` items on the room floor (incl. `DROP ALL`) to share loot with party ([#51](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/51))
-- [ ] MAP shows the way back to your party when separated ([#52](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/52))
-- [ ] `LOOK <item>` — detailed, lore-filled item descriptions (examine) ([#53](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/53))
+- [x] Sell unwanted items for scrip at vendors (`SELL`) ([#40](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/40)) — _shipped v2.3.0_
+- [x] Multiple players can attack the same mob at once (shared combat + reward model) ([#41](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/41)) — _shipped v2.3.0_
+- [x] Party follow: members move with the leader ([#42](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/42)) — _shipped v2.3.0_
+- [x] Quick party-chat shortcut (single-char prefix) that propagates to all crew ([#43](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/43)) — _shipped v2.3.0_
+- [x] Clan system + party/clan reward bonuses (1.8x for clanmates, on top of a party bonus) ([#44](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/44)) — _shipped v2.3.0_
+- [x] Party-vs-party sparring in the gym (team duels, non-lethal) ([#45](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/45)) — _shipped v2.3.0_
+- [x] Container text: stop saying "You lunge at the container" — randomized container verbs (pry/crack/jimmy/…) ([#46](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/46)) — _shipped v2.3.0_
+- [x] Lighten the dark-grey (dim) text in the default color scheme ([#47](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/47)) — _shipped v2.3.0_
+- [x] Unsafe logout penalty: lose 5% HP + "X did Y while you were sleeping for Z damage" on return ([#48](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/48)) — _shipped v2.3.0_
+- [x] Block BUYING unusable items (but allow looting + selling them) + always explain why USE fails ([#49](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/49)) — _shipped v2.3.0_
+- [x] Party loot drops include something for each class in the party ([#50](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/50)) — _shipped v2.3.0_
+- [x] `DROP` / `GET` items on the room floor (incl. `DROP ALL`) to share loot with party ([#51](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/51)) — _shipped v2.3.0_
+- [x] MAP shows the way back to your party when separated ([#52](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/52)) — _shipped v2.3.0_
+- [x] `LOOK <item>` — detailed, lore-filled item descriptions (examine) ([#53](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/53)) — _shipped v2.3.0_
 - [ ] Generate lore-filled extended item descriptions via Violet Lotus ([#54](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/54)) — _do via plan mode_
-- [ ] Character password auth (set at creation, verify at login) — all game modes ([#55](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/55))
-- [ ] Prompt pre-existing (passwordless) characters to set a password on first login ([#56](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/56))
+- [x] Character password auth (set at creation, verify at login) — all game modes ([#55](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/55)) — _shipped v2.3.0_
+- [x] Prompt pre-existing (passwordless) characters to set a password on first login ([#56](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/56)) — _shipped v2.3.0_
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
 - [x] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8)) — _shipped v2.2.0: machines leave wreckage, never a corpse_
