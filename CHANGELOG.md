@@ -16,6 +16,8 @@ incrementally; see the issue links.)
 ### Changed
 
 ### Fixed
+- **Lighter dim/ambience text** in the default scheme — the dark-grey hint text
+  is now a more readable light grey. (#47)
 
 ## [2.2.0] - 2026-06-26
 
