@@ -235,8 +235,79 @@ func (w *World) showMap(p *Player) {
 	if dir, ok := w.onwardStep(p.RoomID, false); ok {
 		b.WriteString("  " + style(dim, "▲ WAY OUT toward easier ground: go "+strings.ToUpper(dir)) + crlf)
 	}
+	// If you're in a crew and got separated, point the way back to them.
+	if p.party != nil {
+		if dir, who, ok := w.stepToParty(p); ok {
+			b.WriteString("  " + style(green, "▸ TO YOUR CREW: go "+strings.ToUpper(dir)+" (toward "+who+")") + crlf)
+		} else if w.partyElsewhere(p) {
+			b.WriteString("  " + style(dim, "▸ your crew is out of reach from here (try jacking in/out)") + crlf)
+		}
+	}
 	b.WriteString(style(neon, "  ╚════════════════════════════════════════╝") + crlf)
 	p.send(b.String())
+}
+
+// partyElsewhere reports whether any crewmate is in a different room.
+func (w *World) partyElsewhere(p *Player) bool {
+	if p.party == nil {
+		return false
+	}
+	for _, m := range p.party.Members {
+		if m != p && m.RoomID != p.RoomID {
+			return true
+		}
+	}
+	return false
+}
+
+// stepToParty BFS-walks the room graph to the nearest crewmate not in this room
+// and returns the first move toward them (and whose room it is).
+func (w *World) stepToParty(p *Player) (dir, who string, ok bool) {
+	if p.party == nil {
+		return "", "", false
+	}
+	targets := map[string]string{}
+	for _, m := range p.party.Members {
+		if m == p || m.RoomID == p.RoomID {
+			continue
+		}
+		if _, exists := targets[m.RoomID]; !exists {
+			targets[m.RoomID] = m.Name
+		}
+	}
+	if len(targets) == 0 {
+		return "", "", false
+	}
+	type node struct{ id, first string }
+	seen := map[string]bool{p.RoomID: true}
+	queue := []node{{p.RoomID, ""}}
+	for len(queue) > 0 {
+		cur := queue[0]
+		queue = queue[1:]
+		r := w.room(cur.id)
+		if r == nil {
+			continue
+		}
+		for _, d := range mapDirs {
+			dest, has := r.Exits[d]
+			if !has {
+				continue
+			}
+			first := cur.first
+			if first == "" {
+				first = d
+			}
+			if name, isTarget := targets[dest]; isTarget {
+				return first, name, true
+			}
+			if seen[dest] {
+				continue
+			}
+			seen[dest] = true
+			queue = append(queue, node{dest, first})
+		}
+	}
+	return "", "", false
 }
 
 // padRight pads s with spaces to width w (never truncates).
