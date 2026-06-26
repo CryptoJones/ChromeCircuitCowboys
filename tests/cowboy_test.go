@@ -317,8 +317,9 @@ func TestCowboyLeaderDeathPassesLeadership(t *testing.T) {
 	if leader.RoomID != "capsule" {
 		t.Fatalf("leader should have flatlined and re-sleeved; at %s hp=%d", leader.RoomID, leader.HP)
 	}
-	if leader.HP != leader.MaxHP {
-		t.Fatalf("fresh clone should be full HP: %d/%d", leader.HP, leader.MaxHP)
+	// A fresh clone wakes at full HP plus the +15% fresh-sleeve buffer (#26).
+	if leader.HP != leader.MaxHP+leader.MaxHP*15/100 {
+		t.Fatalf("fresh clone should wake with the +15%% sleeve buffer: %d/%d", leader.HP, leader.MaxHP)
 	}
 	if !strings.Contains(b2.String(), "now leads the crew") {
 		t.Fatalf("leadership should pass to the surviving member; got:\n%s", b2.String())
