@@ -313,6 +313,9 @@ func (w *World) killMob(p *Player, m *Mob) {
 	for k, v := range m.tmpl.Drops { // seeded item drops (loot caches, boss kit)
 		loot[k] = v
 	}
+	if !box { // caches are their own loot; for real kills, cut the crew in
+		w.addPartyLoot(p, loot)
+	}
 	w.corpses = append(w.corpses, &Corpse{
 		Owner: m.tmpl.Name, RoomID: m.RoomID, Loot: loot, Scrip: scrip, mob: m, IsICE: ice, IsBox: box, IsMech: mech,
 	})
