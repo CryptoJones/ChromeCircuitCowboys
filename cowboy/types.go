@@ -12,6 +12,7 @@ type Player struct {
 	Name         string
 	Class        string
 	Clan         string // clan tag (""=none); clanmates partying together earn bonus rewards
+	Theme        string // color scheme: ""=default, "cbdark"/"cblight"=colorblind-friendly
 	RoomID       string
 	HP, MaxHP    int
 	Level, XP    int
@@ -51,7 +52,7 @@ func (p *Player) defense() int { return p.Reflexes / 4 }
 
 func (p *Player) send(s string) {
 	if p.out != nil {
-		p.out(s)
+		p.out(recolor(p.Theme, s)) // remap the palette to the player's chosen theme
 	}
 	p.dirty = true // output emitted; a fresh prompt is owed (cleared by sendPrompt)
 }
@@ -127,6 +128,7 @@ type SavedPlayer struct {
 	Name                         string
 	Class                        string
 	Clan                         string
+	Theme                        string
 	Level, XP, Eddies, HP, MaxHP int
 	Body, Reflexes, Intelligence int
 	StatPoints                   int
