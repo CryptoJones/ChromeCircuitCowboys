@@ -11,6 +11,10 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **Colorblind-friendly color schemes** — `THEME default | cbdark | cblight`.
+  The colorblind themes remap success→blue and danger→orange (instead of
+  green/red), in dark and light variants, applied at send-time and persisted.
+  Accessibility. (#38)
 - **Crew-vs-crew sparring** — in the Iron Temple gym, party-vs-party matches:
   a downed fighter stays out until one whole crew is wiped, then everyone's
   restored. Still non-lethal. (#45)

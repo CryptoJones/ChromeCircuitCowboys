@@ -171,6 +171,8 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.groupChat(p, arg)
 	case "clan", "clans":
 		w.clan(p, arg)
+	case "theme", "colors", "colours":
+		w.theme(p, arg)
 	case "leaderboard", "top", "rankings":
 		w.leaderboard(p)
 	case "help", "?", "commands":
@@ -810,6 +812,7 @@ func helpText() string {
 		"  send / wire      — at a terminal: SEND <runner> <msg> / WIRE <runner> <scrip>; MAIL to read\r\n" +
 		"  trade <runner>   — face-to-face swap: OFFER <item>/<scrip>, CONFIRM, CANCEL\r\n" +
 		"  spend <stat>    — spend character points to raise body/reflexes/intelligence\r\n" +
+		"  theme           — color scheme: default / cbdark / cblight (colorblind-friendly)\r\n" +
 		"  attack <foe> (a) — engage a hostile (alias kill/breach)\r\n" +
 		"  flee            — try to break a fight and bolt\r\n" +
 		"  say <msg>       — talk to others in the room\r\n" +
