@@ -10,6 +10,7 @@ Ideas and tasks not yet scheduled.
 - [ ] Hacking mini-game at data terminals everywhere in meatspace ([#33](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/33))
 - [ ] Scatter data terminals across ~1-in-4 surface rooms, randomized (not a predictable pattern) ([#34](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/34))
 - [ ] Rewrite every room description (more vivid) via Violet Lotus on ronin28, with per-area plot context from the Obsidian Vault ([#35](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/35))
+- [ ] `TALK` takes input (e.g. `talk "hi"`) with random responses — modular for future growth ([#36](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/36))
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
 - [x] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8)) — _shipped v2.2.0: machines leave wreckage, never a corpse_
