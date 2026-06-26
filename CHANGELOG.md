@@ -11,6 +11,7 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **Character sheet spells out "Armor Class"** instead of the cryptic "AC". (#30)
 
 ### Changed
 
