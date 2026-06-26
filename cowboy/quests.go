@@ -205,29 +205,59 @@ func (w *World) showQuests(p *Player) {
 	}
 }
 
-// accept takes a bounty offered in the current room (by the local fixer/NPC).
+// accept takes bounties offered in the current room (by the local fixer/NPC).
+// Accepts one ("accept 2"), several ("accept 1 2 3"), or every eligible job
+// ("accept all"). Each pick is guarded independently (level / already-on-it);
+// a bad token is skipped with a note rather than aborting the batch.
 func (w *World) accept(p *Player, arg string) {
 	offered := w.questsHere(p)
 	if len(offered) == 0 {
 		p.send(style(dim, "No one here is hiring. Find a fixer or a broker (a vendor room).") + crlf)
 		return
 	}
-	n, err := strconv.Atoi(strings.TrimSpace(arg))
-	if err != nil || n < 1 || n > len(offered) {
-		p.send(style(dim, "Accept which? See QUESTS for the numbered board.") + crlf)
+	arg = strings.ToLower(strings.TrimSpace(arg))
+	if arg == "" {
+		p.send(style(dim, "Accept which? See QUESTS for the numbered board (or ACCEPT ALL).") + crlf)
 		return
 	}
-	q := offered[n-1]
-	if p.Level < q.MinLevel {
-		p.send(style(red, "You need level "+itoa(q.MinLevel)+" for that job.") + crlf)
-		return
+	var picks []int
+	if arg == "all" {
+		for i := range offered {
+			picks = append(picks, i+1)
+		}
+	} else {
+		for _, tok := range strings.Fields(arg) {
+			n, err := strconv.Atoi(tok)
+			if err != nil || n < 1 || n > len(offered) {
+				p.send(style(dim, "Ignoring \""+tok+"\" — not a bounty number on the board.") + crlf)
+				continue
+			}
+			picks = append(picks, n)
+		}
 	}
-	if _, active := p.Quests[q.ID]; active {
-		p.send(style(dim, "You're already on that bounty.") + crlf)
-		return
+	accepted := 0
+	seen := map[int]bool{}
+	for _, n := range picks {
+		if seen[n] {
+			continue
+		}
+		seen[n] = true
+		q := offered[n-1]
+		if p.Level < q.MinLevel {
+			p.send(style(red, q.Name+": you need level "+itoa(q.MinLevel)+" for that job.") + crlf)
+			continue
+		}
+		if _, active := p.Quests[q.ID]; active {
+			p.send(style(dim, "Already on "+q.Name+".") + crlf)
+			continue
+		}
+		p.Quests[q.ID] = 0
+		accepted++
+		p.send(style(green, "Bounty accepted: ") + q.Name + style(dim, " — "+q.Desc) + crlf)
 	}
-	p.Quests[q.ID] = 0
-	p.send(style(green, "Bounty accepted: ") + q.Name + style(dim, " — "+q.Desc) + crlf)
+	if accepted > 1 {
+		p.send(style(gold, "Took on "+itoa(accepted)+" bounties.") + crlf)
+	}
 }
 
 // claim turns in any completed bounties for rewards. A bounty can be redeemed
