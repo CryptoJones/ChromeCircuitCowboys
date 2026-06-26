@@ -11,6 +11,9 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **Unsafe-logout penalty** — logging out somewhere unsafe means you got jumped
+  offline: lose 5%% HP (never below 1) with a flavor line on return; safe-room
+  logouts are free. (#48)
 - **MAP points back to your crew** when separated — a "TO YOUR CREW: go <DIR>"
   pointer toward the nearest crewmate. (#52)
 - **Party follow** — when the crew leader moves, members in the room follow
