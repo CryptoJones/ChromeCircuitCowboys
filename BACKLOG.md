@@ -12,6 +12,7 @@ Ideas and tasks not yet scheduled.
 - [ ] Rewrite every room description (more vivid) via Violet Lotus on ronin28, with per-area plot context from the Obsidian Vault ([#35](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/35)) — _do via plan mode_
 - [ ] `TALK` takes input (e.g. `talk "hi"`) with random responses — modular for future growth ([#36](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/36)) — _do via plan mode_
 - [ ] AI characters that act as players to populate empty servers (so solo players aren't lonely) ([#37](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/37)) — _do via plan mode_
+- [ ] Switchable colorblind-friendly palette (Claude Code's), light + dark — accessibility ([#38](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/38))
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
 - [x] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8)) — _shipped v2.2.0: machines leave wreckage, never a corpse_
