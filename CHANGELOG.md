@@ -5,6 +5,25 @@ All notable changes to **Chrome Circuit Cowboys** are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning: [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2026-06-26
+
+Fixes from local playtesting of the v2.3.0 auth + theme work.
+
+### Fixed
+- **Password entry is now masked.** New-password and login prompts echo `*` per
+  keystroke instead of relying on client-side echo (which showed the password in
+  cleartext). (#57)
+- **The room re-shows after new-character password setup.** Previously the
+  starting room rendered during character creation and was then scrolled off by
+  the password prompts, so a new runner had to press Enter to see where they
+  were. It now redraws automatically once the password is set. (#57)
+- **Clearer password confirmation.** "Password set." now explains you'll need it
+  to jack back in, instead of a bare two-word line. (#57)
+- **Color themes are now distinct, and the MAP respects them.** `cbdark` /
+  `cblight` remap the *whole* palette (Okabe-Ito-inspired, colorblind-safe) — not
+  just green/red — so the three schemes look unmistakably different and the
+  cyan-bordered map visibly changes color with the theme. (#57)
+
 ## [2.3.0] - 2026-06-26
 
 Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land

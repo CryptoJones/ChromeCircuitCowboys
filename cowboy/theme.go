@@ -20,19 +20,29 @@ func recolor(theme, s string) string {
 }
 
 var themeReplacers = map[string]*strings.Replacer{
-	// Colorblind, dark background: green→blue, red→orange; keep cyan/yellow/magenta.
+	// Colorblind, dark background. The WHOLE palette is remapped to an
+	// Okabe-Ito-inspired, colorblind-safe set — so the entire UI (the cyan-
+	// bordered MAP included) visibly shifts, not just green/red text. Hues are
+	// chosen so no two semantic colors collapse for red-green colorblindness:
+	// system=azure, success=blue, reward=amber, alert=pink, danger=orange.
 	"cbdark": strings.NewReplacer(
-		green, "\x1b[1;34m", // success → bright blue
+		neon, "\x1b[38;5;39m", // system/headers → azure (was cyan)
+		hot, "\x1b[38;5;213m", // alerts → pink
+		gold, "\x1b[38;5;220m", // reward → amber
+		green, "\x1b[38;5;27m", // success → strong blue
 		red, "\x1b[38;5;208m", // danger → orange
+		dim, "\x1b[38;5;250m", // ambience → lighter grey
 	),
-	// Colorblind, light background: darker, non-bold hues that read on a light terminal.
+	// Colorblind, light background. Dark, non-bold hues that read on a light
+	// terminal AND stay colorblind-safe — a deliberately different (darker,
+	// muted) look from both default and cbdark so the three are unmistakable.
 	"cblight": strings.NewReplacer(
-		neon, "\x1b[36m",
-		hot, "\x1b[35m",
-		gold, "\x1b[38;5;94m", // dark amber
-		green, "\x1b[34m", // success → dark blue
+		neon, "\x1b[38;5;26m", // system/headers → medium blue
+		hot, "\x1b[38;5;90m", // alerts → dark magenta
+		gold, "\x1b[38;5;94m", // reward → dark amber
+		green, "\x1b[38;5;19m", // success → deep navy
 		red, "\x1b[38;5;166m", // danger → dark orange
-		dim, "\x1b[38;5;240m", // darker grey for light bg
+		dim, "\x1b[38;5;240m", // ambience → dark grey for light bg
 	),
 }
 

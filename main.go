@@ -24,7 +24,7 @@ import (
 
 // version is this build's release version (compared against the configured
 // update feed, if any).
-const version = "2.3.0"
+const version = "2.3.1"
 
 func main() {
 	addr := flag.String("addr", "127.0.0.1:4000", "TCP listen address for BBS bridge")
@@ -356,6 +356,11 @@ func serve(nc net.Conn, events chan event) {
 			events <- event{typ: evClose, c: c}
 			return
 		}
+		// The room was rendered during evCreate, then scrolled off-screen by the
+		// password prompts — re-show it so the runner lands looking at the world.
+		reshown := make(chan struct{})
+		events <- event{typ: evReshow, c: c, done: reshown}
+		<-reshown
 	}
 
 	// In-world input loop with a MANAGED prompt: we own the input buffer here so
@@ -424,16 +429,26 @@ func serve(nc net.Conn, events chan event) {
 	}
 }
 
-// readHidden reads a line without echoing it (password entry).
-func readHidden(r *bufio.Reader) (string, error) {
-	return cowboy.ReadLine(r, func(string) {})
+// readHidden reads a password line, masking each typed character with '*' so the
+// caller sees their input is registering without exposing the secret. Newline and
+// destructive-backspace echoes pass straight through; every printable keystroke
+// shows a star instead of the character.
+func readHidden(r *bufio.Reader, c *conn) (string, error) {
+	return cowboy.ReadLine(r, func(s string) {
+		switch s {
+		case "\r\n", "\b \b":
+			c.out(s)
+		default:
+			c.out("*")
+		}
+	})
 }
 
 // authenticate prompts for an existing character's password (up to 3 tries).
 func authenticate(name string, r *bufio.Reader, c *conn, events chan event) bool {
 	for tries := 0; tries < 3; tries++ {
 		c.out("\r\nPassword: ")
-		pw, err := readHidden(r)
+		pw, err := readHidden(r, c)
 		if err != nil {
 			return false
 		}
@@ -453,7 +468,7 @@ func setNewPassword(name string, r *bufio.Reader, c *conn, events chan event, in
 	c.out("\r\n" + intro + "\r\n")
 	for {
 		c.out("New password (8+ chars): ")
-		pw, err := readHidden(r)
+		pw, err := readHidden(r, c)
 		if err != nil {
 			return false
 		}
@@ -463,7 +478,7 @@ func setNewPassword(name string, r *bufio.Reader, c *conn, events chan event, in
 			continue
 		}
 		c.out("\r\nConfirm: ")
-		pw2, err := readHidden(r)
+		pw2, err := readHidden(r, c)
 		if err != nil {
 			return false
 		}
@@ -474,7 +489,7 @@ func setNewPassword(name string, r *bufio.Reader, c *conn, events chan event, in
 		done := make(chan struct{})
 		events <- event{typ: evSetPass, name: name, pass: pw, done: done}
 		<-done
-		c.out("\r\nPassword set.\r\n")
+		c.out("\r\nPassword set — you're locked in. Remember it; you'll need it to jack back in.\r\n")
 		return true
 	}
 }
@@ -493,6 +508,7 @@ const (
 	evAuthInfo // query a name's auth state (exists / has-password)
 	evCheckPass
 	evSetPass
+	evReshow // re-render the room + prompt (after an interstitial like password setup)
 )
 
 // connectResult tells the connection goroutine how the world handled a connect:
@@ -559,6 +575,12 @@ func handle(world *cowboy.World, ev event) {
 		ev.boolReply <- world.CheckPassword(ev.name, ev.pass)
 	case evSetPass:
 		_ = world.SetPassword(ev.name, ev.pass)
+		close(ev.done)
+	case evReshow:
+		if ev.c.player != nil {
+			world.Look(ev.c.player)
+			world.Prompt(ev.c.player)
+		}
 		close(ev.done)
 	}
 }

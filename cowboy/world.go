@@ -278,6 +278,11 @@ func (w *World) enter(p *Player) {
 	w.broadcast(p.RoomID, p, style(dim, p.Name+" materializes in a wash of static.")+crlf)
 }
 
+// Look re-renders the player's current room. Used after an interstitial step
+// (e.g. new-character password setup) has scrolled the initial room view off
+// the caller's screen, so they don't have to press Enter to see where they are.
+func (w *World) Look(p *Player) { w.lookText(p) }
+
 // Disconnect saves progress, announces the exit, and removes the player.
 func (w *World) Disconnect(p *Player) {
 	if p == nil {
