@@ -597,6 +597,9 @@ func (w *World) examine(p *Player, arg string) {
 	}
 	p.send(crlf + style(neon, x.name) + carried + crlf)
 	p.send(style(green, "  "+x.desc) + crlf)
+	if x.lore != "" { // richer generated examine flavor (#54)
+		p.send(style(dim, "  "+wrapText(x.lore, 74)) + crlf)
+	}
 	var effects []string
 	if x.heal > 0 {
 		effects = append(effects, "restores "+itoa(x.heal)+" HP")

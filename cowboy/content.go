@@ -54,6 +54,7 @@ func buildRooms() map[string]*Room {
 	m["nz1_1_top"].Exits["up"] = "data_port"
 	// Neon Alley steps NORTH up onto the Inner Circuit (the RP transit rings).
 	m["neon_alley"].Exits["north"] = "ic_1"
+	applyRoomLore(m) // overlay the Violet Lotus-generated vivid descriptions (#35)
 	return m
 }
 
@@ -101,6 +102,7 @@ type ware struct {
 	intel    int    // implant: permanent Intelligence boost on install
 	forClass string // if set, only this class may BUY/USE it ("" = anyone)
 	desc     string
+	lore     string // richer authored/generated examine flavor (#54); "" = none
 }
 
 // isImplant reports whether a ware is a stat implant (installed at a medic for a

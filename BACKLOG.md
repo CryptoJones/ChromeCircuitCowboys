@@ -9,11 +9,11 @@ Ideas and tasks not yet scheduled.
 - [x] Some quests award a character point, class-flavored ([#32](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/32)) — _shipped v2.3.0_
 - [x] Hacking mini-game at data terminals everywhere in meatspace ([#33](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/33)) — _shipped v2.3.0_
 - [x] Scatter data terminals across ~1-in-4 surface rooms, randomized (not a predictable pattern) ([#34](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/34)) — _shipped v2.3.0_
-- [ ] Rewrite every room description (more vivid) via Violet Lotus on ronin28, with per-area plot context from the Obsidian Vault ([#35](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/35)) — _do via plan mode_
+- [x] Rewrite every room description (more vivid) via Violet Lotus on ronin28, with per-area plot context from the Obsidian Vault ([#35](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/35)) — _shipped: dev-time Violet Lotus pass enriches all 360 room descs; baked into `cowboy/lore.json` (embedded overlay)_
 - [ ] `TALK` takes input (e.g. `talk "hi"`) with random responses — modular for future growth ([#36](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/36)) — _do via plan mode_
 - [ ] AI characters that act as players to populate empty servers (so solo players aren't lonely) ([#37](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/37)) — _do via plan mode_
 - [x] Switchable colorblind-friendly palette (Claude Code's), light + dark — accessibility ([#38](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/38)) — _shipped v2.3.0_
-- [ ] Expand all NPCs' default responses via Violet Lotus (they're too terse) ([#39](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/39)) — _do via plan mode_
+- [x] Expand all NPCs' default responses via Violet Lotus (they're too terse) ([#39](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/39)) — _shipped: additive overlay — authored canon lines kept, Violet Lotus extras appended for every zone-lore set + flavor NPC_
 - [x] Sell unwanted items for scrip at vendors (`SELL`) ([#40](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/40)) — _shipped v2.3.0_
 - [x] Multiple players can attack the same mob at once (shared combat + reward model) ([#41](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/41)) — _shipped v2.3.0_
 - [x] Party follow: members move with the leader ([#42](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/42)) — _shipped v2.3.0_
@@ -28,7 +28,7 @@ Ideas and tasks not yet scheduled.
 - [x] `DROP` / `GET` items on the room floor (incl. `DROP ALL`) to share loot with party ([#51](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/51)) — _shipped v2.3.0_
 - [x] MAP shows the way back to your party when separated ([#52](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/52)) — _shipped v2.3.0_
 - [x] `LOOK <item>` — detailed, lore-filled item descriptions (examine) ([#53](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/53)) — _shipped v2.3.0_
-- [ ] Generate lore-filled extended item descriptions via Violet Lotus ([#54](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/54)) — _do via plan mode_
+- [x] Generate lore-filled extended item descriptions via Violet Lotus ([#54](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/54)) — _shipped: per-item `lore` flavor line generated for all 29 wares; shown under the desc on `LOOK <item>`_
 - [x] Character password auth (set at creation, verify at login) — all game modes ([#55](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/55)) — _shipped v2.3.0_
 - [x] Prompt pre-existing (passwordless) characters to set a password on first login ([#56](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/56)) — _shipped v2.3.0_
 - [x] v2.3.0 playtest fixes: mask password entry, re-show room after new-char password setup, make color themes distinct + MAP respect them ([#57](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/57)) — _shipped v2.3.1_
