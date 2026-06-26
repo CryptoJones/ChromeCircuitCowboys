@@ -34,6 +34,7 @@ type Player struct {
 	partyInvite  *Player        // pending crew invite from this leader (nil = none); consent before joining
 	trade        *tradeSession  // active face-to-face trade (nil = not trading)
 	hack         *hackGame      // active terminal hacking mini-game (nil = not hacking)
+	downed       bool           // knocked out in a gym team-spar (out until the match resets)
 	shieldTicks  int            // remaining ticks of the mirror program's damage shield
 	shieldAmt    int            // flat damage reduction while shielded
 	homing       int            // ticks left on a recall-home cast (0 = not recalling)
