@@ -35,14 +35,16 @@ func OpenSQLite(path string) (*SQLiteStore, error) {
 		room          TEXT NOT NULL,
 		inv_json      TEXT NOT NULL,
 		quests_json   TEXT NOT NULL DEFAULT '{}',
-		stash_json    TEXT NOT NULL DEFAULT '{}'
+		stash_json    TEXT NOT NULL DEFAULT '{}',
+		stat_points   INTEGER NOT NULL DEFAULT 0
 	)`); err != nil {
 		db.Close()
 		return nil, err
 	}
-	// Idempotent migration for DBs created before the stash column existed
-	// (errors harmlessly when the column is already present).
+	// Idempotent migrations for DBs created before a column existed (each errors
+	// harmlessly when the column is already present).
 	_, _ = db.Exec(`ALTER TABLE cowboy_player ADD COLUMN stash_json TEXT NOT NULL DEFAULT '{}'`)
+	_, _ = db.Exec(`ALTER TABLE cowboy_player ADD COLUMN stat_points INTEGER NOT NULL DEFAULT 0`)
 	return &SQLiteStore{db: db}, nil
 }
 
@@ -54,10 +56,10 @@ func (s *SQLiteStore) Load(name string) (*SavedPlayer, bool, error) {
 	var sp SavedPlayer
 	var invJSON, questsJSON, stashJSON string
 	err := s.db.QueryRow(`SELECT name, class, level, xp, eddies, hp, maxhp, body, reflexes,
-		intelligence, weapon_bonus, weapon_name, ram, deck_bonus, room, inv_json, quests_json, stash_json
+		intelligence, weapon_bonus, weapon_name, ram, deck_bonus, room, inv_json, quests_json, stash_json, stat_points
 		FROM cowboy_player WHERE name = ? COLLATE NOCASE`, name).
 		Scan(&sp.Name, &sp.Class, &sp.Level, &sp.XP, &sp.Eddies, &sp.HP, &sp.MaxHP, &sp.Body,
-			&sp.Reflexes, &sp.Intelligence, &sp.WeaponBonus, &sp.WeaponName, &sp.RAM, &sp.DeckBonus, &sp.Room, &invJSON, &questsJSON, &stashJSON)
+			&sp.Reflexes, &sp.Intelligence, &sp.WeaponBonus, &sp.WeaponName, &sp.RAM, &sp.DeckBonus, &sp.Room, &invJSON, &questsJSON, &stashJSON, &sp.StatPoints)
 	if err == sql.ErrNoRows {
 		return nil, false, nil
 	}
@@ -99,15 +101,16 @@ func (s *SQLiteStore) Save(sp *SavedPlayer) error {
 	qjson, _ := json.Marshal(sp.Quests)
 	stash, _ := json.Marshal(sp.Stash)
 	_, err := s.db.Exec(`INSERT INTO cowboy_player
-		(name, class, level, xp, eddies, hp, maxhp, body, reflexes, intelligence, weapon_bonus, weapon_name, ram, deck_bonus, room, inv_json, quests_json, stash_json)
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+		(name, class, level, xp, eddies, hp, maxhp, body, reflexes, intelligence, weapon_bonus, weapon_name, ram, deck_bonus, room, inv_json, quests_json, stash_json, stat_points)
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 		ON CONFLICT(name) DO UPDATE SET
 		  class=excluded.class, level=excluded.level, xp=excluded.xp, eddies=excluded.eddies, hp=excluded.hp,
 		  maxhp=excluded.maxhp, body=excluded.body, reflexes=excluded.reflexes,
 		  intelligence=excluded.intelligence, weapon_bonus=excluded.weapon_bonus,
 		  weapon_name=excluded.weapon_name, ram=excluded.ram, deck_bonus=excluded.deck_bonus,
-		  room=excluded.room, inv_json=excluded.inv_json, quests_json=excluded.quests_json, stash_json=excluded.stash_json`,
+		  room=excluded.room, inv_json=excluded.inv_json, quests_json=excluded.quests_json, stash_json=excluded.stash_json,
+		  stat_points=excluded.stat_points`,
 		sp.Name, sp.Class, sp.Level, sp.XP, sp.Eddies, sp.HP, sp.MaxHP, sp.Body, sp.Reflexes,
-		sp.Intelligence, sp.WeaponBonus, sp.WeaponName, sp.RAM, sp.DeckBonus, sp.Room, string(inv), string(qjson), string(stash))
+		sp.Intelligence, sp.WeaponBonus, sp.WeaponName, sp.RAM, sp.DeckBonus, sp.Room, string(inv), string(qjson), string(stash), sp.StatPoints)
 	return err
 }

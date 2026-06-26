@@ -1,6 +1,9 @@
 package cowboy
 
-import "strings"
+import (
+	"strconv"
+	"strings"
+)
 
 // inNet reports whether the player is inside the Net — where attacks are netrun
 // BREACHes driven by Intelligence (and spend RAM), not meatspace strikes driven
@@ -64,6 +67,8 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.who(p)
 	case "score", "stats", "st", "sc":
 		w.score(p)
+	case "spend":
+		w.spend(p, arg)
 	case "attack", "a", "kill", "k", "breach":
 		w.engage(p, arg)
 	case "flee", "jackout", "disconnect":
@@ -256,6 +261,9 @@ func (w *World) score(p *Player) {
 	p.send(xpLine + crlf)
 	p.send("  HP " + itoa(p.HP) + "/" + itoa(p.MaxHP) + "   RAM " + itoa(p.RAM) + "/" + itoa(maxRAM(p)) + "   AC " + itoa(playerAC(p)) + crlf)
 	p.send("  Body " + itoa(p.Body) + "   Reflexes " + itoa(p.Reflexes) + "   Intelligence " + itoa(p.Intelligence) + crlf)
+	if p.StatPoints > 0 {
+		p.send(style(gold, "  Character points: "+itoa(p.StatPoints)) + style(dim, " — type SPEND <body|reflexes|intelligence>") + crlf)
+	}
 	weapon := "bare fists"
 	if p.WeaponName != "" {
 		weapon = p.WeaponName + " (+" + itoa(p.WeaponBonus) + " atk)"
@@ -274,6 +282,50 @@ func (w *World) score(p *Player) {
 		p.send(style(dim, "  Crew: "+itoa(len(p.party.Members))+" members (GROUP to view)") + crlf)
 	}
 	p.send(style(dim, "  Programs: RUN <name> — see PROGRAMS") + crlf)
+}
+
+// spend raises a stat with banked character points (1 point = +1). Raising Body
+// also lifts MaxHP (and heals the new headroom). Usage: SPEND <stat> [amount].
+func (w *World) spend(p *Player, arg string) {
+	if p.StatPoints <= 0 {
+		p.send(style(dim, "You have no character points to spend. Level up to earn them.") + crlf)
+		return
+	}
+	fields := strings.Fields(strings.ToLower(strings.TrimSpace(arg)))
+	if len(fields) == 0 {
+		p.send(style(gold, "You have "+itoa(p.StatPoints)+" character point(s).") + crlf)
+		p.send(style(dim, "SPEND <body|reflexes|intelligence> [amount] — 1 point = +1.") + crlf)
+		return
+	}
+	n := 1
+	if len(fields) >= 2 {
+		if v, err := strconv.Atoi(fields[1]); err == nil {
+			n = v
+		}
+	}
+	if n < 1 {
+		n = 1
+	}
+	if n > p.StatPoints {
+		n = p.StatPoints
+	}
+	switch fields[0] {
+	case "body", "bod", "b":
+		p.Body += n
+		old := p.MaxHP
+		p.MaxHP = maxHPFor(p)
+		p.HP += p.MaxHP - old
+	case "reflexes", "ref", "r":
+		p.Reflexes += n
+	case "intelligence", "int", "i":
+		p.Intelligence += n
+	default:
+		p.send(style(dim, "Spend on what? body, reflexes, or intelligence.") + crlf)
+		return
+	}
+	p.StatPoints -= n
+	p.send(style(green, "Spent "+itoa(n)+" point(s) on "+fields[0]+". ") + style(dim, itoa(p.StatPoints)+" left.") + crlf)
+	w.save(p)
 }
 
 func (w *World) inventory(p *Player) {
@@ -566,6 +618,7 @@ func helpText() string {
 		"  in / out        — step into/out of your capsule pod from Neon Alley\r\n" +
 		"  look (l)        — examine your location\r\n" +
 		"  map (m)         — local map: exits, and the way deeper or out\r\n" +
+		"  spend <stat>    — spend character points to raise body/reflexes/intelligence\r\n" +
 		"  attack <foe> (a) — engage a hostile (alias kill/breach)\r\n" +
 		"  flee            — try to break a fight and bolt\r\n" +
 		"  say <msg>       — talk to others in the room\r\n" +
