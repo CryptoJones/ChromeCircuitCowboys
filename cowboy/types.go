@@ -11,6 +11,7 @@ type Player struct {
 	ID           int
 	Name         string
 	Class        string
+	Clan         string // clan tag (""=none); clanmates partying together earn bonus rewards
 	RoomID       string
 	HP, MaxHP    int
 	Level, XP    int
@@ -124,6 +125,7 @@ type Corpse struct {
 type SavedPlayer struct {
 	Name                         string
 	Class                        string
+	Clan                         string
 	Level, XP, Eddies, HP, MaxHP int
 	Body, Reflexes, Intelligence int
 	StatPoints                   int
