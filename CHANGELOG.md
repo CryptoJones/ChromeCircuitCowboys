@@ -5,6 +5,31 @@ All notable changes to **Chrome Circuit Cowboys** are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning: [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-06-25
+
+A quality-of-life release that works the backlog: a navigation map, fairer
+quest turn-ins, and flavor fixes for bodiless foes.
+
+### Added
+- **`MAP` command (alias `M`).** A CP437 "you-are-here" panel: every exit
+  labelled with where it leads (and whether it goes deeper/harder, back/easier,
+  to a cache, shop, medic, or safe spot), plus the single move that takes you
+  onward to the next harder area (`▼ PROCEED`) or back out (`▲ WAY OUT`). Works
+  in the Undercity, the Net, and on the surface. (#6)
+
+### Changed
+- **Quests redeem at the giver too.** A completed bounty can now be `CLAIM`ed
+  back with the quest-giver who offered it (the fixer's room, or — for roving
+  RP-ring rumors — wherever it was scattered this session), not only at a
+  broker. (#7)
+- **Bodiless foes no longer leave a "corpse".** Loot crates (supply/data caches)
+  now *crack open* into a cracked-open cache and Net constructs *shatter into
+  shards*; only a real kill leaves a flatlined body. (#5)
+
+### Docs
+- Generated `docs/underground-descent.drawio` and `docs/net-ascent.drawio`
+  (with PNGs) straight from the live zone data.
+
 ## [2.0.0] - 2026-06-25
 
 A massive content release: both 1–99 progression paths are now hand-authored
