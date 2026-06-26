@@ -11,6 +11,9 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **Character passwords (all modes).** New characters set a password; returning
+  ones must enter it (bcrypt-hashed, never plaintext). Pre-existing passwordless
+  characters are prompted to set one on first login (migration). (#55, #56)
 - **Colorblind-friendly color schemes** — `THEME default | cbdark | cblight`.
   The colorblind themes remap success→blue and danger→orange (instead of
   green/red), in dark and light variants, applied at send-time and persisted.
