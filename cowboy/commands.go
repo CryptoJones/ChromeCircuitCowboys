@@ -194,7 +194,7 @@ func (w *World) lookText(p *Player) {
 	if len(w.questsHere(p)) > 0 {
 		p.send(style(gold, "Someone here is hiring — type QUESTS.") + crlf)
 	}
-	if loreKey(p.RoomID) != "" {
+	if _, hasNPC := roomNPC[p.RoomID]; hasNPC || loreKey(p.RoomID) != "" {
 		p.send(style(dim, "There's someone here to TALK to.") + crlf)
 	}
 	if p.RoomID == startRoom {
