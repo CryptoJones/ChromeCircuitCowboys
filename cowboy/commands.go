@@ -295,7 +295,7 @@ func (w *World) score(p *Player) {
 		xpLine = "  Level " + itoa(p.Level) + " " + style(gold, "(MAX)")
 	}
 	p.send(xpLine + crlf)
-	p.send("  HP " + itoa(p.HP) + "/" + itoa(p.MaxHP) + "   RAM " + itoa(p.RAM) + "/" + itoa(maxRAM(p)) + "   AC " + itoa(playerAC(p)) + crlf)
+	p.send("  HP " + itoa(p.HP) + "/" + itoa(p.MaxHP) + "   RAM " + itoa(p.RAM) + "/" + itoa(maxRAM(p)) + "   Armor Class " + itoa(playerAC(p)) + crlf)
 	p.send("  Body " + itoa(p.Body) + "   Reflexes " + itoa(p.Reflexes) + "   Intelligence " + itoa(p.Intelligence) + crlf)
 	if p.StatPoints > 0 {
 		p.send(style(gold, "  Character points: "+itoa(p.StatPoints)) + style(dim, " — type SPEND <body|reflexes|intelligence>") + crlf)
