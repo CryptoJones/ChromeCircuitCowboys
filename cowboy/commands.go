@@ -197,6 +197,9 @@ func (w *World) lookText(p *Player) {
 	if loreKey(p.RoomID) != "" {
 		p.send(style(dim, "There's someone here to TALK to.") + crlf)
 	}
+	if p.RoomID == startRoom {
+		p.send(style(dim, "The clone-booth tech is here — TALK for a quick orientation.") + crlf)
+	}
 	// Exits.
 	var dirs []string
 	for _, d := range []string{"north", "south", "east", "west", "up", "down", "in", "out"} {

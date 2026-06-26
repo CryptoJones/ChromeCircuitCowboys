@@ -19,6 +19,8 @@ incrementally; see the issue links.)
 - **`TALK` to locals for lore.** Ask whoever's around (the hiring fixer, or a
   passer-by) about the level you're on — every underground arc and Net zone has
   its own backstory, surfaced in-game. (#12)
+- **Clone-booth onboarding.** TALK in the Re-Clone Bay for a quick primer on
+  the core commands from the booth tech, Doc Splice. (#20)
 - **Batch quest accept.** `ACCEPT 1 2 3` takes several bounties at once and
   `ACCEPT ALL` takes every eligible one; each pick is guarded independently. (#17)
 - **Character points.** Each level banks spendable character points (shown on

@@ -102,8 +102,25 @@ func (w *World) talkSpeaker(p *Player) string {
 	return "a wary local"
 }
 
-// talk delivers a line of local backstory.
+// boothIntro is the clone-booth tech's onboarding primer for new runners — a
+// quick rundown of the core verbs, given when you TALK in the Re-Clone Bay.
+var boothIntro = []string{
+	"Fresh sleeve, huh? Name's Doc Splice. Quick orientation before you jack out, kid:",
+	"  Move with N/S/E/W (or UP/DOWN). LOOK (L) to read a room, MAP (M) to see exits and the way deeper or out.",
+	"  Fight with ATTACK (A); OPEN caches; LOOT (LO) the remains. Press an inventory number to USE it fast.",
+	"  QUESTS for bounties — ACCEPT then CLAIM at a broker or the giver. TALK to locals for the lore.",
+	"  Stash gear in your pod here (STASH/GRAB — no limit), HOME to recall back, SPEND points to grow. Now go make some scrip.",
+}
+
+// talk delivers a line of local backstory — or, in the Re-Clone Bay, the
+// new-player onboarding primer.
 func (w *World) talk(p *Player, arg string) {
+	if p.RoomID == startRoom {
+		for _, line := range boothIntro {
+			p.send(style(green, line) + crlf)
+		}
+		return
+	}
 	lore := zoneLore[loreKey(p.RoomID)]
 	speaker := w.talkSpeaker(p)
 	if len(lore) == 0 {
