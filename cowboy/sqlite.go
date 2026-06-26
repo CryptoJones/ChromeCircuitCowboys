@@ -47,7 +47,45 @@ func OpenSQLite(path string) (*SQLiteStore, error) {
 	_, _ = db.Exec(`ALTER TABLE cowboy_player ADD COLUMN stash_json TEXT NOT NULL DEFAULT '{}'`)
 	_, _ = db.Exec(`ALTER TABLE cowboy_player ADD COLUMN stat_points INTEGER NOT NULL DEFAULT 0`)
 	_, _ = db.Exec(`ALTER TABLE cowboy_player ADD COLUMN done_json TEXT NOT NULL DEFAULT '{}'`)
+	if _, err := db.Exec(`CREATE TABLE IF NOT EXISTS cowboy_mail (
+		id        INTEGER PRIMARY KEY AUTOINCREMENT,
+		to_name   TEXT NOT NULL COLLATE NOCASE,
+		from_name TEXT NOT NULL,
+		body      TEXT NOT NULL
+	)`); err != nil {
+		db.Close()
+		return nil, err
+	}
 	return &SQLiteStore{db: db}, nil
+}
+
+// PushMail queues a message for a recipient.
+func (s *SQLiteStore) PushMail(to, from, body string) error {
+	_, err := s.db.Exec(`INSERT INTO cowboy_mail (to_name, from_name, body) VALUES (?,?,?)`, to, from, body)
+	return err
+}
+
+// PopMail returns and deletes the recipient's queued mail (oldest first).
+func (s *SQLiteStore) PopMail(to string) ([]Mail, error) {
+	rows, err := s.db.Query(`SELECT from_name, body FROM cowboy_mail WHERE to_name = ? COLLATE NOCASE ORDER BY id`, to)
+	if err != nil {
+		return nil, err
+	}
+	var out []Mail
+	for rows.Next() {
+		var m Mail
+		if err := rows.Scan(&m.From, &m.Body); err != nil {
+			rows.Close()
+			return nil, err
+		}
+		out = append(out, m)
+	}
+	rows.Close()
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	_, err = s.db.Exec(`DELETE FROM cowboy_mail WHERE to_name = ? COLLATE NOCASE`, to)
+	return out, err
 }
 
 // Close releases the database.

@@ -94,6 +94,14 @@ type Room struct {
 	Safe    bool              // no-violence zone (outside the clone pods): a security drone flatlines PvP aggressors
 	Net     bool              // inside the Net: combat is a BREACH (Intelligence + RAM), ICE shatters into shards
 	Spar    bool              // a sparring gym: PvP is non-lethal — a downed runner is knocked out, keeps everything
+	Term    bool              // a data terminal: SEND mail / WIRE scrip to other runners (vendors/medics also count)
+}
+
+// Mail is a stored message from one runner to another, delivered whenever the
+// recipient next reads MAIL (works even if they were offline).
+type Mail struct {
+	From string
+	Body string
 }
 
 // Corpse is a dead runner's old body, left where they flatlined. It holds the
@@ -135,13 +143,34 @@ type Persistence interface {
 	Save(sp *SavedPlayer) error
 	// Top returns up to n characters ranked by level then XP (for the leaderboard).
 	Top(n int) ([]SavedPlayer, error)
+	// PushMail queues a message for a recipient; PopMail returns and clears theirs.
+	PushMail(to, from, body string) error
+	PopMail(to string) ([]Mail, error)
 }
 
 // MemStore is an in-memory Persistence for tests and ephemeral runs.
-type MemStore struct{ m map[string]*SavedPlayer }
+type MemStore struct {
+	m    map[string]*SavedPlayer
+	mail map[string][]Mail
+}
 
 // NewMemStore builds an empty in-memory store.
-func NewMemStore() *MemStore { return &MemStore{m: map[string]*SavedPlayer{}} }
+func NewMemStore() *MemStore {
+	return &MemStore{m: map[string]*SavedPlayer{}, mail: map[string][]Mail{}}
+}
+
+// PushMail queues a message for to.
+func (s *MemStore) PushMail(to, from, body string) error {
+	s.mail[to] = append(s.mail[to], Mail{From: from, Body: body})
+	return nil
+}
+
+// PopMail returns and clears the recipient's queued mail.
+func (s *MemStore) PopMail(to string) ([]Mail, error) {
+	m := s.mail[to]
+	delete(s.mail, to)
+	return m, nil
+}
 
 // Load returns a saved character by name.
 func (s *MemStore) Load(name string) (*SavedPlayer, bool, error) {

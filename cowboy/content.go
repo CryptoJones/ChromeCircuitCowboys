@@ -30,7 +30,7 @@ func buildRooms() map[string]*Room {
 		{ID: "corpo_plaza", Name: "Corporate Plaza",
 			Desc:  "Glass and gun-metal. Security drones sweep the concourse and corpo-sec in\r\nmirror visors watch everything. A guarded data port hums to the east.",
 			Exits: map[string]string{"west": "the_sprawl", "east": "data_port"}},
-		{ID: "data_port", Name: "Data Port",
+		{ID: "data_port", Name: "Data Port", Term: true,
 			Desc:  "A jack-in cradle wired to the city grid. Jacking in (UP) drops your\r\nconsciousness into the Net — the seedy underbelly of cyberspace.",
 			Exits: map[string]string{"west": "corpo_plaza", "up": "nz1_1_top"}},
 	}
