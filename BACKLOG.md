@@ -7,6 +7,7 @@ Ideas and tasks not yet scheduled.
 - [ ] Character sheet: spell out "AC" as "Armor Class" ([#30](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/30))
 - [ ] Character sheet: always show character points (0 if none) + bold "You have character points to spend." note ([#31](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/31))
 - [ ] Some quests award a character point, class-flavored ([#32](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/32))
+- [ ] Hacking mini-game at data terminals everywhere in meatspace ([#33](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/33))
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
 - [x] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8)) — _shipped v2.2.0: machines leave wreckage, never a corpse_
