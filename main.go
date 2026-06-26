@@ -314,6 +314,23 @@ func serve(nc net.Conn, events chan event) {
 		return
 	}
 
+	// Authenticate (all modes): an existing character must enter its password;
+	// a legacy character with none is prompted to set one (migration).
+	ai := make(chan cowboy.CharAuth, 1)
+	events <- event{typ: evAuthInfo, name: name, authReply: ai}
+	auth := <-ai
+	if auth.Exists {
+		if auth.HasPassword {
+			if !authenticate(name, r, c, events) {
+				events <- event{typ: evClose, c: c}
+				return
+			}
+		} else if !setNewPassword(name, r, c, events, "This character has no password yet — set one.") {
+			events <- event{typ: evClose, c: c}
+			return
+		}
+	}
+
 	reply := make(chan connectResult, 1)
 	events <- event{typ: evConnect, c: c, name: name, reply: reply}
 	res := <-reply
@@ -334,6 +351,11 @@ func serve(nc net.Conn, events chan event) {
 		reply2 := make(chan connectResult, 1)
 		events <- event{typ: evCreate, c: c, name: name, spec: spec, reply: reply2}
 		<-reply2
+		// Set a password for the new runner (created online now).
+		if !setNewPassword(name, r, c, events, "Set a password for your new runner.") {
+			events <- event{typ: evClose, c: c}
+			return
+		}
 	}
 
 	// In-world input loop with a MANAGED prompt: we own the input buffer here so
@@ -402,6 +424,61 @@ func serve(nc net.Conn, events chan event) {
 	}
 }
 
+// readHidden reads a line without echoing it (password entry).
+func readHidden(r *bufio.Reader) (string, error) {
+	return cowboy.ReadLine(r, func(string) {})
+}
+
+// authenticate prompts for an existing character's password (up to 3 tries).
+func authenticate(name string, r *bufio.Reader, c *conn, events chan event) bool {
+	for tries := 0; tries < 3; tries++ {
+		c.out("\r\nPassword: ")
+		pw, err := readHidden(r)
+		if err != nil {
+			return false
+		}
+		br := make(chan bool, 1)
+		events <- event{typ: evCheckPass, name: name, pass: pw, boolReply: br}
+		if <-br {
+			return true
+		}
+		c.out("\r\nWrong password.\r\n")
+	}
+	c.out("\r\nToo many attempts. NO CARRIER\r\n")
+	return false
+}
+
+// setNewPassword prompts to set + confirm a password (new char or migration).
+func setNewPassword(name string, r *bufio.Reader, c *conn, events chan event, intro string) bool {
+	c.out("\r\n" + intro + "\r\n")
+	for {
+		c.out("New password (8+ chars): ")
+		pw, err := readHidden(r)
+		if err != nil {
+			return false
+		}
+		pw = strings.TrimSpace(pw)
+		if len(pw) < 8 {
+			c.out("\r\nToo short — at least 8 characters.\r\n")
+			continue
+		}
+		c.out("\r\nConfirm: ")
+		pw2, err := readHidden(r)
+		if err != nil {
+			return false
+		}
+		if pw != strings.TrimSpace(pw2) {
+			c.out("\r\nDidn't match — try again.\r\n")
+			continue
+		}
+		done := make(chan struct{})
+		events <- event{typ: evSetPass, name: name, pass: pw, done: done}
+		<-done
+		c.out("\r\nPassword set.\r\n")
+		return true
+	}
+}
+
 // ---- events (all handled on the world goroutine) ----
 
 type evType int
@@ -413,6 +490,9 @@ const (
 	evDisconnect
 	evClose
 	evShutdown // flush all players, then signal done (graceful shutdown)
+	evAuthInfo // query a name's auth state (exists / has-password)
+	evCheckPass
+	evSetPass
 )
 
 // connectResult tells the connection goroutine how the world handled a connect:
@@ -424,13 +504,16 @@ type connectResult struct {
 }
 
 type event struct {
-	typ   evType
-	c     *conn
-	name  string
-	line  string
-	spec  cowboy.CharSpec
-	reply chan connectResult
-	done  chan struct{} // evShutdown: closed once all players are saved
+	typ       evType
+	c         *conn
+	name      string
+	line      string
+	pass      string
+	spec      cowboy.CharSpec
+	reply     chan connectResult
+	authReply chan cowboy.CharAuth
+	boolReply chan bool
+	done      chan struct{} // evShutdown: closed once all players are saved (also evSetPass ack)
 }
 
 func handle(world *cowboy.World, ev event) {
@@ -470,6 +553,13 @@ func handle(world *cowboy.World, ev event) {
 		}
 	case evDisconnect, evClose:
 		teardown(world, ev.c)
+	case evAuthInfo:
+		ev.authReply <- world.AuthInfo(ev.name)
+	case evCheckPass:
+		ev.boolReply <- world.CheckPassword(ev.name, ev.pass)
+	case evSetPass:
+		_ = world.SetPassword(ev.name, ev.pass)
+		close(ev.done)
 	}
 }
 

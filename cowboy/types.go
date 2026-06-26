@@ -36,6 +36,7 @@ type Player struct {
 	trade        *tradeSession  // active face-to-face trade (nil = not trading)
 	hack         *hackGame      // active terminal hacking mini-game (nil = not hacking)
 	downed       bool           // knocked out in a gym team-spar (out until the match resets)
+	passwordHash string         // bcrypt hash of the character's password (""=unset; legacy)
 	shieldTicks  int            // remaining ticks of the mirror program's damage shield
 	shieldAmt    int            // flat damage reduction while shielded
 	homing       int            // ticks left on a recall-home cast (0 = not recalling)
@@ -129,6 +130,7 @@ type SavedPlayer struct {
 	Class                        string
 	Clan                         string
 	Theme                        string
+	PasswordHash                 string
 	Level, XP, Eddies, HP, MaxHP int
 	Body, Reflexes, Intelligence int
 	StatPoints                   int

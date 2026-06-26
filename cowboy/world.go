@@ -319,7 +319,7 @@ func (w *World) SaveAll() {
 
 func (w *World) save(p *Player) {
 	_ = w.store.Save(&SavedPlayer{
-		Name: p.Name, Class: p.Class, Clan: p.Clan, Theme: p.Theme, Level: p.Level, XP: p.XP, Eddies: p.Eddies,
+		Name: p.Name, Class: p.Class, Clan: p.Clan, Theme: p.Theme, PasswordHash: p.passwordHash, Level: p.Level, XP: p.XP, Eddies: p.Eddies,
 		HP: p.HP, MaxHP: p.MaxHP, Body: p.Body, Reflexes: p.Reflexes,
 		Intelligence: p.Intelligence, StatPoints: p.StatPoints, WeaponBonus: p.WeaponBonus,
 		WeaponName: p.WeaponName, RAM: p.RAM, DeckBonus: p.DeckBonus,
@@ -341,6 +341,7 @@ func applySave(p *Player, sp *SavedPlayer) {
 	p.Class = sp.Class
 	p.Clan = sp.Clan
 	p.Theme = sp.Theme
+	p.passwordHash = sp.PasswordHash
 	p.Level, p.XP, p.Eddies = sp.Level, sp.XP, sp.Eddies
 	p.HP, p.MaxHP = sp.HP, sp.MaxHP
 	p.Body, p.Reflexes, p.Intelligence = sp.Body, sp.Reflexes, sp.Intelligence
