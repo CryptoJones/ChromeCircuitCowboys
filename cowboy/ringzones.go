@@ -25,6 +25,8 @@ func ring(id, name, desc, flags string, exits map[string]string) *Room {
 			r.Vendor = true
 		case 'm':
 			r.Medic = true
+		case 'p':
+			r.Spar = true
 		}
 	}
 	return r
@@ -64,7 +66,9 @@ func buildRingRooms() []*Room {
 		ring("sb_8", "Sprawlbelt :: Scrap Exchange", "A cage-fronted stall heaped with salvaged parts where a scrap-trader buys drone-cores by the gram, no questions asked.", "sv",
 			map[string]string{"east": "sb_9", "west": "sb_7"}),
 		ring("sb_9", "Sprawlbelt :: The Stripped Lot", "A chain-link belt yard of gutted vehicles on cinderblocks where a scrap-scrounger drone picks the husks for copper.", "",
-			map[string]string{"east": "sb_10", "west": "sb_8"}),
+			map[string]string{"east": "sb_10", "west": "sb_8", "north": "sb_gym"}),
+		ring("sb_gym", "Sprawlbelt :: The Iron Temple", "A clangorous fitness center bolted into a belt warehouse — heavy bags, a sparring cage, and a synth-muscled trainer barking counts. Duels here are non-lethal: get dropped and you just wake up sore. ATTACK another runner to spar.", "p",
+			map[string]string{"south": "sb_9"}),
 		ring("sb_10", "Sprawlbelt :: The Mending Stop", "A folding-cot belt clinic where a street medic patches the beltway's walking wounded and trades word of who's hiring.", "sm",
 			map[string]string{"east": "sb_1", "west": "sb_9"}),
 	}
