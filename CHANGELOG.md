@@ -11,6 +11,8 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **Party follow** — when the crew leader moves, members in the room follow
+  along (those mid-combat stay to finish the fight). (#42)
 - **`SELL` items for scrip** at vendors — offload unwanted gear for 50%%
   catalog buyback (`SELL <item> [qty]`). (#40)
 - **Quick party-chat shortcut `;`** — `;<msg>` goes straight to crew chat

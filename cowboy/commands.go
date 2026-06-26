@@ -503,10 +503,34 @@ func (w *World) move(p *Player, dir string) {
 		p.send(style(dim, "You can't go "+dir+".") + crlf)
 		return
 	}
+	origin := p.RoomID
 	w.broadcast(p.RoomID, p, style(dim, p.Name+" heads "+dir+".")+crlf)
 	p.RoomID = dest
 	w.broadcast(p.RoomID, p, style(dim, p.Name+" arrives.")+crlf)
 	w.lookText(p)
+	w.partyFollow(p, origin, dest, dir)
+}
+
+// partyFollow pulls the leader's crew along when the leader moves: any member in
+// the room the leader just left (and not mid-combat) follows to the destination.
+func (w *World) partyFollow(leader *Player, origin, dest, dir string) {
+	if leader.party == nil || leader.party.Leader != leader {
+		return
+	}
+	for _, m := range leader.party.Members {
+		if m == leader || m.RoomID != origin {
+			continue
+		}
+		if m.fighting != nil || m.pvpTarget != nil {
+			m.send(style(dim, leader.Name+" heads "+dir+" — you stay and finish the fight.") + crlf)
+			continue
+		}
+		m.homing = 0 // moving cancels any recall they were casting
+		m.RoomID = dest
+		w.broadcast(dest, m, style(dim, m.Name+" follows "+leader.Name+" in.")+crlf)
+		m.send(style(dim, "You follow "+leader.Name+" "+dir+".") + crlf)
+		w.lookText(m)
+	}
 }
 
 // recallTicks is the cast time of a HOME recall — ~10 seconds at the default 2s
