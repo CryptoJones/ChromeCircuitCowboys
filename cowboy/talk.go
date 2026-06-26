@@ -112,13 +112,39 @@ var boothIntro = []string{
 	"  Stash gear in your pod here (STASH/GRAB — no limit), HOME to recall back, SPEND points to grow. Now go make some scrip.",
 }
 
+// npcVoice is a named flavor NPC parked in a specific room — TALK to them for
+// a line of their patter.
+type npcVoice struct {
+	speaker string
+	lines   []string
+}
+
+// roomNPC places named flavor NPCs in specific rooms (the rings / the surface).
+// TALK checks here before the generic per-zone lore.
+var roomNPC = map[string]npcVoice{
+	// Spanish-speaking locals around Noche City (#21).
+	"ic_1": {"Rosa, a flower-cart vendor", []string{
+		"¡Hola, choom! Bienvenido a la Ciudad de la Noche.",
+		"¿Buscas trabajo? Hay rumores en el anillo. ¡Ten cuidado ahí abajo!",
+		"¡Que la suerte te acompañe! ¡Viva la Ciudad de la Noche!",
+	}},
+	"sb_2": {"Tío Beto at the noodle stall", []string{
+		"¡Siéntate, siéntate! Los fideos están calientes. La noche es larga, cowboy.",
+		"Dicen que los muertos caminan en la Red. Yo digo: come primero, preocúpate después.",
+	}},
+}
+
 // talk delivers a line of local backstory — or, in the Re-Clone Bay, the
-// new-player onboarding primer.
+// new-player onboarding primer; or a named flavor NPC's patter.
 func (w *World) talk(p *Player, arg string) {
 	if p.RoomID == startRoom {
 		for _, line := range boothIntro {
 			p.send(style(green, line) + crlf)
 		}
+		return
+	}
+	if npc, ok := roomNPC[p.RoomID]; ok && len(npc.lines) > 0 {
+		p.send(style(neon, npc.speaker+": ") + style(green, npc.lines[w.roll(len(npc.lines))]) + crlf)
 		return
 	}
 	lore := zoneLore[loreKey(p.RoomID)]

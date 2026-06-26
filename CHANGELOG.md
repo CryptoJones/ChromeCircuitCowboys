@@ -21,6 +21,8 @@ incrementally; see the issue links.)
   its own backstory, surfaced in-game. (#12)
 - **Clone-booth onboarding.** TALK in the Re-Clone Bay for a quick primer on
   the core commands from the booth tech, Doc Splice. (#20)
+- **Spanish-speaking locals.** Flavor NPCs around the rings greet you in
+  Spanish (¡Viva la Ciudad de la Noche!). (#21)
 - **Batch quest accept.** `ACCEPT 1 2 3` takes several bounties at once and
   `ACCEPT ALL` takes every eligible one; each pick is guarded independently. (#17)
 - **Character points.** Each level banks spendable character points (shown on
