@@ -10,6 +10,7 @@ Ideas and tasks not yet scheduled.
 - [ ] TALK to NPCs — every NPC gives backstory/lore about the level you're on ([#12](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/12))
 - [ ] Numbered inventory — press the number to USE that item, no Enter needed (fast for combat) ([#13](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/13))
 - [ ] Shortcuts: `A` = attack, `LO` = loot (`L` stays look) ([#14](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/14))
+- [ ] Per-area cyberware that grants character points — 2-3 per band so each class can buy a grind aid ([#15](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/15))
 - [x] Loot crates & net mobs shouldn't leave a "corpse" — they have no bodies; reword the death/loot text for them ([#5](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/5)) — _shipped in v2.1.0: caches crack open, ICE shatters into shards_
 - [x] 16-bit map feature — render a CP437/ANSI map showing how to exit the "level" or proceed to the next harder area ([#6](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/6)) — _`MAP`/`M`: labelled exits + PROCEED/WAY-OUT arrows, works in Undercity, Net, and surface_
 - [x] Quests redeemable at the giver, not just at brokers ([#7](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/7)) — _claim now pays out at the fixer/ring-giver room or a broker_
