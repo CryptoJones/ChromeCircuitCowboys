@@ -145,13 +145,68 @@ func (w *World) flee(p *Player) {
 // respawns, and out-of-combat regen (HP and RAM).
 func (w *World) Tick() {
 	w.aggro()
+	w.botAssist() // crewed AI runners join their crew's fights — before combat resolves, so they swing this tick
 	w.resolveCombat()
 	w.resolvePvP()
 	w.tickRecall() // after combat, so a hit this tick interrupts before the recall lands
 	w.respawnDead()
 	w.expireShields()
 	w.regen()
-	w.tickBots() // AI runners wander + chatter so the world feels populated (#37)
+	w.tickBots() // AI runners wander + chatter (or follow their crew) so the world feels populated (#37)
+}
+
+// botAssist makes crewed AI runners pitch in defensively: if a HUMAN crewmate in
+// the bot's room is fighting a live mob there, the bot engages that same mob.
+// Bots never initiate on a passive mob, and disengage the moment no crewmate is
+// fighting in the room (the mob died, the crew moved on, etc.).
+func (w *World) botAssist() {
+	for _, b := range w.players {
+		if !b.IsBot || b.party == nil {
+			continue
+		}
+		if mob := w.crewmateFightHere(b); mob != nil {
+			b.pvpTarget = nil
+			b.fighting = mob
+		} else {
+			b.fighting = nil
+		}
+	}
+}
+
+// crewmateFightHere returns a live mob in b's room that a human crewmate of b is
+// currently fighting — the trigger for a bot to weigh in — or nil if none.
+func (w *World) crewmateFightHere(b *Player) *Mob {
+	for _, m := range b.party.Members {
+		if m.IsBot || m.RoomID != b.RoomID {
+			continue
+		}
+		if mob := m.fighting; mob != nil && !mob.dead && mob.RoomID == b.RoomID {
+			return mob
+		}
+	}
+	return nil
+}
+
+// killCredit attributes a kill to a human so XP, quest credit, and loot go to the
+// crew — never to the AI runner that happened to land the final hit. Prefers a
+// human already swinging at the mob, then any human crewmate in the room.
+func (w *World) killCredit(p *Player, m *Mob) *Player {
+	if !p.IsBot {
+		return p
+	}
+	for _, a := range w.attackersOf(m) {
+		if !a.IsBot {
+			return a
+		}
+	}
+	if p.party != nil {
+		for _, mate := range p.party.Members {
+			if !mate.IsBot && mate.RoomID == m.RoomID {
+				return mate
+			}
+		}
+	}
+	return p
 }
 
 // tickRecall counts down HOME recalls and, when one completes, phases the runner
@@ -247,7 +302,7 @@ func (w *World) resolveCombat() {
 			p.send(style(dim, "You miss "+m.tmpl.Name+".") + crlf)
 		}
 		if m.HP <= 0 {
-			w.killMob(p, m)
+			w.killMob(w.killCredit(p, m), m) // a bot's finishing blow credits a human crewmate
 		}
 	}
 	// Pass 2: every live mob that's being fought hits back at ONE of its
@@ -262,14 +317,20 @@ func (w *World) resolveCombat() {
 			continue
 		}
 		target := attackers[w.roll(len(attackers))]
-		m.target = target
+		if !target.IsBot {
+			m.target = target // never let a mob lock onto a bot — keeps aggro on real runners
+		}
 		if w.toHit(m.tmpl.Damage/2, playerAC(target)) {
 			d := applyShield(target, dmg(m.tmpl.Damage, playerAC(target)))
 			target.HP -= d
 			w.breakRecall(target)
 			target.send(style(red, m.tmpl.Name+" hits you for "+itoa(d)+".") + crlf)
 			if target.HP <= 0 {
-				w.flatline(target, m)
+				if target.IsBot {
+					target.HP = 1 // AI runners soak hits for the crew but never flatline
+				} else {
+					w.flatline(target, m)
+				}
 			}
 		} else {
 			target.send(style(dim, m.tmpl.Name+" misses you.") + crlf)

@@ -24,7 +24,7 @@ import (
 
 // version is this build's release version (compared against the configured
 // update feed, if any).
-const version = "2.5.2"
+const version = "2.5.3"
 
 func main() {
 	addr := flag.String("addr", "127.0.0.1:4000", "TCP listen address for BBS bridge")

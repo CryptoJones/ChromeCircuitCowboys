@@ -131,6 +131,14 @@ func (w *World) tickBots() {
 			continue
 		}
 		if b.party != nil { // crewed up: shut up and follow — no chatter, no wandering off
+			// If we've been left behind (and aren't mid-fight), regroup on the leader.
+			if b.fighting == nil {
+				if lead := b.party.Leader; lead != nil && lead != b && lead.RoomID != b.RoomID {
+					w.broadcast(b.RoomID, b, style(dim, b.Name+" moves out.")+crlf)
+					b.RoomID = lead.RoomID
+					w.broadcast(lead.RoomID, b, style(dim, b.Name+" catches up with the crew.")+crlf)
+				}
+			}
 			continue
 		}
 		switch w.roll(6) { // ~2/3 of ticks the bot just idles

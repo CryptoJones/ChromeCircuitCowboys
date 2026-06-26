@@ -254,9 +254,12 @@ func (w *World) awardXP(killer *Player, xp int) {
 	if killer.party != nil {
 		recipients = recipients[:0]
 		for _, m := range killer.party.Members {
-			if m.RoomID == killer.RoomID {
+			if !m.IsBot && m.RoomID == killer.RoomID { // AI runners help fight but don't take XP shares
 				recipients = append(recipients, m)
 			}
+		}
+		if len(recipients) == 0 { // all-bot edge (no human present) — credit the killer
+			recipients = append(recipients, killer)
 		}
 	}
 	share := xp
