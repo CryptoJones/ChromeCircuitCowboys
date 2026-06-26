@@ -39,6 +39,9 @@ incrementally; see the issue links.)
 - **Character sheet spells out "Armor Class"** instead of the cryptic "AC". (#30)
 
 ### Changed
+- **Group combat** — several runners can pile on the same mob (each lands
+  their own hits), and the mob now retaliates on a random one of its attackers
+  each tick, spreading the danger instead of pinning one. (#41)
 - **USE always explains why** instead of a bare "you can't use that" — cyberware
   tells you to INSTALL it, class-restricted gear names the requirement; and
   vendors won't sell you gear your class can't use (new `forClass` restriction,

@@ -214,6 +214,8 @@ func (w *World) playerSwing(p *Player) int {
 }
 
 func (w *World) resolveCombat() {
+	// Pass 1: every engaged runner swings at the mob they're fighting. Several
+	// runners can pile on the same mob — each lands their own hit this tick.
 	for _, p := range w.players {
 		m := p.fighting
 		if m == nil {
@@ -232,22 +234,44 @@ func (w *World) resolveCombat() {
 		}
 		if m.HP <= 0 {
 			w.killMob(p, m)
-			continue
-		}
-		if m.target == p {
-			if w.toHit(m.tmpl.Damage/2, playerAC(p)) {
-				d := applyShield(p, dmg(m.tmpl.Damage, playerAC(p)))
-				p.HP -= d
-				w.breakRecall(p)
-				p.send(style(red, m.tmpl.Name+" hits you for "+itoa(d)+".") + crlf)
-				if p.HP <= 0 {
-					w.flatline(p, m)
-				}
-			} else {
-				p.send(style(dim, m.tmpl.Name+" misses you.") + crlf)
-			}
 		}
 	}
+	// Pass 2: every live mob that's being fought hits back at ONE of its
+	// attackers, picked at random each tick — so a group fight spreads the
+	// danger around instead of pinning one runner.
+	for _, m := range w.mobs {
+		if m.dead {
+			continue
+		}
+		attackers := w.attackersOf(m)
+		if len(attackers) == 0 {
+			continue
+		}
+		target := attackers[w.roll(len(attackers))]
+		m.target = target
+		if w.toHit(m.tmpl.Damage/2, playerAC(target)) {
+			d := applyShield(target, dmg(m.tmpl.Damage, playerAC(target)))
+			target.HP -= d
+			w.breakRecall(target)
+			target.send(style(red, m.tmpl.Name+" hits you for "+itoa(d)+".") + crlf)
+			if target.HP <= 0 {
+				w.flatline(target, m)
+			}
+		} else {
+			target.send(style(dim, m.tmpl.Name+" misses you.") + crlf)
+		}
+	}
+}
+
+// attackersOf returns every runner currently fighting mob m in its room.
+func (w *World) attackersOf(m *Mob) []*Player {
+	var out []*Player
+	for _, p := range w.players {
+		if p.fighting == m && p.RoomID == m.RoomID {
+			out = append(out, p)
+		}
+	}
+	return out
 }
 
 // resolvePvP runs one round of every active netrun duel. Both runners swing in
