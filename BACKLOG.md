@@ -13,6 +13,7 @@ Ideas and tasks not yet scheduled.
 - [ ] `TALK` takes input (e.g. `talk "hi"`) with random responses — modular for future growth ([#36](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/36)) — _do via plan mode_
 - [ ] AI characters that act as players to populate empty servers (so solo players aren't lonely) ([#37](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/37)) — _do via plan mode_
 - [ ] Switchable colorblind-friendly palette (Claude Code's), light + dark — accessibility ([#38](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/38))
+- [ ] Expand all NPCs' default responses via Violet Lotus (they're too terse) ([#39](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/39)) — _do via plan mode_
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
 - [x] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8)) — _shipped v2.2.0: machines leave wreckage, never a corpse_
