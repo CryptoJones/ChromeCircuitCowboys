@@ -398,6 +398,6 @@ func netMob(kind string, band int, id, name, home string) *MobTemplate {
 // into shards dropping a band-scaled RAM consumable + scrip, refilling on cooldown.
 func netCacheMob(band int, id, home string) *MobTemplate {
 	return &MobTemplate{ID: id, Name: "a sealed data-cache", HP: 5 + band, Damage: 0, AC: 1,
-		XP: 5 + band*3, Eddies: 15 + band*22, Aggressive: false, ICE: true, Home: home,
+		XP: 5 + band*3, Eddies: 15 + band*22, Aggressive: false, ICE: true, Container: true, Home: home,
 		Drops: map[string]int{ramFor(band): 1}}
 }

@@ -329,7 +329,7 @@ func mobFor(kind string, band int, id, name, home string) *MobTemplate {
 // consumable + scrip, and refills on the normal room respawn cooldown once looted.
 func cacheMob(band int, id, home, item string) *MobTemplate {
 	return &MobTemplate{ID: id, Name: "a sealed supply cache", HP: 5 + band, Damage: 0, AC: 1,
-		XP: 5 + band*3, Eddies: 15 + band*22, Aggressive: false, Home: home,
+		XP: 5 + band*3, Eddies: 15 + band*22, Aggressive: false, Container: true, Home: home,
 		Drops: map[string]int{item: 1}}
 }
 

@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/CryptoJones/ChromeCircuitCowboys/cowboy"
@@ -13,7 +14,8 @@ func TestUndergroundDescentAndLootCache(t *testing.T) {
 	w := cowboy.NewWorld(cowboy.NewMemStore())
 	w.SetRoll(func(n int) int { return 0 }) // deterministic to-hit
 
-	p := w.Connect("descender", func(string) {})
+	out, buf := sink()
+	p := w.Connect("descender", out)
 
 	// Back Alley drops down into the first authored zone.
 	p.RoomID = "back_alley"
@@ -27,6 +29,8 @@ func TestUndergroundDescentAndLootCache(t *testing.T) {
 	startScrip := p.Eddies
 
 	// Step into the hidden ceiling cache off The Sodium Strip and crack it open.
+	// Reset the capture so we only assert on the cache interaction below.
+	buf.Reset()
 	p.RoomID = "z1_02_cache"
 	w.Command(p, "attack cache")
 	for i := 0; i < 3 && p.Inv["stimpak"] == startStim; i++ {
@@ -39,5 +43,15 @@ func TestUndergroundDescentAndLootCache(t *testing.T) {
 	}
 	if p.Eddies <= startScrip {
 		t.Fatalf("loot cache yielded no scrip (%d -> %d)", startScrip, p.Eddies)
+	}
+
+	// A crate has no body: it cracks open / spills, and the loot text never
+	// calls it a "body" or "corpse" (C³ #5).
+	got := buf.String()
+	if !strings.Contains(got, "cracks open") {
+		t.Errorf("cache kill should say it cracks open; got:\n%s", got)
+	}
+	if strings.Contains(got, "body") || strings.Contains(got, "corpse") {
+		t.Errorf("a bodiless cache must not be called a body/corpse; got:\n%s", got)
 	}
 }

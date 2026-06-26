@@ -190,11 +190,14 @@ func (w *World) lookText(p *Player) {
 	for _, m := range w.liveMobsIn(p.RoomID) {
 		p.send(style(hot, m.tmpl.Name+" is here.") + crlf)
 	}
-	// Flatlined bodies / shattered ICE waiting to be looted.
+	// Flatlined bodies / shattered ICE / cracked-open caches waiting to be looted.
 	for _, c := range w.corpsesIn(p.RoomID) {
-		if c.IsICE {
+		switch {
+		case c.IsBox:
+			p.send(style(dim, "A cracked-open "+strings.TrimPrefix(c.Owner, "a sealed ")+" lies spilled here. (LOOT)") + crlf)
+		case c.IsICE:
 			p.send(style(dim, "Broken shards of "+c.Owner+" glitter here. (LOOT)") + crlf)
-		} else {
+		default:
 			p.send(style(dim, c.Owner+"'s flatlined body lies here. (LOOT)") + crlf)
 		}
 	}
@@ -404,16 +407,24 @@ func (w *World) goHome(p *Player) {
 func (w *World) loot(p *Player) {
 	cs := w.corpsesIn(p.RoomID)
 	if len(cs) == 0 {
-		p.send(style(dim, "There's no flatlined body to loot here.") + crlf)
+		p.send(style(dim, "There's nothing here to loot.") + crlf)
 		return
 	}
 	total := 0
 	scrip := 0
-	ice := false
+	// Classify what's lying here so the wording fits: an inert container (cache),
+	// a Net construct's shards, or an actual flatlined body. A body in the pile
+	// wins the phrasing (the most general, never-wrong noun).
+	box, ice, body := false, false, false
 	var cyber []string
 	for _, c := range cs {
-		if c.IsICE {
+		switch {
+		case c.IsBox:
+			box = true
+		case c.IsICE:
 			ice = true
+		default:
+			body = true
 		}
 		for name, qty := range c.Loot {
 			if qty <= 0 {
@@ -434,32 +445,51 @@ func (w *World) loot(p *Player) {
 		}
 	}
 	w.removeCorpsesIn(p.RoomID)
+	// A body in the pile wins the phrasing; otherwise shards (Net) or a cache.
+	useICE := !body && ice
+	useBox := !body && !ice && box
 	if total == 0 && scrip == 0 {
-		if ice {
+		switch {
+		case useBox:
+			p.send(style(dim, "The cache is already cleaned out.") + crlf)
+		case useICE:
 			p.send(style(dim, "The shards are inert — nothing to salvage.") + crlf)
-		} else {
+		default:
 			p.send(style(dim, "The body is already stripped bare.") + crlf)
 		}
 		return
 	}
 	if scrip > 0 {
 		p.Eddies += scrip
-		if ice {
+		switch {
+		case useBox:
+			p.send(style(gold, "You scoop €$"+itoa(scrip)+" scrip from the cracked-open cache.") + crlf)
+		case useICE:
 			p.send(style(gold, "You salvage €$"+itoa(scrip)+" scrip from the broken shards.") + crlf)
-		} else {
+		default:
 			p.send(style(gold, "You recover €$"+itoa(scrip)+" scrip from the body.") + crlf)
 		}
 	}
 	if total > 0 {
-		p.send(style(green, "You strip the body — its gear is now in your pack.") + crlf)
+		switch {
+		case useBox:
+			p.send(style(green, "You clear out the cache — its contents are now in your pack.") + crlf)
+		case useICE:
+			p.send(style(green, "You pick the shards clean — the salvage is now in your pack.") + crlf)
+		default:
+			p.send(style(green, "You strip the body — its gear is now in your pack.") + crlf)
+		}
 		if len(cyber) > 0 {
 			p.send(style(neon, "Salvaged cyberware: ") + strings.Join(cyber, ", ") +
 				style(dim, " — INSTALL it at a Emergency Medic to use it again.") + crlf)
 		}
 	}
-	if ice {
+	switch {
+	case useBox:
+		w.broadcast(p.RoomID, p, style(dim, p.Name+" cracks open a cache.")+crlf)
+	case useICE:
 		w.broadcast(p.RoomID, p, style(dim, p.Name+" picks through the broken shards.")+crlf)
-	} else {
+	default:
 		w.broadcast(p.RoomID, p, style(dim, p.Name+" loots a flatlined body.")+crlf)
 	}
 }
@@ -502,7 +532,7 @@ func helpText() string {
 		"  who             — who's jacked in\r\n" +
 		"  score (st)      — your character sheet\r\n" +
 		"  list / buy <x>  — vendor (at shops); use <item> to consume\r\n" +
-		"  loot            — strip a flatlined body (corpse) of its gear\r\n" +
+		"  loot            — strip a flatlined body, ICE shards, or a cache of its gear\r\n" +
 		"  install <cyber> — Emergency Medic re-installs salvaged cyberware (at the Night Market)\r\n" +
 		"  give <item> <runner> — hand recovered gear back to a crewmate\r\n" +
 		"  inventory (i)   — what you're carrying (cap grows with level)\r\n" +

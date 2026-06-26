@@ -61,6 +61,7 @@ type MobTemplate struct {
 	Eddies     int
 	Aggressive bool // attacks players on sight
 	ICE        bool // a Net construct: shatters into "broken shards" (not a body) and "regenerates"
+	Container  bool // an inert breakable (supply/data cache): cracks open into salvage, never a "body"
 	Home       string
 	Next       string         // multi-stage ICE: on "death" it morphs into this template instead of dying
 	Drops      map[string]int // item drops seeded into the corpse on death (e.g. loot-cache consumables)
@@ -101,6 +102,7 @@ type Corpse struct {
 	Scrip  int            // scrip carried by the body (mob loot); 0 for runner corpses
 	mob    *Mob           // the slain mob this body belongs to (nil for runner corpses); looting it ungates respawn
 	IsICE  bool           // ICE construct's "broken shards" (salvage), not a flatlined body
+	IsBox  bool           // inert container (supply/data cache): "a cracked-open cache", never a body
 }
 
 // SavedPlayer is the persisted slice of a Player (progress survives logout).
