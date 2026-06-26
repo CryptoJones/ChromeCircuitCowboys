@@ -68,6 +68,7 @@ func (w *World) engage(p *Player, arg string) {
 	if target.target == nil {
 		target.target = p
 	}
+	w.rallyCrewBots(p, target) // your AI runners pile in the instant you do
 	verb := "You lunge at "
 	switch {
 	case target.tmpl.Container:
@@ -169,6 +170,34 @@ func (w *World) botAssist() {
 			b.fighting = mob
 		} else {
 			b.fighting = nil
+		}
+	}
+}
+
+// rallyCrewBots makes a player's crewed AI runners in the room immediately engage
+// the mob the player just attacked, so the crew swings the same round you do.
+func (w *World) rallyCrewBots(p *Player, m *Mob) {
+	if p.party == nil || m == nil || m.dead {
+		return
+	}
+	for _, b := range p.party.Members {
+		if b.IsBot && b.RoomID == m.RoomID {
+			b.pvpTarget = nil
+			b.fighting = m
+		}
+	}
+}
+
+// partyCombatLog relays a combatant's action to their crewmates in the same room
+// so a player sees what the rest of the crew (AI runners included) is doing in
+// the fight — their own first-person line is sent separately by the caller.
+func (w *World) partyCombatLog(actor *Player, msg string) {
+	if actor.party == nil {
+		return
+	}
+	for _, m := range actor.party.Members {
+		if m != actor && m.RoomID == actor.RoomID {
+			m.send(msg)
 		}
 	}
 }
@@ -298,6 +327,7 @@ func (w *World) resolveCombat() {
 			d := dmg(w.playerSwing(p), m.tmpl.AC)
 			m.HP -= d
 			p.send(style(green, "You hit "+m.tmpl.Name+" for "+itoa(d)+".") + crlf)
+			w.partyCombatLog(p, style(dim, p.Name+" hits "+m.tmpl.Name+" for "+itoa(d)+".")+crlf)
 		} else {
 			p.send(style(dim, "You miss "+m.tmpl.Name+".") + crlf)
 		}
@@ -325,6 +355,7 @@ func (w *World) resolveCombat() {
 			target.HP -= d
 			w.breakRecall(target)
 			target.send(style(red, m.tmpl.Name+" hits you for "+itoa(d)+".") + crlf)
+			w.partyCombatLog(target, style(dim, m.tmpl.Name+" hits "+target.Name+" for "+itoa(d)+".")+crlf)
 			if target.HP <= 0 {
 				if target.IsBot {
 					target.HP = 1 // AI runners soak hits for the crew but never flatline

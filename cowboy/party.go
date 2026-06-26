@@ -51,7 +51,11 @@ func (w *World) group(p *Player, arg string) {
 func (w *World) invite(p *Player, arg string) {
 	arg = strings.TrimSpace(arg)
 	if arg == "" {
-		p.send(style(dim, "Invite who? Use GROUP <runner>.") + crlf)
+		p.send(style(dim, "Invite who? Use GROUP <runner> (or GROUP ALL).") + crlf)
+		return
+	}
+	if strings.EqualFold(arg, "all") {
+		w.inviteAll(p)
 		return
 	}
 	if p.party != nil && p.party.Leader != p {
@@ -87,6 +91,44 @@ func (w *World) invite(p *Player, arg string) {
 	p.send(style(green, "Crew invite sent to "+target.Name+" — awaiting their ACCEPT.") + crlf)
 	target.send(style(neon, p.Name+" invites you to crew up — type ") + style(green, "ACCEPT") +
 		style(neon, " to join, or ") + style(dim, "DECLINE") + style(neon, ".") + crlf)
+}
+
+// inviteAll crews up everyone else in the room who isn't already in a party:
+// AI runners fall in immediately, human runners get a pending invite to ACCEPT.
+// Anyone already crewed (yours or another's) is skipped — so crewed bots can't
+// be poached this way either.
+func (w *World) inviteAll(p *Player) {
+	if p.party != nil && p.party.Leader != p {
+		lead := "the crew leader"
+		if p.party.Leader != nil {
+			lead = p.party.Leader.Name
+		}
+		p.send(style(dim, "Only "+lead+" can invite to this crew.") + crlf)
+		return
+	}
+	bots, pending := 0, 0
+	for _, t := range w.playersIn(p.RoomID, p) {
+		if t.party != nil || t.partyInvite != nil {
+			continue // already crewed or already has a pending invite
+		}
+		if t.IsBot {
+			w.botJoinCrew(p, t)
+			bots++
+			continue
+		}
+		t.partyInvite = p
+		t.send(style(neon, p.Name+" invites you to crew up — type ") + style(green, "ACCEPT") +
+			style(neon, " to join, or ") + style(dim, "DECLINE") + style(neon, ".") + crlf)
+		pending++
+	}
+	switch {
+	case bots == 0 && pending == 0:
+		p.send(style(dim, "No free runners here to crew up.") + crlf)
+	case pending == 0:
+		p.send(style(green, itoa(bots)+" runner(s) fall in with your crew.") + crlf)
+	default:
+		p.send(style(green, itoa(bots)+" fell in; invited "+itoa(pending)+" runner(s) — awaiting their ACCEPT.") + crlf)
+	}
 }
 
 // acceptInvite joins the crew of whoever invited p (the consent step).

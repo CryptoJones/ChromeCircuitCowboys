@@ -211,10 +211,20 @@ func (w *World) install(p *Player, arg string) {
 		p.send(style(dim, "You need a Emergency Medic to wire in cyberware. (try the Night Market)") + crlf)
 		return
 	}
-	name := strings.ToLower(strings.TrimSpace(arg))
-	if name == "" {
-		p.send(style(dim, "Install what? (salvaged cyberware sits in your INVENTORY)") + crlf)
+	fields := strings.Fields(strings.TrimSpace(arg))
+	if len(fields) == 0 {
+		p.send(style(dim, "Install what? (salvaged cyberware sits in your INVENTORY) — INSTALL <item|#> [qty]") + crlf)
 		return
+	}
+	name := resolveInvItem(p, fields[0]) // a bare number selects the Nth INVENTORY item
+	qty := 1
+	if len(fields) >= 2 {
+		q, err := strconv.Atoi(fields[1])
+		if err != nil || q < 1 {
+			p.send(style(dim, "Quantity must be a positive number. (INSTALL <item|#> [qty])") + crlf)
+			return
+		}
+		qty = q
 	}
 	if p.Inv[name] <= 0 {
 		p.send(style(dim, "You're not carrying "+name+" to install.") + crlf)
@@ -226,28 +236,41 @@ func (w *World) install(p *Player, arg string) {
 		return
 	}
 	if x.isImplant() {
-		p.Body += x.body
-		p.Reflexes += x.refl
-		p.Intelligence += x.intel
-		if x.body > 0 { // Body raises max HP — heal the new headroom
-			old := p.MaxHP
-			p.MaxHP = maxHPFor(p)
-			p.HP += p.MaxHP - old
+		n := qty
+		if n > p.Inv[name] {
+			n = p.Inv[name] // can't install more than you carry
 		}
-		w.consumeInv(p, name)
+		for i := 0; i < n; i++ {
+			p.Body += x.body
+			p.Reflexes += x.refl
+			p.Intelligence += x.intel
+			if x.body > 0 { // Body raises max HP — heal the new headroom
+				old := p.MaxHP
+				p.MaxHP = maxHPFor(p)
+				p.HP += p.MaxHP - old
+			}
+			w.consumeInv(p, name)
+		}
 		var parts []string
 		if x.body > 0 {
-			parts = append(parts, "Body +"+itoa(x.body))
+			parts = append(parts, "Body +"+itoa(x.body*n))
 		}
 		if x.refl > 0 {
-			parts = append(parts, "Reflexes +"+itoa(x.refl))
+			parts = append(parts, "Reflexes +"+itoa(x.refl*n))
 		}
 		if x.intel > 0 {
-			parts = append(parts, "Intelligence +"+itoa(x.intel))
+			parts = append(parts, "Intelligence +"+itoa(x.intel*n))
 		}
 		w.save(p)
-		p.send(style(green, "The Emergency Medic wires in the "+name+". "+strings.Join(parts, ", ")+".") + crlf)
+		label := name
+		if n > 1 {
+			label = itoa(n) + "x " + name
+		}
+		p.send(style(green, "The Emergency Medic wires in the "+label+". "+strings.Join(parts, ", ")+".") + crlf)
 		return
+	}
+	if qty > 1 { // a weapon/deck is a single slot — quantity doesn't apply
+		p.send(style(dim, "You can only wear one "+name+" — installing a single unit.") + crlf)
 	}
 	if x.bonus > 0 {
 		if x.bonus <= p.WeaponBonus {
