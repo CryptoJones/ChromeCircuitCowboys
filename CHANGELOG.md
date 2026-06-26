@@ -11,6 +11,9 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **Data terminals scattered across the surface** — ~1 in 4 surface rooms now
+  has a terminal (seeded placement, not a tidy pattern), on top of vendors/
+  medics/the Data Port. (#34)
 - **`LOOK <item>` examines an item** — name, flavor, mechanical effect, and
   market value — instead of always describing the room. (#53)
 - **`DROP` / `GET` floor items** — drop loot on the room floor (incl. `DROP ALL`)
