@@ -330,6 +330,11 @@ func (w *World) killMob(p *Player, m *Mob) {
 	// what lets the area respawn the mob.
 	xp := w.vary(m.tmpl.XP)
 	scrip := w.vary(m.tmpl.Eddies)
+	if pct := w.rewardPct(p); pct > 100 { // party / clan reward bonus (#44)
+		xp = xp * pct / 100
+		scrip = scrip * pct / 100
+		p.send(style(neon, "(crew bonus: rewards ×"+itoa(pct)+"%)") + crlf)
+	}
 	ice := m.tmpl.ICE
 	box := m.tmpl.Container
 	mech := m.tmpl.Mechanical

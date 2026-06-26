@@ -11,6 +11,9 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **Clans + crew reward bonuses** — `CLAN create/join/leave/list`. Killing as a
+  party of 2+ in a room grants a +15%% reward bonus; if 2+ crewmates share a
+  clan, that's multiplied by 1.8 (×2.07 total). Clan persists per character. (#44)
 - **`HACK` mini-game at terminals** — crack a hidden access code (high/low,
   7 tries) at any data terminal for a scrip + XP payout; a blown run costs a
   little RAM. (#33)

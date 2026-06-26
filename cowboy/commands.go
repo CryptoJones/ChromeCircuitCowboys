@@ -169,6 +169,8 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.leaveParty(p)
 	case "gsay", "crewchat", "party":
 		w.groupChat(p, arg)
+	case "clan", "clans":
+		w.clan(p, arg)
 	case "leaderboard", "top", "rankings":
 		w.leaderboard(p)
 	case "help", "?", "commands":
@@ -826,6 +828,7 @@ func helpText() string {
 		"  programs / run <name> — netrun demons (scalpel/hammer/leech/mirror/medic)\r\n" +
 		"  invite <runner> — invite to your crew (leader only); they ACCEPT/DECLINE\r\n" +
 		"  group / crew     — show your crew (shared XP in-room); gsay <msg> (or ;<msg>); leave\r\n" +
+		"  clan             — clan create/join/leave/list (clanmates partying earn bonus rewards)\r\n" +
 		"  leaderboard     — top runners by level\r\n" +
 		"  quit            — jack out\r\n" +
 		style(dim, "  In the Net, ATTACK breaches ICE using Intelligence and spends RAM\r\n"+
