@@ -14,6 +14,7 @@ Ideas and tasks not yet scheduled.
 - [ ] `OPEN` command for supply/data caches instead of attacking them ([#16](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/16))
 - [ ] `ACCEPT` multiple quests — `accept 1 2 3 4` and `accept all` ([#17](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/17))
 - [ ] Completed quests can't be re-accepted — except the low-level RP ring rumors ([#18](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/18))
+- [ ] Fitness center on the outer ring (Sprawlbelt) — non-lethal PvP sparring, no death or loot/cyberware loss ([#19](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/19))
 - [x] Loot crates & net mobs shouldn't leave a "corpse" — they have no bodies; reword the death/loot text for them ([#5](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/5)) — _shipped in v2.1.0: caches crack open, ICE shatters into shards_
 - [x] 16-bit map feature — render a CP437/ANSI map showing how to exit the "level" or proceed to the next harder area ([#6](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/6)) — _`MAP`/`M`: labelled exits + PROCEED/WAY-OUT arrows, works in Undercity, Net, and surface_
 - [x] Quests redeemable at the giver, not just at brokers ([#7](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/7)) — _claim now pays out at the fixer/ring-giver room or a broker_
