@@ -380,15 +380,20 @@ func ramFor(b int) string {
 func waresForBand(b int) []ware {
 	switch {
 	case b <= 2:
-		return pickWares("stimpak", "ram-chip", "ice-breaker", "cyberdeck")
+		return pickWares("stimpak", "ram-chip", "ice-breaker", "cyberdeck",
+			"subdermal-plating", "reflex-booster", "neural-coprocessor")
 	case b <= 4:
-		return pickWares("trauma-kit", "ram-chip", "mono-katana", "cyberdeck")
+		return pickWares("trauma-kit", "ram-chip", "mono-katana", "cyberdeck",
+			"titanium-weave", "kerenzikov", "cortex-bridge")
 	case b <= 6:
-		return pickWares("trauma-kit", "ram-bank", "war-axe", "quantum-deck")
+		return pickWares("trauma-kit", "ram-bank", "war-axe", "quantum-deck",
+			"myomer-bundle", "synaptic-amp", "mnemonic-array")
 	case b <= 8:
-		return pickWares("mega-stim", "ram-bank", "rail-blade", "quantum-deck")
+		return pickWares("mega-stim", "ram-bank", "rail-blade", "quantum-deck",
+			"juggernaut-frame", "sandevistan", "quantum-cortex")
 	default:
-		return pickWares("mega-stim", "ram-bank", "monowire", "neural-deck")
+		return pickWares("mega-stim", "ram-bank", "monowire", "neural-deck",
+			"goliath-chassis", "hyper-reflex", "ascendant-mind")
 	}
 }
 
