@@ -5,6 +5,20 @@ import (
 	"strings"
 )
 
+// classBlocked returns a player-facing reason if this ware is restricted to a
+// class the player isn't, or "" if they may buy/use it. The reason names the
+// requirement (e.g. "This is Hacker gear — your Enforcer can't use it.").
+func classBlocked(p *Player, x ware) string {
+	if x.forClass == "" || strings.EqualFold(x.forClass, p.Class) {
+		return ""
+	}
+	mine := p.Class
+	if mine == "" {
+		mine = "build"
+	}
+	return "This is " + strings.Title(x.forClass) + " gear — your " + strings.Title(mine) + " can't use it."
+}
+
 func (w *World) atVendor(p *Player) bool {
 	r := w.room(p.RoomID)
 	return r != nil && r.Vendor
@@ -66,6 +80,11 @@ func (w *World) buy(p *Player, arg string) {
 	}
 	if !ok {
 		p.send(style(dim, "No such item. Type LIST.") + crlf)
+		return
+	}
+	if reason := classBlocked(p, x); reason != "" {
+		// Don't let them waste scrip on gear they can't use.
+		p.send(style(dim, reason+" The vendor won't sell it to you.") + crlf)
 		return
 	}
 	qty := 1
@@ -261,8 +280,21 @@ func (w *World) use(p *Player, arg string) {
 		return
 	}
 	x, ok := findWare(name)
-	if !ok || (x.heal <= 0 && x.ram <= 0) {
-		p.send(style(dim, "You can't use that.") + crlf)
+	if !ok {
+		p.send(style(dim, "That's not something you can use.") + crlf)
+		return
+	}
+	if reason := classBlocked(p, x); reason != "" {
+		p.send(style(dim, reason) + crlf)
+		return
+	}
+	if x.heal <= 0 && x.ram <= 0 {
+		// Not a consumable — explain WHY, don't just refuse.
+		if x.isImplant() || x.bonus > 0 || x.deck > 0 {
+			p.send(style(dim, "That's cyberware — INSTALL it at a Emergency Medic, don't USE it.") + crlf)
+		} else {
+			p.send(style(dim, "The "+name+" does nothing on its own — it's not a consumable.") + crlf)
+		}
 		return
 	}
 	// Don't waste a single-use consumable when it would have no effect.

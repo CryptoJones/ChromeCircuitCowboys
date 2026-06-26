@@ -393,7 +393,7 @@ func waresForBand(b int) []ware {
 			"juggernaut-frame", "sandevistan", "quantum-cortex")
 	default:
 		return pickWares("mega-stim", "ram-bank", "monowire", "neural-deck",
-			"goliath-chassis", "hyper-reflex", "ascendant-mind")
+			"goliath-chassis", "hyper-reflex", "ascendant-mind", "berserker-core")
 	}
 }
 
