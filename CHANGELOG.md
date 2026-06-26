@@ -22,6 +22,8 @@ incrementally; see the issue links.)
 - **Stat-implant cyberware.** Each level band's vendors now stock three implants
   (Body / Reflexes / Intelligence), so every class can buy a grind aid and
   `INSTALL` it at a medic for a permanent stat boost. (#15)
+- **Fresh-sleeve adrenaline.** Re-sleeving after a flatline now wakes you with a
+  +15% HP buffer (overheal above max) that bleeds off as you take damage. (#26)
 
 ### Changed
 - **Quest board shows your state.** On a fixer's board, a bounty you've already
