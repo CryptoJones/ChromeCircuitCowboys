@@ -4,6 +4,7 @@ Ideas and tasks not yet scheduled.
 
 - [ ] Secret (HELP-hidden) command to display the current room's ID ([#28](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/28))
 - [ ] Rename the `back_alley` room's display name "Back Alley" → "Underground Entrance" ([#29](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/29))
+- [ ] Character sheet: spell out "AC" as "Armor Class" ([#30](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/30))
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
 - [x] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8)) — _shipped v2.2.0: machines leave wreckage, never a corpse_
