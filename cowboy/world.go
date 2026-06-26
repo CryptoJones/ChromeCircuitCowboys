@@ -144,7 +144,43 @@ func (w *World) Connect(name string, out func(string)) *Player {
 	}
 	w.enter(p)
 	w.deliverMail(p) // hand over any messages that arrived while they were away
+	w.unsafeLogoutPenalty(p)
 	return p
+}
+
+// unsafeLogoutPenalty docks a returning runner who logged out somewhere unsafe:
+// they got jumped while offline. Costs 5% of max HP (never below 1) with a flavor
+// line. Logging out in a Safe room is free.
+func (w *World) unsafeLogoutPenalty(p *Player) {
+	if r := w.room(p.RoomID); r == nil || r.Safe {
+		return
+	}
+	dmg := p.MaxHP * 5 / 100
+	if dmg < 1 {
+		dmg = 1
+	}
+	if dmg >= p.HP {
+		dmg = p.HP - 1 // wake hurt, not dead
+	}
+	if dmg < 1 {
+		return
+	}
+	p.HP -= dmg
+	who := unsafeAttackers[w.roll(len(unsafeAttackers))]
+	verb := unsafeVerbs[w.roll(len(unsafeVerbs))]
+	if w.inNet(p) {
+		who = "a lurking ICE fragment"
+	}
+	p.send(style(red, "*** "+who+" "+verb+" while you were logged off here — "+itoa(dmg)+" damage. ***") + crlf)
+}
+
+var unsafeAttackers = []string{
+	"a street ganger", "a scrap-scavver", "a strung-out wirehead",
+	"a pickpocket", "a stray drone", "a back-alley cutthroat",
+}
+var unsafeVerbs = []string{
+	"shanked you", "rifled your pockets", "kicked you awake",
+	"jacked your ports", "worked you over", "lifted what they could",
 }
 
 // onlineByName returns a connected player by (case-insensitive) name, or nil.
