@@ -20,6 +20,10 @@ incrementally; see the issue links.)
 ### Changed
 
 ### Fixed
+- **MAP now always shows the way out.** The `▲ WAY OUT` arrow follows realm
+  boundaries toward the surface (zone-1 Undercity → street, the Net → the Data
+  Port → street), so even the first zone and Net rooms show how to get out, not
+  just how to go deeper. (#9)
 - **Machines leave wreckage, not a "corpse".** Drones, turrets, mechs and the
   like are now flagged mechanical — destroying/looting one reads as wreckage
   ("its frame sparks and goes dark", "you strip the wreck"), never a flatlined

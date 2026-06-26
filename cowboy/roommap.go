@@ -107,17 +107,66 @@ func (w *World) exitLabel(here, dest string) string {
 	return style(green, name) + tag + flags
 }
 
-// onwardStep finds the single move that starts you toward the next area: the
-// nearest room in this zone with an exit crossing into a harder zone (harder
-// true) or an easier one (harder false). It BFS-walks only rooms of the current
-// realm+zone (skipping dead-end caches), so the first step it returns is always
-// a real direction you can type now. ok is false when there's no such frontier
-// (e.g. the deepest zone has no "deeper", the surface has no "back").
+// areaDepth is how far a room is from the surface: 0 at street level (Night
+// City / the Data Port jack point), rising with each Undercity arc and each Net
+// zone. The way out is always toward a lower depth — crossing realm boundaries
+// (Net → Data Port → surface) when that's the route home.
+func areaDepth(id string) int {
+	_, zone := areaInfo(id) // realm is irrelevant to "how deep"; only the band is
+	return zone             // city/surface (incl. the Data Port) = 0
+}
+
+// onwardStep finds the single move that starts you toward the next area.
+//
+// harder=true → the next harder zone: BFS the current realm+zone for an exit
+// crossing UP the difficulty band, return the first step. ok=false in the
+// deepest zone.
+//
+// harder=false → the way OUT toward the surface: BFS toward any exit that
+// lowers areaDepth, following realm boundaries (zone-1 Undercity → street, the
+// Net → the Data Port → street). ok=false once you're already at the surface.
 func (w *World) onwardStep(start string, harder bool) (dir string, ok bool) {
-	sRealm, sZone := areaInfo(start)
 	type node struct{ id, first string }
 	seen := map[string]bool{start: true}
 	queue := []node{{start, ""}}
+
+	if !harder {
+		startDepth := areaDepth(start)
+		if startDepth == 0 {
+			return "", false // already at the surface
+		}
+		for len(queue) > 0 {
+			cur := queue[0]
+			queue = queue[1:]
+			r := w.room(cur.id)
+			if r == nil {
+				continue
+			}
+			for _, d := range mapDirs {
+				dest, has := r.Exits[d]
+				if !has {
+					continue
+				}
+				first := cur.first
+				if first == "" {
+					first = d
+				}
+				if areaDepth(dest) < startDepth {
+					return first, true // an exit toward the surface
+				}
+				if seen[dest] || strings.HasSuffix(dest, "_cache") {
+					continue
+				}
+				if areaDepth(dest) <= startDepth { // don't wander deeper while seeking the exit
+					seen[dest] = true
+					queue = append(queue, node{dest, first})
+				}
+			}
+		}
+		return "", false
+	}
+
+	sRealm, sZone := areaInfo(start)
 	for len(queue) > 0 {
 		cur := queue[0]
 		queue = queue[1:]
@@ -135,7 +184,7 @@ func (w *World) onwardStep(start string, harder bool) (dir string, ok bool) {
 				first = d
 			}
 			dRealm, dZone := areaInfo(dest)
-			if dRealm == sRealm && ((harder && dZone > sZone) || (!harder && dZone < sZone)) {
+			if dRealm == sRealm && dZone > sZone {
 				return first, true
 			}
 			if seen[dest] || strings.HasSuffix(dest, "_cache") {
