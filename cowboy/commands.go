@@ -69,7 +69,11 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 
 	switch cmd {
 	case "look", "l":
-		w.lookText(p)
+		if strings.TrimSpace(arg) != "" {
+			w.examine(p, arg)
+		} else {
+			w.lookText(p)
+		}
 	case "roomid", "whereami", "#id":
 		w.showRoomID(p) // hidden dev/SysOp command (not in HELP)
 	case "open":
@@ -565,6 +569,52 @@ func (w *World) goHome(p *Player) {
 	p.homing = recallTicks
 	p.send(style(neon, "You jack a recall protocol. Hold still (~10s) and you'll phase home to your Re-Clone Bay — a hit or a move breaks it.") + crlf)
 	w.broadcast(p.RoomID, p, style(dim, p.Name+" flickers — phasing out.")+crlf)
+}
+
+// examine gives a detailed look at an item — `LOOK <item>`. Resolves from the
+// catalog (so any known ware can be examined) and prints its flavor + mechanical
+// effects. (Richer authored lore is a follow-on, #54.)
+func (w *World) examine(p *Player, arg string) {
+	name := strings.ToLower(strings.TrimSpace(arg))
+	x, ok := findWare(name)
+	if !ok {
+		p.send(style(dim, "You don't see '"+arg+"' to examine. (try an item in your INVENTORY)") + crlf)
+		return
+	}
+	carried := ""
+	if p.Inv[name] > 0 {
+		carried = style(dim, "  (you carry "+itoa(p.Inv[name])+")")
+	}
+	p.send(crlf + style(neon, x.name) + carried + crlf)
+	p.send(style(green, "  "+x.desc) + crlf)
+	var effects []string
+	if x.heal > 0 {
+		effects = append(effects, "restores "+itoa(x.heal)+" HP")
+	}
+	if x.ram > 0 {
+		effects = append(effects, "restores "+itoa(x.ram)+" RAM")
+	}
+	if x.bonus > 0 {
+		effects = append(effects, "+"+itoa(x.bonus)+" attack (install at a medic)")
+	}
+	if x.deck > 0 {
+		effects = append(effects, "+"+itoa(x.deck)+" max RAM (install at a medic)")
+	}
+	if x.body > 0 {
+		effects = append(effects, "+"+itoa(x.body)+" Body implant")
+	}
+	if x.refl > 0 {
+		effects = append(effects, "+"+itoa(x.refl)+" Reflexes implant")
+	}
+	if x.intel > 0 {
+		effects = append(effects, "+"+itoa(x.intel)+" Intelligence implant")
+	}
+	if len(effects) > 0 {
+		p.send(style(gold, "  Effect: ") + strings.Join(effects, ", ") + crlf)
+	}
+	if x.price > 0 {
+		p.send(style(dim, "  Market value: €$"+itoa(x.price)+" (sells for ~€$"+itoa(x.price*sellBuyback/100)+")") + crlf)
+	}
 }
 
 // showRoomID prints the current room's internal ID (plus name + exits) — a
