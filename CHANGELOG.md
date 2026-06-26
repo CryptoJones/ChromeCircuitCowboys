@@ -15,6 +15,10 @@ incrementally; see the issue links.)
 ### Changed
 
 ### Fixed
+- **Machines leave wreckage, not a "corpse".** Drones, turrets, mechs and the
+  like are now flagged mechanical — destroying/looting one reads as wreckage
+  ("its frame sparks and goes dark", "you strip the wreck"), never a flatlined
+  body. (#8)
 
 ## [2.1.0] - 2026-06-25
 

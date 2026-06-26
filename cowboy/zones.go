@@ -308,20 +308,36 @@ func opposite(d string) string {
 	return d
 }
 
+// mechWords flags machine foes (drones, turrets, mechs, …) by name so a slain
+// one leaves "wreckage", not a flatlined body. They have no body.
+var mechWords = []string{"drone", "turret", "mech", "gunship", "combat-frame", "automaton", "servitor", "sentry-gun"}
+
+// isMechanical reports whether a mob name reads as a machine.
+func isMechanical(name string) bool {
+	n := strings.ToLower(name)
+	for _, w := range mechWords {
+		if strings.Contains(n, w) {
+			return true
+		}
+	}
+	return false
+}
+
 // mobFor builds a band-scaled hostile. Stats grow with the level band so each
 // arc keeps pace with the player's level.
 func mobFor(kind string, band int, id, name, home string) *MobTemplate {
+	mech := isMechanical(name)
 	switch kind {
 	case "b": // arc boss
 		return &MobTemplate{ID: id, Name: name, HP: 90 + band*55, Damage: 12 + band*5, AC: 7 + band,
-			XP: 250 + band*180, Eddies: 130 + band*110, Aggressive: true, Home: home,
+			XP: 250 + band*180, Eddies: 130 + band*110, Aggressive: true, Mechanical: mech, Home: home,
 			Drops: map[string]int{healFor(band): 2}}
 	case "e": // elite / mini-boss
 		return &MobTemplate{ID: id, Name: name, HP: 30 + band*22, Damage: 6 + band*3, AC: 4 + band,
-			XP: 70 + band*65, Eddies: 25 + band*28, Aggressive: true, Home: home}
+			XP: 70 + band*65, Eddies: 25 + band*28, Aggressive: true, Mechanical: mech, Home: home}
 	default: // common
 		return &MobTemplate{ID: id, Name: name, HP: 14 + band*11, Damage: 3 + band*2, AC: 2 + band,
-			XP: 20 + band*28, Eddies: 8 + band*11, Aggressive: true, Home: home}
+			XP: 20 + band*28, Eddies: 8 + band*11, Aggressive: true, Mechanical: mech, Home: home}
 	}
 }
 
