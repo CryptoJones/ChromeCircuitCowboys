@@ -68,6 +68,8 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.openContainer(p, arg)
 	case "talk", "ask", "speak":
 		w.talk(p, arg)
+	case "pay", "hire":
+		w.payJoytoy(p, arg)
 	case "map", "m":
 		w.showMap(p)
 	case "say", "'":
@@ -199,6 +201,9 @@ func (w *World) lookText(p *Player) {
 	}
 	if p.RoomID == startRoom {
 		p.send(style(dim, "The clone-booth tech is here — TALK for a quick orientation.") + crlf)
+	}
+	if jt, ok := joytoyRooms[p.RoomID]; ok {
+		p.send(style(dim, jt+" is working here — PAY for some company (€$"+itoa(joytoyFee)+").") + crlf)
 	}
 	// Exits.
 	var dirs []string

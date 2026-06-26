@@ -27,6 +27,9 @@ incrementally; see the issue links.)
   Mandarin, with a dim English gloss. (#22)
 - **Easter egg.** A laughing ROM construct hides in the Sprawlbelt — TALK to
   it for cynical hacker wisdom; it calls you "Boy". (#23)
+- **Red-light strip.** Joytoys along the Sprawlbelt (the Rolling Rose, the
+  Fortune Stall) — PAY for company: a fade-to-black hour that leaves you
+  fully restored (HP + RAM). (#27)
 - **Batch quest accept.** `ACCEPT 1 2 3` takes several bounties at once and
   `ACCEPT ALL` takes every eligible one; each pick is guarded independently. (#17)
 - **Character points.** Each level banks spendable character points (shown on
