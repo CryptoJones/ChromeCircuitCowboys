@@ -11,6 +11,8 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **MAP points back to your crew** when separated — a "TO YOUR CREW: go <DIR>"
+  pointer toward the nearest crewmate. (#52)
 - **Party follow** — when the crew leader moves, members in the room follow
   along (those mid-combat stay to finish the fight). (#42)
 - **`SELL` items for scrip** at vendors — offload unwanted gear for 50%%
