@@ -216,6 +216,9 @@ func (w *World) Disconnect(p *Player) {
 	}
 	p.pvpTarget = nil
 	p.partyInvite = nil
+	if p.trade != nil { // any open trade dies with the leaver
+		w.cancelTrade(p.trade, p.Name+" jacked out")
+	}
 	for _, other := range w.players { // anyone duelling the leaver disengages
 		if other.pvpTarget == p {
 			other.pvpTarget = nil

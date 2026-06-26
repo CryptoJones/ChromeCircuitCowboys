@@ -31,6 +31,7 @@ type Player struct {
 	pvpTarget    *Player        // current PvP target in the Net (nil = not duelling)
 	party        *Party         // co-op crew (nil = solo)
 	partyInvite  *Player        // pending crew invite from this leader (nil = none); consent before joining
+	trade        *tradeSession  // active face-to-face trade (nil = not trading)
 	shieldTicks  int            // remaining ticks of the mirror program's damage shield
 	shieldAmt    int            // flat damage reduction while shielded
 	homing       int            // ticks left on a recall-home cast (0 = not recalling)
