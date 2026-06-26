@@ -297,12 +297,13 @@ func (w *World) killMob(p *Player, m *Mob) {
 	scrip := w.vary(m.tmpl.Eddies)
 	ice := m.tmpl.ICE
 	box := m.tmpl.Container
+	mech := m.tmpl.Mechanical
 	loot := map[string]int{}
 	for k, v := range m.tmpl.Drops { // seeded item drops (loot caches, boss kit)
 		loot[k] = v
 	}
 	w.corpses = append(w.corpses, &Corpse{
-		Owner: m.tmpl.Name, RoomID: m.RoomID, Loot: loot, Scrip: scrip, mob: m, IsICE: ice, IsBox: box,
+		Owner: m.tmpl.Name, RoomID: m.RoomID, Loot: loot, Scrip: scrip, mob: m, IsICE: ice, IsBox: box, IsMech: mech,
 	})
 	p.send(style(hot, "*** "+m.tmpl.Name+" is destroyed! ***") + crlf)
 	drop := "Its body drops €$" + itoa(scrip) + " scrip - LOOT it."
@@ -311,6 +312,8 @@ func (w *World) killMob(p *Player, m *Mob) {
 		drop = "It cracks open, spilling €$" + itoa(scrip) + " scrip - LOOT it."
 	case ice:
 		drop = "It shatters into broken shards holding €$" + itoa(scrip) + " scrip - LOOT them."
+	case mech:
+		drop = "Its frame sparks and goes dark, scattering €$" + itoa(scrip) + " scrip - LOOT it."
 	}
 	p.send(style(gold, "You gain "+itoa(xp)+" XP. "+drop) + crlf)
 	w.broadcast(p.RoomID, p, style(dim, p.Name+" destroys "+m.tmpl.Name+".")+crlf)

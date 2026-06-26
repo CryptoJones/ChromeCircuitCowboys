@@ -199,6 +199,8 @@ func (w *World) lookText(p *Player) {
 			p.send(style(dim, "A cracked-open "+strings.TrimPrefix(c.Owner, "a sealed ")+" lies spilled here. (LOOT)") + crlf)
 		case c.IsICE:
 			p.send(style(dim, "Broken shards of "+c.Owner+" glitter here. (LOOT)") + crlf)
+		case c.IsMech:
+			p.send(style(dim, "The wreck of "+c.Owner+" lies here. (LOOT)") + crlf)
 		default:
 			p.send(style(dim, c.Owner+"'s flatlined body lies here. (LOOT)") + crlf)
 		}
@@ -417,7 +419,7 @@ func (w *World) loot(p *Player) {
 	// Classify what's lying here so the wording fits: an inert container (cache),
 	// a Net construct's shards, or an actual flatlined body. A body in the pile
 	// wins the phrasing (the most general, never-wrong noun).
-	box, ice, body := false, false, false
+	box, ice, mech, body := false, false, false, false
 	var cyber []string
 	for _, c := range cs {
 		switch {
@@ -425,6 +427,8 @@ func (w *World) loot(p *Player) {
 			box = true
 		case c.IsICE:
 			ice = true
+		case c.IsMech:
+			mech = true
 		default:
 			body = true
 		}
@@ -447,13 +451,17 @@ func (w *World) loot(p *Player) {
 		}
 	}
 	w.removeCorpsesIn(p.RoomID)
-	// A body in the pile wins the phrasing; otherwise shards (Net) or a cache.
-	useICE := !body && ice
-	useBox := !body && !ice && box
+	// A body in the pile wins the phrasing; otherwise a cache, a machine wreck,
+	// or Net shards.
+	useBox := !body && box
+	useMech := !body && !box && mech
+	useICE := !body && !box && !mech && ice
 	if total == 0 && scrip == 0 {
 		switch {
 		case useBox:
 			p.send(style(dim, "The cache is already cleaned out.") + crlf)
+		case useMech:
+			p.send(style(dim, "The wreck is already stripped — nothing but scrap.") + crlf)
 		case useICE:
 			p.send(style(dim, "The shards are inert — nothing to salvage.") + crlf)
 		default:
@@ -466,6 +474,8 @@ func (w *World) loot(p *Player) {
 		switch {
 		case useBox:
 			p.send(style(gold, "You scoop €$"+itoa(scrip)+" scrip from the cracked-open cache.") + crlf)
+		case useMech:
+			p.send(style(gold, "You pull €$"+itoa(scrip)+" scrip from the wreckage.") + crlf)
 		case useICE:
 			p.send(style(gold, "You salvage €$"+itoa(scrip)+" scrip from the broken shards.") + crlf)
 		default:
@@ -476,6 +486,8 @@ func (w *World) loot(p *Player) {
 		switch {
 		case useBox:
 			p.send(style(green, "You clear out the cache — its contents are now in your pack.") + crlf)
+		case useMech:
+			p.send(style(green, "You strip the wreck — its gear is now in your pack.") + crlf)
 		case useICE:
 			p.send(style(green, "You pick the shards clean — the salvage is now in your pack.") + crlf)
 		default:
@@ -489,6 +501,8 @@ func (w *World) loot(p *Player) {
 	switch {
 	case useBox:
 		w.broadcast(p.RoomID, p, style(dim, p.Name+" cracks open a cache.")+crlf)
+	case useMech:
+		w.broadcast(p.RoomID, p, style(dim, p.Name+" picks through a wreck.")+crlf)
 	case useICE:
 		w.broadcast(p.RoomID, p, style(dim, p.Name+" picks through the broken shards.")+crlf)
 	default:
