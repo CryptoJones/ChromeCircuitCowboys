@@ -52,6 +52,8 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 	switch cmd {
 	case "look", "l":
 		w.lookText(p)
+	case "open":
+		w.openContainer(p, arg)
 	case "map", "m":
 		w.showMap(p)
 	case "say", "'":
@@ -405,6 +407,28 @@ func (w *World) goHome(p *Player) {
 	w.broadcast(p.RoomID, p, style(dim, p.Name+" flickers — phasing out.")+crlf)
 }
 
+// openContainer breaks open a supply/data cache in the room — the intuitive
+// verb for an inert container (you don't "attack" a crate). It engages the
+// cache like a passive mob (Damage 0), so it cracks open and drops loot to LOOT.
+func (w *World) openContainer(p *Player, arg string) {
+	arg = strings.ToLower(strings.TrimSpace(arg))
+	var target *Mob
+	for _, m := range w.liveMobsIn(p.RoomID) {
+		if !m.tmpl.Container {
+			continue
+		}
+		if arg == "" || strings.Contains(strings.ToLower(m.tmpl.Name), arg) {
+			target = m
+			break
+		}
+	}
+	if target == nil {
+		p.send(style(dim, "There's nothing to open here. (Caches OPEN; everything else you ATTACK.)") + crlf)
+		return
+	}
+	w.engage(p, target.tmpl.Name)
+}
+
 // loot strips every flatlined body in the room into your pack. Items are
 // usable immediately; salvaged cyberware must be re-installed at a Emergency Medic.
 // Open recovery: anyone can loot any body (recover for a crewmate — or swipe it).
@@ -549,6 +573,7 @@ func helpText() string {
 		"  who             — who's jacked in\r\n" +
 		"  score (st)      — your character sheet\r\n" +
 		"  list / buy <x>  — vendor (at shops); use <item> to consume\r\n" +
+		"  open            — crack open a supply/data cache in the room\r\n" +
 		"  loot            — strip a flatlined body, ICE shards, or a cache of its gear\r\n" +
 		"  install <cyber> — Emergency Medic re-installs salvaged cyberware (at the Night Market)\r\n" +
 		"  give <item> <runner> — hand recovered gear back to a crewmate\r\n" +

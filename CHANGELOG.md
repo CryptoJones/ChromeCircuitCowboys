@@ -11,6 +11,8 @@ Backlog batch: QoL, content, and combat-flow improvements. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **`OPEN` command for caches.** Crack open a supply/data cache with `OPEN`
+  instead of attacking it — the intuitive verb for an inert container. (#16)
 
 ### Changed
 
