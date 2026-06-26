@@ -24,6 +24,9 @@ incrementally; see the issue links.)
   `INSTALL` it at a medic for a permanent stat boost. (#15)
 
 ### Changed
+- **Quest board shows your state.** On a fixer's board, a bounty you've already
+  accepted is greyed out (with progress), and one that's complete and ready to
+  turn in is flagged RED `[READY — turn in]`. (#10)
 
 ### Fixed
 - **MAP now always shows the way out.** The `▲ WAY OUT` arrow follows realm

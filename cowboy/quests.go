@@ -183,8 +183,21 @@ func (w *World) showQuests(p *Player) {
 			if p.Level < q.MinLevel {
 				lvl = style(red, "  [needs level "+itoa(q.MinLevel)+"]")
 			}
-			p.send("  " + style(gold, itoa(i+1)+")") + " " + style(green, q.Name) +
-				style(dim, " — "+q.Desc) + " " + style(gold, "(+"+itoa(q.XP)+"xp, €$"+itoa(q.Eddies)+")") + lvl + crlf)
+			// Colour by the player's state with this bounty: greyed if already
+			// accepted and in progress, RED when it's complete and ready to turn
+			// in here, normal (green) if not yet taken.
+			nameColor, tag := green, ""
+			if got, active := p.Quests[q.ID]; active {
+				if got >= q.Count {
+					nameColor = red
+					tag = style(red, "  [READY — turn in]")
+				} else {
+					nameColor = dim
+					tag = style(dim, "  [accepted "+itoa(got)+"/"+itoa(q.Count)+"]")
+				}
+			}
+			p.send("  " + style(gold, itoa(i+1)+")") + " " + style(nameColor, q.Name) +
+				style(dim, " — "+q.Desc) + " " + style(gold, "(+"+itoa(q.XP)+"xp, €$"+itoa(q.Eddies)+")") + lvl + tag + crlf)
 		}
 	}
 	if len(p.Quests) == 0 {
