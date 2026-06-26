@@ -23,6 +23,7 @@ Ideas and tasks not yet scheduled.
 - [ ] Container text: stop saying "You lunge at the container" — randomized container verbs (pry/crack/jimmy/…) ([#46](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/46))
 - [ ] Lighten the dark-grey (dim) text in the default color scheme ([#47](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/47))
 - [ ] Unsafe logout penalty: lose 5% HP + "X did Y while you were sleeping for Z damage" on return ([#48](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/48))
+- [ ] Block buying unusable items + always explain WHY something can't be used (e.g. "This is for solos.") ([#49](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/49))
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
 - [x] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8)) — _shipped v2.2.0: machines leave wreckage, never a corpse_
