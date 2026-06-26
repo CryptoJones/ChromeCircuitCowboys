@@ -23,7 +23,7 @@ Ideas and tasks not yet scheduled.
 - [ ] Container text: stop saying "You lunge at the container" — randomized container verbs (pry/crack/jimmy/…) ([#46](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/46))
 - [ ] Lighten the dark-grey (dim) text in the default color scheme ([#47](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/47))
 - [ ] Unsafe logout penalty: lose 5% HP + "X did Y while you were sleeping for Z damage" on return ([#48](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/48))
-- [ ] Block buying unusable items + always explain WHY something can't be used (e.g. "This is for solos.") ([#49](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/49))
+- [ ] Block BUYING unusable items (but allow looting + selling them) + always explain why USE fails ([#49](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/49))
 - [ ] Party loot drops include something for each class in the party ([#50](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/50))
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
