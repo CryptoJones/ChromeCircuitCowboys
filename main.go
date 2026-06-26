@@ -24,13 +24,13 @@ import (
 
 // version is this build's release version (compared against the configured
 // update feed, if any).
-const version = "2.5.0"
+const version = "2.5.1"
 
 func main() {
 	addr := flag.String("addr", "127.0.0.1:4000", "TCP listen address for BBS bridge")
 	dbPath := flag.String("db", "cowboy.db", "character database path (SQLite)")
 	tick := flag.Duration("tick", 2*time.Second, "combat/world tick interval")
-	bots := flag.Int("bots", 5, "number of AI runners that wander + chatter to keep the world lively (0 = none)")
+	bots := flag.Int("bots", 32, "number of AI runners that wander + chatter to keep the world lively (0 = none; capped at the roster size)")
 	updateURL := flag.String("update-url", os.Getenv("CCC_UPDATE_URL"),
 		"forge 'releases/latest' JSON endpoint to check for updates (GitHub/Codeberg/Forgejo shape); empty = no check")
 	showVer := flag.Bool("version", false, "print version and exit")

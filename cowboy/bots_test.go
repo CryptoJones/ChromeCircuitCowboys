@@ -47,6 +47,26 @@ func TestEnableBotsSeedsRunners(t *testing.T) {
 	}
 }
 
+func TestRosterSupportsThirtyTwo(t *testing.T) {
+	if len(botRoster) < 32 {
+		t.Fatalf("roster has %d handles; need >=32 so `-bots 32` seeds 32 distinct runners", len(botRoster))
+	}
+	// Names must be unique, or byName registration would collide and drop bots.
+	seen := map[string]bool{}
+	for _, p := range botRoster {
+		k := strings.ToLower(p.name)
+		if seen[k] {
+			t.Errorf("duplicate bot handle %q in roster", p.name)
+		}
+		seen[k] = true
+	}
+	w := NewWorld(NewMemStore())
+	w.EnableBots(32)
+	if got := len(botsIn(w)); got != 32 {
+		t.Errorf("EnableBots(32) seeded %d runners, want 32", got)
+	}
+}
+
 func TestBotsAreNeverSaved(t *testing.T) {
 	store := NewMemStore()
 	w := NewWorld(store)
