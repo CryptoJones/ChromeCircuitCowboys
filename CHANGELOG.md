@@ -33,6 +33,9 @@ incrementally; see the issue links.)
 - **Sparring gym.** The Iron Temple on the Sprawlbelt (north off the Stripped
   Lot) hosts non-lethal PvP: ATTACK another runner to spar — a downed sparrer is
   knocked out, keeps all their gear/scrip, and wakes at full HP. (#19)
+- **Data terminals.** At any vendor/medic room or the Data Port: `SEND <runner>
+  <msg>` to mail another player (delivered on their next login), `WIRE <runner>
+  <scrip>` to transfer credits (even to offline runners), and `MAIL` to read. (#24)
 - **Batch quest accept.** `ACCEPT 1 2 3` takes several bounties at once and
   `ACCEPT ALL` takes every eligible one; each pick is guarded independently. (#17)
 - **Character points.** Each level banks spendable character points (shown on

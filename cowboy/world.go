@@ -143,7 +143,18 @@ func (w *World) Connect(name string, out func(string)) *Player {
 		newCharacter(p)
 	}
 	w.enter(p)
+	w.deliverMail(p) // hand over any messages that arrived while they were away
 	return p
+}
+
+// onlineByName returns a connected player by (case-insensitive) name, or nil.
+func (w *World) onlineByName(name string) *Player {
+	for _, o := range w.players {
+		if strings.EqualFold(o.Name, name) {
+			return o
+		}
+	}
+	return nil
 }
 
 // CreateCharacter brings a brand-new player into the world using the loadout

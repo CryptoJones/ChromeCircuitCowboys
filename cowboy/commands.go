@@ -70,6 +70,12 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.talk(p, arg)
 	case "pay", "hire":
 		w.payJoytoy(p, arg)
+	case "send":
+		w.sendMail(p, arg)
+	case "wire", "transfer":
+		w.wireScrip(p, arg)
+	case "mail", "messages":
+		w.readMail(p)
 	case "map", "m":
 		w.showMap(p)
 	case "say", "'":
@@ -667,6 +673,7 @@ func helpText() string {
 		"  look (l)        — examine your location\r\n" +
 		"  map (m)         — local map: exits, and the way deeper or out\r\n" +
 		"  talk            — ask a local about this level (lore/backstory)\r\n" +
+		"  send / wire      — at a terminal: SEND <runner> <msg> / WIRE <runner> <scrip>; MAIL to read\r\n" +
 		"  spend <stat>    — spend character points to raise body/reflexes/intelligence\r\n" +
 		"  attack <foe> (a) — engage a hostile (alias kill/breach)\r\n" +
 		"  flee            — try to break a fight and bolt\r\n" +
