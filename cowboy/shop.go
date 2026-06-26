@@ -125,6 +125,57 @@ func (w *World) buy(p *Player, arg string) {
 	p.send(style(green, "Bought "+itoa(qty)+"x "+x.name+" for €$"+itoa(cost)+". You have "+itoa(p.Inv[x.name])+".") + crlf)
 }
 
+// sellBuyback is the fraction of an item's catalog price a vendor pays for it.
+const sellBuyback = 50 // percent
+
+// sell offloads unwanted items from the pack for scrip at a vendor (the opposite
+// of BUY). Pays a fraction of the catalog price; items with no price can't be
+// sold. Syntax: SELL <item> [qty].
+func (w *World) sell(p *Player, arg string) {
+	if !w.atVendor(p) {
+		p.send(style(dim, "There's no vendor here to sell to.") + crlf)
+		return
+	}
+	fields := strings.Fields(strings.ToLower(strings.TrimSpace(arg)))
+	if len(fields) == 0 {
+		p.send(style(dim, "Sell what? (SELL <item> [qty])") + crlf)
+		return
+	}
+	name := fields[0]
+	if p.Inv[name] <= 0 {
+		p.send(style(dim, "You're not carrying any "+name+".") + crlf)
+		return
+	}
+	qty := 1
+	if len(fields) >= 2 {
+		q, err := strconv.Atoi(fields[1])
+		if err != nil || q < 1 {
+			p.send(style(dim, "Quantity must be a positive number.") + crlf)
+			return
+		}
+		qty = q
+	}
+	if qty > p.Inv[name] {
+		qty = p.Inv[name]
+	}
+	x, ok := findWare(name)
+	if !ok || x.price <= 0 {
+		p.send(style(dim, "No one here will pay for "+name+".") + crlf)
+		return
+	}
+	unit := x.price * sellBuyback / 100
+	if unit < 1 {
+		unit = 1
+	}
+	total := unit * qty
+	p.Inv[name] -= qty
+	if p.Inv[name] <= 0 {
+		delete(p.Inv, name)
+	}
+	p.Eddies += total
+	p.send(style(green, "Sold "+itoa(qty)+"x "+name+" for €$"+itoa(total)+" ("+itoa(unit)+" each).") + crlf)
+}
+
 // consumeInv removes one of an item, deleting the key when it hits zero.
 func (w *World) consumeInv(p *Player, name string) {
 	p.Inv[name]--

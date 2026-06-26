@@ -11,6 +11,8 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **`SELL` items for scrip** at vendors — offload unwanted gear for 50%%
+  catalog buyback (`SELL <item> [qty]`). (#40)
 - **Quick party-chat shortcut `;`** — `;<msg>` goes straight to crew chat
   (same as GSAY), like `'`=say and `:`=emote. (#43)
 - **Hidden `roomid` command** (also `whereami`) prints the current room's

@@ -112,6 +112,8 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.list(p)
 	case "buy":
 		w.buy(p, arg)
+	case "sell":
+		w.sell(p, arg)
 	case "use":
 		w.use(p, arg)
 	case "loot", "lo", "salvage":
@@ -724,7 +726,7 @@ func helpText() string {
 		"  me / emote / :<action> — roleplay an action (\"Wintermute lights a cig\")\r\n" +
 		"  who             — who's jacked in\r\n" +
 		"  score (st)      — your character sheet\r\n" +
-		"  list / buy <x>  — vendor (at shops); use <item> to consume\r\n" +
+		"  list / buy <x>  — vendor (at shops); sell <item> [qty]; use <item> to consume\r\n" +
 		"  open            — crack open a supply/data cache in the room\r\n" +
 		"  loot (lo)       — strip a flatlined body, ICE shards, or a cache of its gear\r\n" +
 		"  install <cyber> — Emergency Medic re-installs salvaged cyberware (at the Night Market)\r\n" +
