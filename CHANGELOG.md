@@ -16,6 +16,8 @@ incrementally; see the issue links.)
 - **Character sheet spells out "Armor Class"** instead of the cryptic "AC". (#30)
 
 ### Changed
+- **Character points always shown on the sheet** (0 when none), with a bold
+  "You have character points to spend." call-out when you have some. (#31)
 - **Renamed the "Back Alley" room to "Underground Entrance"** (the descent into
   the Undercity). (#29)
 
