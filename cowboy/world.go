@@ -3,6 +3,7 @@ package cowboy
 import (
 	"math"
 	"math/rand"
+	"sort"
 	"strings"
 )
 
@@ -67,8 +68,42 @@ func NewWorld(store Persistence) *World {
 			w.spawn(t)
 		}
 	}
-	w.assignRingQuests() // scatter the RP ring "rumor" bounties across the ring givers
+	w.assignRingQuests()  // scatter the RP ring "rumor" bounties across the ring givers
+	w.scatterTerminals()  // sprinkle data terminals across ~1/4 of the surface
 	return w
+}
+
+// RoomIsTerminal reports whether a room has a data terminal (a flagged surface
+// room, a vendor, a medic, or the Data Port). Exposed for tooling/tests.
+func (w *World) RoomIsTerminal(id string) bool {
+	r := w.room(id)
+	return r != nil && (r.Term || r.Vendor || r.Medic)
+}
+
+// terminalSeed gives the scattered data terminals a stable-but-unpredictable
+// placement: the same set every run, not an obvious pattern.
+const terminalSeed = 0x0C0FFEE5
+
+// scatterTerminals flags roughly one in four surface rooms (city + rings) as a
+// data terminal (#34), on top of the vendors/medics/Data-Port that already are.
+// Seeded so the layout is consistent across runs but doesn't fall in a tidy line.
+func (w *World) scatterTerminals() {
+	var ids []string
+	for id, r := range w.rooms {
+		if realm, _ := areaInfo(id); realm != "city" {
+			continue // surface only — not the Undercity or the Net
+		}
+		if r.Term || r.Vendor || r.Medic {
+			continue // already a terminal
+		}
+		ids = append(ids, id)
+	}
+	sort.Strings(ids) // deterministic order before the seeded shuffle
+	rng := rand.New(rand.NewSource(terminalSeed))
+	rng.Shuffle(len(ids), func(i, j int) { ids[i], ids[j] = ids[j], ids[i] })
+	for i := 0; i < len(ids)/4; i++ {
+		w.rooms[ids[i]].Term = true
+	}
 }
 
 // maxRAM is a player's RAM ceiling — Intelligence-derived, plus any cyberdeck.
