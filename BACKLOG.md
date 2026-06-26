@@ -28,6 +28,7 @@ Ideas and tasks not yet scheduled.
 - [ ] `DROP` / `GET` items on the room floor (incl. `DROP ALL`) to share loot with party ([#51](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/51))
 - [ ] MAP shows the way back to your party when separated ([#52](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/52))
 - [ ] `LOOK <item>` — detailed, lore-filled item descriptions (examine) ([#53](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/53))
+- [ ] Generate lore-filled extended item descriptions via Violet Lotus ([#54](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/54)) — _do via plan mode_
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
 - [x] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8)) — _shipped v2.2.0: machines leave wreckage, never a corpse_
