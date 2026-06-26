@@ -16,6 +16,7 @@ Ideas and tasks not yet scheduled.
 - [ ] Completed quests can't be re-accepted — except the low-level RP ring rumors ([#18](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/18))
 - [ ] Fitness center on the outer ring (Sprawlbelt) — non-lethal PvP sparring, no death or loot/cyberware loss ([#19](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/19))
 - [ ] New-player NPC in the clone booth — TALK for a brief intro to commands, actions, etc. ([#20](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/20))
+- [ ] Spanish-speaking NPCs — greet in Spanish / "¡Viva la Ciudad de la Noche!" ([#21](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/21))
 - [x] Loot crates & net mobs shouldn't leave a "corpse" — they have no bodies; reword the death/loot text for them ([#5](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/5)) — _shipped in v2.1.0: caches crack open, ICE shatters into shards_
 - [x] 16-bit map feature — render a CP437/ANSI map showing how to exit the "level" or proceed to the next harder area ([#6](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/6)) — _`MAP`/`M`: labelled exits + PROCEED/WAY-OUT arrows, works in Undercity, Net, and surface_
 - [x] Quests redeemable at the giver, not just at brokers ([#7](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/7)) — _claim now pays out at the fixer/ring-giver room or a broker_
