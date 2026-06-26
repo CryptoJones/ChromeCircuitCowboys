@@ -66,6 +66,8 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.lookText(p)
 	case "open":
 		w.openContainer(p, arg)
+	case "talk", "ask", "speak":
+		w.talk(p, arg)
 	case "map", "m":
 		w.showMap(p)
 	case "say", "'":
@@ -191,6 +193,9 @@ func (w *World) lookText(p *Player) {
 	}
 	if len(w.questsHere(p)) > 0 {
 		p.send(style(gold, "Someone here is hiring — type QUESTS.") + crlf)
+	}
+	if loreKey(p.RoomID) != "" {
+		p.send(style(dim, "There's someone here to TALK to.") + crlf)
 	}
 	// Exits.
 	var dirs []string
@@ -653,6 +658,7 @@ func helpText() string {
 		"  in / out        — step into/out of your capsule pod from Neon Alley\r\n" +
 		"  look (l)        — examine your location\r\n" +
 		"  map (m)         — local map: exits, and the way deeper or out\r\n" +
+		"  talk            — ask a local about this level (lore/backstory)\r\n" +
 		"  spend <stat>    — spend character points to raise body/reflexes/intelligence\r\n" +
 		"  attack <foe> (a) — engage a hostile (alias kill/breach)\r\n" +
 		"  flee            — try to break a fight and bolt\r\n" +

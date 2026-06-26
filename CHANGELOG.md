@@ -16,6 +16,9 @@ incrementally; see the issue links.)
 - **Combat shortcuts.** `A` = attack, `LO` = loot (`L` still = look). (#14)
 - **Numbered inventory + quick-use.** `INVENTORY` is numbered; pressing a digit
   at the prompt instantly USEs that slot (no Enter — fast for combat). (#13)
+- **`TALK` to locals for lore.** Ask whoever's around (the hiring fixer, or a
+  passer-by) about the level you're on — every underground arc and Net zone has
+  its own backstory, surfaced in-game. (#12)
 - **Batch quest accept.** `ACCEPT 1 2 3` takes several bounties at once and
   `ACCEPT ALL` takes every eligible one; each pick is guarded independently. (#17)
 - **Character points.** Each level banks spendable character points (shown on
