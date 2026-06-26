@@ -19,6 +19,7 @@ type Player struct {
 	Reflexes     int // dodge / damage reduction
 	Intelligence int // (flavor + future deck mechanics)
 	StatPoints   int // unspent character points (earned on level-up) — SPEND to raise a stat
+	Done         map[string]int // completed one-time bounty ids (ring rumors are exempt/repeatable)
 	WeaponBonus  int // from a purchased weapon (e.g. ICE-breaker)
 	WeaponName   string
 	RAM          int            // netrun resource: powers breaches in the Net; regenerates out of combat
@@ -123,6 +124,7 @@ type SavedPlayer struct {
 	Inv                          map[string]int
 	Stash                        map[string]int
 	Quests                       map[string]int
+	Done                         map[string]int
 }
 
 // Persistence stores character progress between sessions. The server backs it

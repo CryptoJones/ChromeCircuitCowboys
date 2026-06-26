@@ -173,7 +173,7 @@ func (w *World) CreateCharacter(name string, spec CharSpec, out func(string)) *P
 
 func (w *World) newPlayer(name string, out func(string)) *Player {
 	w.nextID++
-	return &Player{ID: w.nextID, Name: name, Inv: map[string]int{}, Stash: map[string]int{}, Quests: map[string]int{}, out: out}
+	return &Player{ID: w.nextID, Name: name, Inv: map[string]int{}, Stash: map[string]int{}, Quests: map[string]int{}, Done: map[string]int{}, out: out}
 }
 
 // enter registers a fully-built player in the world and greets them.
@@ -236,7 +236,7 @@ func (w *World) save(p *Player) {
 		HP: p.HP, MaxHP: p.MaxHP, Body: p.Body, Reflexes: p.Reflexes,
 		Intelligence: p.Intelligence, StatPoints: p.StatPoints, WeaponBonus: p.WeaponBonus,
 		WeaponName: p.WeaponName, RAM: p.RAM, DeckBonus: p.DeckBonus,
-		Room: p.RoomID, Inv: p.Inv, Stash: p.Stash, Quests: p.Quests,
+		Room: p.RoomID, Inv: p.Inv, Stash: p.Stash, Quests: p.Quests, Done: p.Done,
 	})
 }
 
@@ -271,6 +271,12 @@ func applySave(p *Player, sp *SavedPlayer) {
 	}
 	if sp.Quests != nil {
 		p.Quests = copyIntMap(sp.Quests)
+	}
+	if sp.Done != nil {
+		p.Done = copyIntMap(sp.Done)
+	}
+	if p.Done == nil {
+		p.Done = map[string]int{}
 	}
 	if p.MaxHP <= 0 {
 		p.MaxHP = maxHPFor(p)

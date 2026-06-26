@@ -264,6 +264,11 @@ func (w *World) accept(p *Player, arg string) {
 			p.send(style(dim, "Already on "+q.Name+".") + crlf)
 			continue
 		}
+		// One-time bounties can't be repeated; the RP-ring rumors are exempt.
+		if q.Pool != "ring" && p.Done[q.ID] > 0 {
+			p.send(style(dim, q.Name+": you've already done that job.") + crlf)
+			continue
+		}
 		p.Quests[q.ID] = 0
 		accepted++
 		p.send(style(green, "Bounty accepted: ") + q.Name + style(dim, " — "+q.Desc) + crlf)
@@ -292,6 +297,14 @@ func (w *World) claim(p *Player) {
 		p.XP += q.XP
 		p.Eddies += q.Eddies
 		claimed++
+		// Story/street bounties are one-time; mark them done so they can't be
+		// re-accepted. The RP-ring rumors stay repeatable.
+		if q.Pool != "ring" {
+			if p.Done == nil {
+				p.Done = map[string]int{}
+			}
+			p.Done[q.ID] = 1
+		}
 		p.send(style(gold, "*** Bounty paid: "+q.Name+" — +"+itoa(q.XP)+"xp, €$"+itoa(q.Eddies)+" ***") + crlf)
 	}
 	if claimed == 0 {
