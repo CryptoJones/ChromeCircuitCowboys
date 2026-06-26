@@ -21,7 +21,7 @@ func buildRooms() map[string]*Room {
 		{ID: "the_sprawl", Name: "The Strip",
 			Desc:  "Endless arcologies stacked into the smog. Crowds churn between street\r\nstalls. A black alley opens north; corporate spires gleam east; the Night\r\nMarket is south.",
 			Exits: map[string]string{"west": "neon_alley", "north": "back_alley", "east": "corpo_plaza", "south": "market"}},
-		{ID: "back_alley", Name: "Back Alley",
+		{ID: "back_alley", Name: "Underground Entrance",
 			Desc:  "A dead-end choked with dumpsters and busted drones. Gangers tag the walls\r\nin UV paint and don't like tourists.",
 			Exits: map[string]string{"south": "the_sprawl"}},
 		{ID: "market", Name: "Night Market", Vendor: true, Medic: true,
