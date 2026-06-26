@@ -32,10 +32,16 @@ func TestGenLevelDrawio(t *testing.T) {
 		netByHome[m.Home] = m
 	}
 
+	ringByID := map[string]*Room{}
+	for _, r := range buildRingRooms() {
+		ringByID[r.ID] = r
+	}
+
 	// Always build (compile + smoke), only persist under the env gate.
 	ug := buildUndergroundDrawio(ugByID, ugByHome)
 	net := buildNetDrawio(netByID, netByHome)
-	for name, xml := range map[string]string{"underground": ug, "net": net} {
+	rings := buildRingDrawio(ringByID)
+	for name, xml := range map[string]string{"underground": ug, "net": net, "rings": rings} {
 		if !strings.Contains(xml, "<mxfile") || !strings.Contains(xml, "</mxfile>") {
 			t.Fatalf("%s drawio is not a well-formed mxfile", name)
 		}
@@ -47,6 +53,7 @@ func TestGenLevelDrawio(t *testing.T) {
 	for path, xml := range map[string]string{
 		"../docs/underground-descent.drawio": ug,
 		"../docs/net-ascent.drawio":          net,
+		"../docs/rp-rings.drawio":            rings,
 	} {
 		if err := os.WriteFile(path, []byte(xml), 0644); err != nil {
 			t.Fatalf("write %s: %v", path, err)
@@ -289,6 +296,151 @@ func buildNetDrawio(byID map[string]*Room, byHome map[string]*MobTemplate) strin
 	}
 
 	dioText(&b, "legend", "Legend:  <font color='#27d4ff'>cyan</font>=area  <font color='#ff4f4f'>red</font>=boss-Core  <font color='#55ff99'>green</font>=safe/hub  ·  Shell/Breach/Core = the 3 layers  ·  amber edge = ascend to the next zone",
+		40, height-30, width-80, 22, 13, "#9fb0c4", false)
+	dioFooter(&b)
+	return b.String()
+}
+
+// --- RP transit rings --------------------------------------------------------
+
+// ringColors picks a box fill/stroke from a ring room's flags.
+func ringColors(r *Room) (fill, stroke string) {
+	switch {
+	case r.Spar:
+		return "#1a0f0f", dioRed
+	case r.Vendor && r.Medic:
+		return "#0c1810", dioGreen
+	case r.Vendor:
+		return dioInk, dioAmber
+	case r.Medic:
+		return dioInk, dioGreen
+	case r.Safe:
+		return dioInk, dioCyan
+	default:
+		return dioInk, dioGrey
+	}
+}
+
+// ringFlags renders a ring room's flags as a short tag string.
+func ringFlags(r *Room) string {
+	var f []string
+	if r.Spar {
+		f = append(f, "sparring gym")
+	}
+	if r.Safe {
+		f = append(f, "safe")
+	}
+	if r.Vendor {
+		f = append(f, "vendor")
+	}
+	if r.Medic {
+		f = append(f, "medic")
+	}
+	return strings.Join(f, " · ")
+}
+
+// buildRingDrawio renders the carved RP transit rings (Inner Circuit + the outer
+// Sprawlbelt, plus the Iron Temple sparring gym) straight from buildRingRooms,
+// so the ring map stays in sync with the world. Boxes note off-ring exits.
+func buildRingDrawio(byID map[string]*Room) string {
+	const (
+		x0    = 40
+		colW  = 178
+		boxW  = 152
+		boxH  = 60
+		rowIC = 122
+		rowSB = 248
+		rowGym = 374
+	)
+	var ic, sb []string
+	for i := 1; i <= 6; i++ {
+		ic = append(ic, "ic_"+itoa(i))
+	}
+	for i := 1; i <= 10; i++ {
+		sb = append(sb, "sb_"+itoa(i))
+	}
+	ringSet := map[string]bool{"sb_gym": true}
+	for _, id := range ic {
+		ringSet[id] = true
+	}
+	for _, id := range sb {
+		ringSet[id] = true
+	}
+
+	width := x0*2 + 10*colW
+	height := rowGym + boxH + 96
+
+	var b strings.Builder
+	dioHeader(&b, "C3 RP Transit Rings", "ccc-rings", width, height)
+	dioText(&b, "title", "CHROME CIRCUIT COWBOYS — RP TRANSIT RINGS", 40, 24, width-80, 34, 26, dioCyan, true)
+	dioText(&b, "subtitle", "Inner Circuit (express loop) + Sprawlbelt (outer beltway) off Neon Alley. Edges = exits, letters = direction; grey notes = off-ring exits.", 40, 60, width-80, 22, 13, dioGrey, false)
+	dioText(&b, "ich", "Inner Circuit", x0, rowIC-26, 360, 20, 15, dioCyan, true)
+	dioText(&b, "sbh", "Sprawlbelt", x0, rowSB-26, 360, 20, 15, dioCyan, true)
+
+	pos := map[string][2]int{}
+	for i, id := range ic {
+		pos[id] = [2]int{x0 + i*colW, rowIC}
+	}
+	for i, id := range sb {
+		pos[id] = [2]int{x0 + i*colW, rowSB}
+	}
+	pos["sb_gym"] = [2]int{pos["sb_9"][0], rowGym}
+
+	order := append(append([]string{}, ic...), sb...)
+	order = append(order, "sb_gym")
+	for _, id := range order {
+		r := byID[id]
+		if r == nil {
+			continue
+		}
+		p := pos[id]
+		fill, stroke := ringColors(r)
+		name := r.Name
+		for _, pfx := range []string{"Inner Circuit :: ", "Sprawlbelt :: "} {
+			name = strings.TrimPrefix(name, pfx)
+		}
+		var ext []string
+		for _, d := range []string{"north", "south", "east", "west", "up", "down", "in", "out"} {
+			dest, ok := r.Exits[d]
+			if !ok || ringSet[dest] {
+				continue
+			}
+			letter := dirLetter[d]
+			if letter == "" {
+				letter = strings.ToUpper(d[:1])
+			}
+			ext = append(ext, letter+"→"+dest)
+		}
+		val := "<b>" + id + "</b> " + trunc(name, 18)
+		if f := ringFlags(r); f != "" {
+			val += "<br><font color='#9fb0c4'>" + f + "</font>"
+		}
+		if len(ext) > 0 {
+			val += "<br><font color='#5a6678'>" + strings.Join(ext, "  ") + "</font>"
+		}
+		dioBox(&b, id, val, p[0], p[1], boxW, boxH, fill, stroke)
+	}
+
+	seen := map[string]bool{}
+	for _, id := range order {
+		r := byID[id]
+		if r == nil {
+			continue
+		}
+		for _, d := range []string{"north", "south", "east", "west", "up", "down"} {
+			dest, ok := r.Exits[d]
+			if !ok || !ringSet[dest] {
+				continue
+			}
+			if seen[id+"|"+dest] || seen[dest+"|"+id] {
+				continue
+			}
+			seen[id+"|"+dest] = true
+			dioEdge(&b, "e_"+id+"_"+dest, id, dest, dirLetter[d], dioGrey, false)
+		}
+	}
+
+	dioText(&b, "legend", "Legend:  <font color='#27d4ff'>cyan</font>=safe  <font color='#ffb000'>amber</font>=vendor  <font color='#55ff99'>green</font>=medic  <font color='#ff4f4f'>red</font>=sparring gym  ·  N/S/E/W = exit dir  ·  grey = off-ring exit",
 		40, height-30, width-80, 22, 13, "#9fb0c4", false)
 	dioFooter(&b)
 	return b.String()
