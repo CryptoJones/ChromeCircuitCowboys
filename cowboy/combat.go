@@ -371,6 +371,13 @@ func (w *World) reClone(p *Player, fee int) {
 	w.dropCorpse(p)
 	w.passLeadershipOnDeath(p)
 	w.respawnPlayer(p, fee)
+	// Fresh-sleeve adrenaline: a new clone wakes up with a +15% health buffer
+	// (overheal above max) to take the sting off re-sleeving — it bleeds off as
+	// you take damage and never regenerates back above max.
+	if bonus := p.MaxHP * 15 / 100; bonus > 0 {
+		p.HP += bonus
+		p.send(style(gold, "Fresh-sleeve adrenaline: +"+itoa(bonus)+" HP ("+itoa(p.HP)+"/"+itoa(p.MaxHP)+") to shake off the re-sleeve.") + crlf)
+	}
 }
 
 // dropCorpse leaves the dead runner's old body where they fell, holding all
