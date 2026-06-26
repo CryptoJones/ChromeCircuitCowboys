@@ -56,7 +56,7 @@ func (w *World) drop(p *Player, arg string) {
 		w.broadcast(p.RoomID, p, style(dim, p.Name+" dumps a pile of gear on the floor.")+crlf)
 		return
 	}
-	name := fields[0]
+	name := resolveInvItem(p, fields[0]) // a bare number selects the Nth INVENTORY item
 	if p.Inv[name] <= 0 {
 		p.send(style(dim, "You're not carrying any "+name+".") + crlf)
 		return

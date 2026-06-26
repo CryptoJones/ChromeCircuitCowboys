@@ -413,6 +413,23 @@ func sortedInv(p *Player) []string {
 	return names
 }
 
+// resolveInvItem maps a typed item token to an inventory item name. A bare
+// number N selects the Nth entry of the numbered inventory (the same ordering
+// INVENTORY shows), so SELL 2 / LOOK 3 / GIVE 1 / DROP 1 / USE 2 all work off
+// the list — no need to type the full item name. Anything else is returned
+// lowercased and untouched. The result is NOT guaranteed to be in the pack;
+// callers still check p.Inv (an out-of-range number falls through as its digits,
+// which then simply won't be found, giving the normal "you don't have" message).
+func resolveInvItem(p *Player, token string) string {
+	token = strings.ToLower(strings.TrimSpace(token))
+	if n, err := strconv.Atoi(token); err == nil {
+		if items := sortedInv(p); n >= 1 && n <= len(items) {
+			return items[n-1]
+		}
+	}
+	return token
+}
+
 func (w *World) inventory(p *Player) {
 	p.send(style(neon, "-- Inventory ("+itoa(invCount(p))+"/"+itoa(carryCap(p))+") --") + crlf)
 	p.send(style(gold, "  €$ "+itoa(p.Eddies)+" scrip") + crlf)
@@ -424,7 +441,7 @@ func (w *World) inventory(p *Player) {
 	for i, name := range items {
 		p.send("  " + style(gold, itoa(i+1)+")") + " " + name + " x" + itoa(p.Inv[name]) + crlf)
 	}
-	p.send(style(dim, "  press a number to USE that item (no Enter), or USE <name>") + crlf)
+	p.send(style(dim, "  press a number to USE it, or use the number as a target: SELL 2 / LOOK 3 / GIVE 1 <runner> / DROP 1") + crlf)
 }
 
 // quickUse uses the Nth inventory item (as numbered by INVENTORY) — driven by a
@@ -585,7 +602,7 @@ func (w *World) goHome(p *Player) {
 // catalog (so any known ware can be examined) and prints its flavor + mechanical
 // effects. (Richer authored lore is a follow-on, #54.)
 func (w *World) examine(p *Player, arg string) {
-	name := strings.ToLower(strings.TrimSpace(arg))
+	name := resolveInvItem(p, arg) // LOOK 3 examines the 3rd INVENTORY item
 	x, ok := findWare(name)
 	if !ok {
 		p.send(style(dim, "You don't see '"+arg+"' to examine. (try an item in your INVENTORY)") + crlf)
@@ -787,7 +804,7 @@ func (w *World) give(p *Player, arg string) {
 		return
 	}
 	targetName := fields[len(fields)-1]
-	item := strings.ToLower(strings.Join(fields[:len(fields)-1], " "))
+	item := resolveInvItem(p, strings.Join(fields[:len(fields)-1], " ")) // GIVE 1 <runner> targets the Nth INVENTORY item
 	target := w.playerInRoomByName(p.RoomID, targetName, p)
 	if target == nil {
 		p.send(style(dim, "No runner named '"+targetName+"' is here.") + crlf)
