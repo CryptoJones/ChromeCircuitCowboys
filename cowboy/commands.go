@@ -52,6 +52,8 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 	switch cmd {
 	case "look", "l":
 		w.lookText(p)
+	case "map", "m":
+		w.showMap(p)
 	case "say", "'":
 		w.say(p, arg)
 	case "emote", "me", "em":
@@ -525,6 +527,7 @@ func helpText() string {
 		"  home / rest    — RECALL to your Re-Clone Bay (~10s cast; a hit or a move breaks it)\r\n" +
 		"  in / out        — step into/out of your capsule pod from Neon Alley\r\n" +
 		"  look (l)        — examine your location\r\n" +
+		"  map (m)         — local map: exits, and the way deeper or out\r\n" +
 		"  attack <foe>    — engage a hostile (alias kill/breach)\r\n" +
 		"  flee            — try to break a fight and bolt\r\n" +
 		"  say <msg>       — talk to others in the room\r\n" +
