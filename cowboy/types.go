@@ -11,18 +11,19 @@ type Player struct {
 	ID           int
 	Name         string
 	Class        string
+	IsBot        bool   // an AI "runner" that wanders + chatters to keep the world lively (#37); never saved or attacked
 	Clan         string // clan tag (""=none); clanmates partying together earn bonus rewards
 	Theme        string // color scheme: ""=default, "cbdark"/"cblight"=colorblind-friendly
 	RoomID       string
 	HP, MaxHP    int
 	Level, XP    int
 	Eddies       int
-	Body         int // melee/breach damage
-	Reflexes     int // dodge / damage reduction
-	Intelligence int // (flavor + future deck mechanics)
-	StatPoints   int // unspent character points (earned on level-up) — SPEND to raise a stat
+	Body         int            // melee/breach damage
+	Reflexes     int            // dodge / damage reduction
+	Intelligence int            // (flavor + future deck mechanics)
+	StatPoints   int            // unspent character points (earned on level-up) — SPEND to raise a stat
 	Done         map[string]int // completed one-time bounty ids (ring rumors are exempt/repeatable)
-	WeaponBonus  int // from a purchased weapon (e.g. ICE-breaker)
+	WeaponBonus  int            // from a purchased weapon (e.g. ICE-breaker)
 	WeaponName   string
 	RAM          int            // netrun resource: powers breaches in the Net; regenerates out of combat
 	DeckBonus    int            // bonus MaxRAM from a purchased cyberdeck (permanent)

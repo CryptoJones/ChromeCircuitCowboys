@@ -160,7 +160,7 @@ func (w *World) sell(p *Player, arg string) {
 		p.send(style(dim, "Sell what? (SELL <item> [qty])") + crlf)
 		return
 	}
-	name := fields[0]
+	name := resolveInvItem(p, fields[0]) // a bare number selects the Nth INVENTORY item
 	if p.Inv[name] <= 0 {
 		p.send(style(dim, "You're not carrying any "+name+".") + crlf)
 		return
@@ -270,11 +270,11 @@ func (w *World) install(p *Player, arg string) {
 }
 
 func (w *World) use(p *Player, arg string) {
-	name := strings.ToLower(strings.TrimSpace(arg))
-	if name == "" {
+	if strings.TrimSpace(arg) == "" {
 		p.send(style(dim, "Use what? (see INVENTORY)") + crlf)
 		return
 	}
+	name := resolveInvItem(p, arg) // USE 2 selects the 2nd INVENTORY item
 	if p.Inv[name] <= 0 {
 		p.send(style(dim, "You don't have a "+name+".") + crlf)
 		return

@@ -156,9 +156,97 @@ var roomNPC = map[string]npcVoice{
 	}},
 }
 
+// talkReplies are the conversational comebacks when a runner actually says
+// something (TALK <words>), grouped by the intent classifyTalk reads out of the
+// input. Spoken by whoever's holding down the room. Add an intent key or a line
+// here to grow the small-talk — classifyTalk routes to it, no other wiring.
+var talkReplies = map[string][]string{
+	"greet": {
+		"Yeah, yeah. Eyes open, mouth shut — that's how you stay breathing down here.",
+		"Hey yourself, choom. You're either buying, selling, or in my way. Which is it?",
+		"A greeting. Quaint. Most folks this deep already drew steel.",
+	},
+	"bye": {
+		"Walk safe, cowboy. Or don't — the gutters aren't picky.",
+		"Later. Try to still be wearing that sleeve next time I see you.",
+		"Jack out clean. The ones who linger are the ones who flatline.",
+	},
+	"thanks": {
+		"Don't thank me. Thanks don't spend, and I've got rent on this corner.",
+		"Save it. Gratitude's just debt you haven't named yet.",
+		"Pfft. Buy something and we'll call it even.",
+	},
+	"insult": {
+		"Big words for a fresh clone. Vat-stink's still on you.",
+		"Keep flapping that jaw. ICE doesn't care how tough you talk.",
+		"You'll learn manners down here. The hard way, like everybody else.",
+	},
+	"ask": {
+		"Questions get you traced, choom. Answers get you killed. Pick your poison.",
+		"You want intel? TALK to me empty-handed and I'll tell you about this place. Otherwise, scrip talks.",
+		"I look like a public terminal to you? Ask the wall. It listens better.",
+	},
+	"smalltalk": {
+		"Sure, sure. Whatever you say, cowboy.",
+		"Talk all you like. Down here, words are the cheapest thing going.",
+		"Mm. Noted. Now move along before someone notices you standing still.",
+		"You're chatty for someone this far from daylight.",
+	},
+}
+
+// classifyTalk reads a rough intent out of what the runner said, so TALK can
+// pick an apt comeback. Keyword-matched and deliberately fuzzy — extend the
+// switch (or talkReplies) to teach it new moods.
+func classifyTalk(input string) string {
+	s := strings.ToLower(strings.Trim(strings.TrimSpace(input), `"'`))
+	has := func(words ...string) bool {
+		for _, t := range strings.Fields(s) {
+			t = strings.Trim(t, `.,!?;:"'`) // shed punctuation glued to the word
+			for _, word := range words {
+				if t == word {
+					return true
+				}
+			}
+		}
+		return false
+	}
+	switch {
+	case has("hi", "hey", "hello", "yo", "sup", "hola", "howdy", "greetings", "choom"):
+		return "greet"
+	case has("bye", "later", "cya", "goodbye", "farewell", "adios", "peace"):
+		return "bye"
+	case has("thanks", "thank", "thx", "gracias", "cheers", "appreciate"):
+		return "thanks"
+	case has("fuck", "shit", "idiot", "asshole", "hate", "suck", "sucks", "bitch", "scum", "trash"):
+		return "insult"
+	case strings.Contains(s, "?"), has("who", "what", "where", "when", "why", "how", "which"):
+		return "ask"
+	default:
+		return "smalltalk"
+	}
+}
+
+// talkRespond answers a runner who actually said something. The room's named
+// flavor NPC fronts the reply if there is one, otherwise the local fixer/passer-by.
+func (w *World) talkRespond(p *Player, arg string) {
+	speaker := w.talkSpeaker(p)
+	if npc, ok := roomNPC[p.RoomID]; ok && npc.speaker != "" {
+		speaker = npc.speaker
+	}
+	pool := talkReplies[classifyTalk(arg)]
+	line := pool[w.roll(len(pool))]
+	p.send(style(neon, speaker+": ") + style(green, line) + crlf)
+}
+
 // talk delivers a line of local backstory — or, in the Re-Clone Bay, the
-// new-player onboarding primer; or a named flavor NPC's patter.
+// new-player onboarding primer; or a named flavor NPC's patter. With an
+// argument (TALK <words>), the runner is actually saying something and gets a
+// reply routed by intent instead.
 func (w *World) talk(p *Player, arg string) {
+	if strings.TrimSpace(arg) != "" && p.RoomID != startRoom {
+		w.talkRespond(p, arg)
+		return
+	}
 	if p.RoomID == startRoom {
 		for _, line := range boothIntro {
 			p.send(style(green, line) + crlf)

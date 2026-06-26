@@ -30,6 +30,7 @@ func main() {
 	addr := flag.String("addr", "127.0.0.1:4000", "TCP listen address for BBS bridge")
 	dbPath := flag.String("db", "cowboy.db", "character database path (SQLite)")
 	tick := flag.Duration("tick", 2*time.Second, "combat/world tick interval")
+	bots := flag.Int("bots", 5, "number of AI runners that wander + chatter to keep the world lively (0 = none)")
 	updateURL := flag.String("update-url", os.Getenv("CCC_UPDATE_URL"),
 		"forge 'releases/latest' JSON endpoint to check for updates (GitHub/Codeberg/Forgejo shape); empty = no check")
 	showVer := flag.Bool("version", false, "print version and exit")
@@ -47,6 +48,7 @@ func main() {
 	defer store.Close()
 
 	world := cowboy.NewWorld(store)
+	world.EnableBots(*bots) // populate the surface with AI runners (#37)
 	events := make(chan event, 256)
 
 	// The single world goroutine: every mutation happens here.
