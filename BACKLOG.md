@@ -2,6 +2,8 @@
 
 Ideas and tasks not yet scheduled.
 
+- [ ] Secret (HELP-hidden) command to display the current room's ID ([#28](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/28))
+
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
 - [x] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8)) — _shipped v2.2.0: machines leave wreckage, never a corpse_
 - [x] MAP should show the way back to an easier area / the exit, not just deeper ([#9](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/9)) — _shipped v2.2.0: WAY OUT now resolves to the surface across realms_
