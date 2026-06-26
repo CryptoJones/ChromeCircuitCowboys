@@ -59,10 +59,14 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		return false
 	}
 
-	// A bare number is an inventory quick-use slot (the server emits it on a
-	// single digit keypress, no Enter — fast for combat).
+	// A bare number is a hack guess while a run is live, otherwise an inventory
+	// quick-use slot (the server emits it on a single digit keypress).
 	if n, err := strconv.Atoi(cmd); err == nil && arg == "" {
-		w.quickUse(p, n)
+		if p.hack != nil {
+			w.hackGuess(p, n)
+		} else {
+			w.quickUse(p, n)
+		}
 		w.sendPrompt(p)
 		return false
 	}
@@ -82,6 +86,8 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.talk(p, arg)
 	case "pay", "hire":
 		w.payJoytoy(p, arg)
+	case "hack":
+		w.startHack(p)
 	case "send":
 		w.sendMail(p, arg)
 	case "wire", "transfer":
@@ -798,6 +804,7 @@ func helpText() string {
 		"  look (l)        — examine your location\r\n" +
 		"  map (m)         — local map: exits, and the way deeper or out\r\n" +
 		"  talk            — ask a local about this level (lore/backstory)\r\n" +
+		"  hack            — at a terminal: crack the access code for scrip + XP\r\n" +
 		"  send / wire      — at a terminal: SEND <runner> <msg> / WIRE <runner> <scrip>; MAIL to read\r\n" +
 		"  trade <runner>   — face-to-face swap: OFFER <item>/<scrip>, CONFIRM, CANCEL\r\n" +
 		"  spend <stat>    — spend character points to raise body/reflexes/intelligence\r\n" +

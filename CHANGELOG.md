@@ -11,6 +11,9 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **`HACK` mini-game at terminals** — crack a hidden access code (high/low,
+  7 tries) at any data terminal for a scrip + XP payout; a blown run costs a
+  little RAM. (#33)
 - **Party loot for every class** — a crew kill now drops something usable for
   each player type present (RAM for Net classes, a heal for meat classes),
   scaled to level. Solo kills unchanged. (#50)
