@@ -17,7 +17,7 @@ const (
 	hot     = "\x1b[1;35m" // bright magenta — combat/alerts
 	gold    = "\x1b[1;33m" // yellow — currency/rewards
 	green   = "\x1b[1;32m" // green — prompts/success
-	dim     = "\x1b[0;90m" // grey — ambience
+	dim     = "\x1b[38;5;245m" // light grey — ambience (lightened from 90m for readability, #47)
 	red     = "\x1b[1;31m" // red — damage/danger
 )
 
