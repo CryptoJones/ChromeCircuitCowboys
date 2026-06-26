@@ -11,6 +11,8 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **Arc-climax bounties award a character point** — the 19 underground-boss /
+  Net-arc story quests now grant a spendable character point on claim. (#32)
 - **Data terminals scattered across the surface** — ~1 in 4 surface rooms now
   has a terminal (seeded placement, not a tidy pattern), on top of vendors/
   medics/the Data Port. (#34)
