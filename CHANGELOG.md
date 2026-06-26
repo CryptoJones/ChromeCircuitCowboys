@@ -36,6 +36,10 @@ incrementally; see the issue links.)
 - **Character sheet spells out "Armor Class"** instead of the cryptic "AC". (#30)
 
 ### Changed
+- **USE always explains why** instead of a bare "you can't use that" — cyberware
+  tells you to INSTALL it, class-restricted gear names the requirement; and
+  vendors won't sell you gear your class can't use (new `forClass` restriction,
+  e.g. Enforcer-only berserker-core). (#49)
 - **Character points always shown on the sheet** (0 when none), with a bold
   "You have character points to spend." call-out when you have some. (#31)
 - **Renamed the "Back Alley" room to "Underground Entrance"** (the descent into

@@ -96,10 +96,11 @@ type ware struct {
 	ram   int // ram-chip: RAM restored on use
 	bonus int // weapon: attack bonus granted on purchase (permanent)
 	deck  int // cyberdeck: MaxRAM bonus granted on purchase (permanent)
-	body  int // implant: permanent Body boost on install
-	refl  int // implant: permanent Reflexes boost on install
-	intel int // implant: permanent Intelligence boost on install
-	desc  string
+	body     int    // implant: permanent Body boost on install
+	refl     int    // implant: permanent Reflexes boost on install
+	intel    int    // implant: permanent Intelligence boost on install
+	forClass string // if set, only this class may BUY/USE it ("" = anyone)
+	desc     string
 }
 
 // isImplant reports whether a ware is a stat implant (installed at a medic for a
@@ -144,6 +145,7 @@ var shopWares = []ware{
 	{name: "sandevistan", price: 2000, refl: 5, desc: "sandevistan rig, +5 Reflexes (permanent)"},
 	{name: "quantum-cortex", price: 2000, intel: 5, desc: "quantum cortex, +5 Intelligence (permanent)"},
 
+	{name: "berserker-core", price: 5500, body: 8, forClass: "enforcer", desc: "Enforcer-only berserker core, +8 Body (permanent)"},
 	{name: "goliath-chassis", price: 4500, body: 6, desc: "goliath chassis, +6 Body (permanent)"},
 	{name: "hyper-reflex", price: 4500, refl: 6, desc: "hyper-reflex lattice, +6 Reflexes (permanent)"},
 	{name: "ascendant-mind", price: 4500, intel: 6, desc: "ascendant mind-core, +6 Intelligence (permanent)"},
