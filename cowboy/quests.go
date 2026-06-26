@@ -199,7 +199,7 @@ func (w *World) showQuests(p *Player) {
 		}
 		state := itoa(got) + "/" + itoa(q.Count)
 		if got >= q.Count {
-			state = style(gold, "READY — CLAIM at a broker")
+			state = style(gold, "READY — CLAIM at a broker or its giver")
 		}
 		p.send("  " + style(green, q.Name) + style(dim, " ["+q.Target+"] ") + state + crlf)
 	}
@@ -230,17 +230,20 @@ func (w *World) accept(p *Player, arg string) {
 	p.send(style(green, "Bounty accepted: ") + q.Name + style(dim, " — "+q.Desc) + crlf)
 }
 
-// claim turns in any completed bounties (at a broker) for rewards.
+// claim turns in any completed bounties for rewards. A bounty can be redeemed
+// at a broker (a vendor room) OR back with the quest-giver who offered it (the
+// fixer's room, or — for roving RP-ring rumors — wherever it was scattered this
+// session).
 func (w *World) claim(p *Player) {
-	if !w.atVendor(p) {
-		p.send(style(dim, "Return to a broker (a vendor room) to claim bounties.") + crlf)
-		return
-	}
+	atVendor := w.atVendor(p)
 	claimed := 0
 	for id, got := range p.Quests {
 		q, ok := questByID(id)
 		if !ok || got < q.Count {
 			continue
+		}
+		if !atVendor && !w.questOfferedHere(p, q) {
+			continue // not at a broker, and not at this bounty's giver
 		}
 		delete(p.Quests, id)
 		p.XP += q.XP
@@ -249,10 +252,25 @@ func (w *World) claim(p *Player) {
 		p.send(style(gold, "*** Bounty paid: "+q.Name+" — +"+itoa(q.XP)+"xp, €$"+itoa(q.Eddies)+" ***") + crlf)
 	}
 	if claimed == 0 {
-		p.send(style(dim, "No completed bounties to claim.") + crlf)
+		p.send(style(dim, "No completed bounties to claim here. Return to a broker or the bounty's giver.") + crlf)
 		return
 	}
 	w.checkLevelUp(p)
+}
+
+// questOfferedHere reports whether the player is standing with the quest-giver
+// who offers q — its fixed Giver room, or (for ring rumors) a ring-giver room
+// this quest was scattered to this session.
+func (w *World) questOfferedHere(p *Player, q Quest) bool {
+	if q.Giver != "" && p.RoomID == q.Giver {
+		return true
+	}
+	for _, idx := range w.ringOffer[p.RoomID] {
+		if quests[idx].ID == q.ID {
+			return true
+		}
+	}
+	return false
 }
 
 // creditQuestKill advances any active bounty whose target matches the slain mob.
@@ -264,7 +282,7 @@ func (w *World) creditQuestKill(p *Player, mobID string) {
 		}
 		p.Quests[id] = got + 1
 		if p.Quests[id] >= q.Count {
-			p.send(style(gold, "Bounty objective complete: "+q.Name+" — CLAIM at a broker.") + crlf)
+			p.send(style(gold, "Bounty objective complete: "+q.Name+" — CLAIM at a broker or its giver.") + crlf)
 		} else {
 			p.send(style(dim, "Bounty progress: "+q.Name+" "+itoa(p.Quests[id])+"/"+itoa(q.Count)) + crlf)
 		}

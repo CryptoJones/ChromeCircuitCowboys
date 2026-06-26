@@ -70,6 +70,36 @@ func TestCowboyQuestAcceptKillClaim(t *testing.T) {
 	}
 }
 
+// A completed bounty must be redeemable back with its quest-giver, not only at
+// a broker/vendor room.
+func TestCowboyClaimAtGiver(t *testing.T) {
+	w := cowboy.NewWorld(cowboy.NewMemStore())
+	out, _ := sink()
+	p := w.Connect("Case", out)
+
+	// "The Snatch & Grab" (ug1_snatch) is given by Marcus the Fixer in z1_01.
+	// Mark it complete and stand in the giver's room (not a vendor).
+	p.Quests["ug1_snatch"] = 1
+	p.RoomID = "z1_01"
+	startXP, startEddies := p.XP, p.Eddies
+
+	w.Command(p, "claim")
+	if _, still := p.Quests["ug1_snatch"]; still {
+		t.Fatal("claim at the quest-giver's room should clear the bounty")
+	}
+	if p.XP <= startXP || p.Eddies <= startEddies {
+		t.Fatalf("claim at giver paid nothing: dXP=%d dEddies=%d", p.XP-startXP, p.Eddies-startEddies)
+	}
+
+	// And NOT redeemable somewhere that is neither a broker nor its giver.
+	p.Quests["ug1_snatch"] = 1
+	p.RoomID = "z1_05" // a plain room in the same zone
+	w.Command(p, "claim")
+	if _, still := p.Quests["ug1_snatch"]; !still {
+		t.Fatal("claim should not pay out away from a broker or the giver")
+	}
+}
+
 func TestCowboyMinLevelGate(t *testing.T) {
 	w := cowboy.NewWorld(cowboy.NewMemStore())
 	out, buf := sink()
