@@ -21,8 +21,9 @@ func TestColorblindTheme(t *testing.T) {
 		t.Fatalf("expected ANSI color in output")
 	}
 
-	// Switch to colorblind-dark; the confirmation sample remaps red→orange (208)
-	// and green→blue (1;34m).
+	// Switch to colorblind-dark. The WHOLE palette is remapped (not just
+	// green/red) so the entire UI — the cyan-bordered MAP included — visibly
+	// shifts: danger→orange (208), success→blue (27), system→azure (39).
 	buf.Reset()
 	w.Command(p, "theme cbdark")
 	got := buf.String()
@@ -32,7 +33,13 @@ func TestColorblindTheme(t *testing.T) {
 	if strings.Contains(got, "\x1b[1;31m") {
 		t.Errorf("colorblind theme should remap the default red away; got raw red in:\n%q", got)
 	}
+	if strings.Contains(got, "\x1b[1;36m") {
+		t.Errorf("colorblind theme should remap the default cyan (system/map borders) away; got raw cyan in:\n%q", got)
+	}
 	if !strings.Contains(got, "\x1b[38;5;208m") {
 		t.Errorf("colorblind-dark should render danger as orange (208); got:\n%q", got)
+	}
+	if !strings.Contains(got, "\x1b[38;5;39m") {
+		t.Errorf("colorblind-dark should remap system/map borders to azure (39); got:\n%q", got)
 	}
 }
