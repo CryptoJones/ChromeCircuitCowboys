@@ -16,6 +16,9 @@ incrementally; see the issue links.)
 - **Combat shortcuts.** `A` = attack, `LO` = loot (`L` still = look). (#14)
 - **Batch quest accept.** `ACCEPT 1 2 3` takes several bounties at once and
   `ACCEPT ALL` takes every eligible one; each pick is guarded independently. (#17)
+- **Character points.** Each level banks spendable character points (shown on
+  the score sheet when you have any); `SPEND <body|reflexes|intelligence>` raises
+  a stat (Body also lifts MaxHP). Persisted across logout. (#11)
 
 ### Changed
 

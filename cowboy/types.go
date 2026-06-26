@@ -18,6 +18,7 @@ type Player struct {
 	Body         int // melee/breach damage
 	Reflexes     int // dodge / damage reduction
 	Intelligence int // (flavor + future deck mechanics)
+	StatPoints   int // unspent character points (earned on level-up) — SPEND to raise a stat
 	WeaponBonus  int // from a purchased weapon (e.g. ICE-breaker)
 	WeaponName   string
 	RAM          int            // netrun resource: powers breaches in the Net; regenerates out of combat
@@ -113,6 +114,7 @@ type SavedPlayer struct {
 	Class                        string
 	Level, XP, Eddies, HP, MaxHP int
 	Body, Reflexes, Intelligence int
+	StatPoints                   int
 	WeaponBonus                  int
 	WeaponName                   string
 	RAM                          int

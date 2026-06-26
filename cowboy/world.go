@@ -234,7 +234,7 @@ func (w *World) save(p *Player) {
 	_ = w.store.Save(&SavedPlayer{
 		Name: p.Name, Class: p.Class, Level: p.Level, XP: p.XP, Eddies: p.Eddies,
 		HP: p.HP, MaxHP: p.MaxHP, Body: p.Body, Reflexes: p.Reflexes,
-		Intelligence: p.Intelligence, WeaponBonus: p.WeaponBonus,
+		Intelligence: p.Intelligence, StatPoints: p.StatPoints, WeaponBonus: p.WeaponBonus,
 		WeaponName: p.WeaponName, RAM: p.RAM, DeckBonus: p.DeckBonus,
 		Room: p.RoomID, Inv: p.Inv, Stash: p.Stash, Quests: p.Quests,
 	})
@@ -255,6 +255,7 @@ func applySave(p *Player, sp *SavedPlayer) {
 	p.Level, p.XP, p.Eddies = sp.Level, sp.XP, sp.Eddies
 	p.HP, p.MaxHP = sp.HP, sp.MaxHP
 	p.Body, p.Reflexes, p.Intelligence = sp.Body, sp.Reflexes, sp.Intelligence
+	p.StatPoints = sp.StatPoints
 	p.WeaponBonus, p.WeaponName = sp.WeaponBonus, sp.WeaponName
 	p.DeckBonus = sp.DeckBonus
 	p.RAM = sp.RAM
@@ -299,6 +300,10 @@ func xpToNext(level int) int { return int(100 * math.Pow(float64(level), 1.4)) }
 // accumulating and excess is discarded.
 const MaxLevel = 99
 
+// pointsPerLevel is how many spendable character points a level-up banks (on top
+// of the small automatic stat growth). SPEND them to customize your build.
+const pointsPerLevel = 2
+
 func (w *World) checkLevelUp(p *Player) {
 	for p.Level < MaxLevel && p.XP >= xpToNext(p.Level) {
 		p.XP -= xpToNext(p.Level)
@@ -306,9 +311,11 @@ func (w *World) checkLevelUp(p *Player) {
 		p.Body += 2
 		p.Reflexes++
 		p.Intelligence++
+		p.StatPoints += pointsPerLevel
 		p.MaxHP = maxHPFor(p)
 		p.HP = p.MaxHP
 		p.send(style(neon, "*** UPLOAD COMPLETE — you reach level "+itoa(p.Level)+"! Stats boosted, HP restored. ***") + crlf)
+		p.send(style(gold, "    +"+itoa(pointsPerLevel)+" character points to SPEND ("+itoa(p.StatPoints)+" banked).") + crlf)
 		if p.Level == MaxLevel {
 			p.send(style(gold, "*** You are MAXED — level "+itoa(MaxLevel)+", an elite cowboy. The grid is yours. ***") + crlf)
 		}
