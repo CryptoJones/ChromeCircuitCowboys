@@ -43,6 +43,12 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.sendPrompt(p)
 		return false
 	}
+	// ";<msg>" is the quick party-chat shortcut (like GSAY) — straight to crew.
+	if strings.HasPrefix(line, ";") {
+		w.groupChat(p, strings.TrimSpace(line[1:]))
+		w.sendPrompt(p)
+		return false
+	}
 	fields := strings.Fields(line)
 	cmd := strings.ToLower(fields[0])
 	arg := strings.TrimSpace(strings.TrimPrefix(line, fields[0]))
@@ -728,7 +734,7 @@ func helpText() string {
 		"  quests          — fixer bounty board; accept <#> / accept 1 2 3 / accept all / claim\r\n" +
 		"  programs / run <name> — netrun demons (scalpel/hammer/leech/mirror/medic)\r\n" +
 		"  invite <runner> — invite to your crew (leader only); they ACCEPT/DECLINE\r\n" +
-		"  group / crew     — show your crew (shared XP in-room); gsay <msg>; leave\r\n" +
+		"  group / crew     — show your crew (shared XP in-room); gsay <msg> (or ;<msg>); leave\r\n" +
 		"  leaderboard     — top runners by level\r\n" +
 		"  quit            — jack out\r\n" +
 		style(dim, "  In the Net, ATTACK breaches ICE using Intelligence and spends RAM\r\n"+
