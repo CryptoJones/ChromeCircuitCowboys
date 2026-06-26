@@ -93,6 +93,7 @@ type Room struct {
 	Private bool              // a per-runner capsule pod — occupants are isolated (no one shares it)
 	Safe    bool              // no-violence zone (outside the clone pods): a security drone flatlines PvP aggressors
 	Net     bool              // inside the Net: combat is a BREACH (Intelligence + RAM), ICE shatters into shards
+	Spar    bool              // a sparring gym: PvP is non-lethal — a downed runner is knocked out, keeps everything
 }
 
 // Corpse is a dead runner's old body, left where they flatlined. It holds the

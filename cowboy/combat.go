@@ -427,6 +427,17 @@ func (w *World) passLeadershipOnDeath(p *Player) {
 // pvpFlatline handles losing a netrun duel: the winner siphons a cut of the
 // loser's scrip (data theft) and the loser respawns in meatspace.
 func (w *World) pvpFlatline(winner, loser *Player) {
+	// In a sparring gym a "kill" is just a knockout: the loser yields, wakes at
+	// full HP, and keeps everything. No re-sleeve, no corpse, no siphon.
+	if r := w.room(loser.RoomID); r != nil && r.Spar {
+		loser.HP = loser.MaxHP
+		loser.pvpTarget = nil
+		winner.pvpTarget = nil
+		loser.send(style(hot, "*** You're dropped — you tap out. Just a spar; you wake up sore but whole. ***") + crlf)
+		winner.send(style(gold, "*** You win the spar! "+loser.Name+" taps out. ***") + crlf)
+		w.broadcast(loser.RoomID, nil, style(dim, winner.Name+" wins a sparring match against "+loser.Name+".")+crlf)
+		return
+	}
 	loot := loser.Eddies / 10
 	loser.send(style(red, "*** YOUR DECK IS FRIED — "+winner.Name+" flatlines you and siphons €$"+itoa(loot)+". ***") + crlf)
 	winner.send(style(gold, "*** You fry "+loser.Name+"'s deck and siphon €$"+itoa(loot)+"! ***") + crlf)

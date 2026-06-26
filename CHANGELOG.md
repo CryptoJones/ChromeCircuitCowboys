@@ -30,6 +30,9 @@ incrementally; see the issue links.)
 - **Red-light strip.** Joytoys along the Sprawlbelt (the Rolling Rose, the
   Fortune Stall) — PAY for company: a fade-to-black hour that leaves you
   fully restored (HP + RAM). (#27)
+- **Sparring gym.** The Iron Temple on the Sprawlbelt (north off the Stripped
+  Lot) hosts non-lethal PvP: ATTACK another runner to spar — a downed sparrer is
+  knocked out, keeps all their gear/scrip, and wakes at full HP. (#19)
 - **Batch quest accept.** `ACCEPT 1 2 3` takes several bounties at once and
   `ACCEPT ALL` takes every eligible one; each pick is guarded independently. (#17)
 - **Character points.** Each level banks spendable character points (shown on
