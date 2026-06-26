@@ -60,7 +60,7 @@ func areaLabel(realm string, zone int) string {
 		}
 		return "THE NET " + levelRange(zone) + " — " + name
 	default:
-		return "NIGHT CITY — the surface"
+		return "NOCHE CITY — the surface"
 	}
 }
 
