@@ -64,7 +64,7 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.who(p)
 	case "score", "stats", "st", "sc":
 		w.score(p)
-	case "attack", "kill", "k", "breach":
+	case "attack", "a", "kill", "k", "breach":
 		w.engage(p, arg)
 	case "flee", "jackout", "disconnect":
 		w.flee(p)
@@ -74,7 +74,7 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.buy(p, arg)
 	case "use":
 		w.use(p, arg)
-	case "loot", "salvage":
+	case "loot", "lo", "salvage":
 		w.loot(p)
 	case "install", "ripper":
 		w.install(p, arg)
@@ -566,7 +566,7 @@ func helpText() string {
 		"  in / out        — step into/out of your capsule pod from Neon Alley\r\n" +
 		"  look (l)        — examine your location\r\n" +
 		"  map (m)         — local map: exits, and the way deeper or out\r\n" +
-		"  attack <foe>    — engage a hostile (alias kill/breach)\r\n" +
+		"  attack <foe> (a) — engage a hostile (alias kill/breach)\r\n" +
 		"  flee            — try to break a fight and bolt\r\n" +
 		"  say <msg>       — talk to others in the room\r\n" +
 		"  me / emote / :<action> — roleplay an action (\"Wintermute lights a cig\")\r\n" +
@@ -574,7 +574,7 @@ func helpText() string {
 		"  score (st)      — your character sheet\r\n" +
 		"  list / buy <x>  — vendor (at shops); use <item> to consume\r\n" +
 		"  open            — crack open a supply/data cache in the room\r\n" +
-		"  loot            — strip a flatlined body, ICE shards, or a cache of its gear\r\n" +
+		"  loot (lo)       — strip a flatlined body, ICE shards, or a cache of its gear\r\n" +
 		"  install <cyber> — Emergency Medic re-installs salvaged cyberware (at the Night Market)\r\n" +
 		"  give <item> <runner> — hand recovered gear back to a crewmate\r\n" +
 		"  inventory (i)   — what you're carrying (cap grows with level)\r\n" +
