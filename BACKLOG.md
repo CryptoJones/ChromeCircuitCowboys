@@ -3,16 +3,16 @@
 Ideas and tasks not yet scheduled.
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
-- [ ] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8))
+- [x] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8)) — _shipped v2.2.0: machines leave wreckage, never a corpse_
 - [ ] MAP should show the way back to an easier area / the exit, not just deeper ([#9](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/9))
 - [ ] Quest board: grey out already-accepted bounties, show RED when ready to turn in ([#10](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/10))
 - [ ] Character points: show available points on the character sheet + a "spend character points" option when you have any ([#11](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/11))
 - [ ] TALK to NPCs — every NPC gives backstory/lore about the level you're on ([#12](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/12))
 - [ ] Numbered inventory — press the number to USE that item, no Enter needed (fast for combat) ([#13](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/13))
-- [ ] Shortcuts: `A` = attack, `LO` = loot (`L` stays look) ([#14](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/14))
+- [x] Shortcuts: `A` = attack, `LO` = loot (`L` stays look) ([#14](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/14)) — _shipped v2.2.0: A=attack, LO=loot, L stays look_
 - [ ] Per-area cyberware that grants character points — 2-3 per band so each class can buy a grind aid ([#15](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/15))
-- [ ] `OPEN` command for supply/data caches instead of attacking them ([#16](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/16))
-- [ ] `ACCEPT` multiple quests — `accept 1 2 3 4` and `accept all` ([#17](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/17))
+- [x] `OPEN` command for supply/data caches instead of attacking them ([#16](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/16)) — _shipped v2.2.0: OPEN cracks open caches_
+- [x] `ACCEPT` multiple quests — `accept 1 2 3 4` and `accept all` ([#17](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/17)) — _shipped v2.2.0: accept 1 2 3 / accept all_
 - [ ] Completed quests can't be re-accepted — except the low-level RP ring rumors ([#18](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/18))
 - [ ] Fitness center on the outer ring (Sprawlbelt) — non-lethal PvP sparring, no death or loot/cyberware loss ([#19](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/19))
 - [ ] New-player NPC in the clone booth — TALK for a brief intro to commands, actions, etc. ([#20](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/20))
