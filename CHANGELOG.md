@@ -11,6 +11,8 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **`DROP` / `GET` floor items** — drop loot on the room floor (incl. `DROP ALL`)
+  for crewmates to `GET` (or `GET ALL`); LOOK shows what's lying there. (#51)
 - **Unsafe-logout penalty** — logging out somewhere unsafe means you got jumped
   offline: lose 5%% HP (never below 1) with a flavor line on return; safe-room
   logouts are free. (#48)
