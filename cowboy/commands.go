@@ -579,7 +579,7 @@ func helpText() string {
 		"  give <item> <runner> — hand recovered gear back to a crewmate\r\n" +
 		"  inventory (i)   — what you're carrying (cap grows with level)\r\n" +
 		"  stash / grab <x> — store/withdraw gear at your Re-Clone Bay (uncapped)\r\n" +
-		"  quests          — fixer bounty board (at a shop); accept <#> / claim\r\n" +
+		"  quests          — fixer bounty board; accept <#> / accept 1 2 3 / accept all / claim\r\n" +
 		"  programs / run <name> — netrun demons (scalpel/hammer/leech/mirror/medic)\r\n" +
 		"  invite <runner> — invite to your crew (leader only); they ACCEPT/DECLINE\r\n" +
 		"  group / crew     — show your crew (shared XP in-room); gsay <msg>; leave\r\n" +
