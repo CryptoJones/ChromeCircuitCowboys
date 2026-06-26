@@ -31,6 +31,7 @@ Ideas and tasks not yet scheduled.
 - [ ] Generate lore-filled extended item descriptions via Violet Lotus ([#54](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/54)) — _do via plan mode_
 - [x] Character password auth (set at creation, verify at login) — all game modes ([#55](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/55)) — _shipped v2.3.0_
 - [x] Prompt pre-existing (passwordless) characters to set a password on first login ([#56](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/56)) — _shipped v2.3.0_
+- [x] v2.3.0 playtest fixes: mask password entry, re-show room after new-char password setup, make color themes distinct + MAP respect them ([#57](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/57)) — _shipped v2.3.1_
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
 - [x] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8)) — _shipped v2.2.0: machines leave wreckage, never a corpse_
