@@ -19,7 +19,7 @@ type World struct {
 	mobs         []*Mob
 	players      map[int]*Player
 	byName       map[string]*Player
-	corpses      []*Corpse // dropped bodys awaiting recovery (in-memory; not persisted)
+	corpses      []*Corpse                 // dropped bodys awaiting recovery (in-memory; not persisted)
 	floor        map[string]map[string]int // roomID -> item -> qty dropped on the floor (in-memory)
 	nextID       int
 	store        Persistence
@@ -68,8 +68,8 @@ func NewWorld(store Persistence) *World {
 			w.spawn(t)
 		}
 	}
-	w.assignRingQuests()  // scatter the RP ring "rumor" bounties across the ring givers
-	w.scatterTerminals()  // sprinkle data terminals across ~1/4 of the surface
+	w.assignRingQuests() // scatter the RP ring "rumor" bounties across the ring givers
+	w.scatterTerminals() // sprinkle data terminals across ~1/4 of the surface
 	return w
 }
 
@@ -323,6 +323,9 @@ func (w *World) SaveAll() {
 }
 
 func (w *World) save(p *Player) {
+	if p.IsBot {
+		return // AI runners are ephemeral — never written to the character store
+	}
 	_ = w.store.Save(&SavedPlayer{
 		Name: p.Name, Class: p.Class, Clan: p.Clan, Theme: p.Theme, PasswordHash: p.passwordHash, Level: p.Level, XP: p.XP, Eddies: p.Eddies,
 		HP: p.HP, MaxHP: p.MaxHP, Body: p.Body, Reflexes: p.Reflexes,

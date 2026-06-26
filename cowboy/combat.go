@@ -151,6 +151,7 @@ func (w *World) Tick() {
 	w.respawnDead()
 	w.expireShields()
 	w.regen()
+	w.tickBots() // AI runners wander + chatter so the world feels populated (#37)
 }
 
 // tickRecall counts down HOME recalls and, when one completes, phases the runner
@@ -189,7 +190,12 @@ func (w *World) aggro() {
 		if m.dead || !m.tmpl.Aggressive || m.target != nil {
 			continue
 		}
-		victims := w.playersIn(m.RoomID, nil)
+		var victims []*Player
+		for _, v := range w.playersIn(m.RoomID, nil) {
+			if !v.IsBot { // mobs ignore AI runners — bots are ambient, not combatants
+				victims = append(victims, v)
+			}
+		}
 		if len(victims) == 0 {
 			continue
 		}
