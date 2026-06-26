@@ -64,6 +64,8 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 	switch cmd {
 	case "look", "l":
 		w.lookText(p)
+	case "roomid", "whereami", "#id":
+		w.showRoomID(p) // hidden dev/SysOp command (not in HELP)
 	case "open":
 		w.openContainer(p, arg)
 	case "talk", "ask", "speak":
@@ -519,6 +521,27 @@ func (w *World) goHome(p *Player) {
 	p.homing = recallTicks
 	p.send(style(neon, "You jack a recall protocol. Hold still (~10s) and you'll phase home to your Re-Clone Bay — a hit or a move breaks it.") + crlf)
 	w.broadcast(p.RoomID, p, style(dim, p.Name+" flickers — phasing out.")+crlf)
+}
+
+// showRoomID prints the current room's internal ID (plus name + exits) — a
+// hidden command (kept out of HELP) for building/debugging, so a room can be
+// referred to by its actual id.
+func (w *World) showRoomID(p *Player) {
+	r := w.room(p.RoomID)
+	name := p.RoomID
+	if r != nil && r.Name != "" {
+		name = r.Name
+	}
+	p.send(style(neon, "roomid: ") + style(gold, p.RoomID) + style(dim, "  ("+name+")") + crlf)
+	if r != nil {
+		var dirs []string
+		for _, d := range []string{"north", "south", "east", "west", "up", "down", "in", "out"} {
+			if dest, ok := r.Exits[d]; ok {
+				dirs = append(dirs, d+"→"+dest)
+			}
+		}
+		p.send(style(dim, "  exits: "+strings.Join(dirs, ", ")) + crlf)
+	}
 }
 
 // openContainer breaks open a supply/data cache in the room — the intuitive
