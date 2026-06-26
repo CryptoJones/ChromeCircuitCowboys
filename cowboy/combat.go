@@ -61,11 +61,22 @@ func (w *World) engage(p *Player, arg string) {
 		target.target = p
 	}
 	verb := "You lunge at "
-	if w.inNet(p) {
+	switch {
+	case target.tmpl.Container:
+		// You don't "lunge at" a crate — pry/crack/jimmy it, varied each time.
+		verb = containerVerbs[w.roll(len(containerVerbs))]
+	case w.inNet(p):
 		verb = "You jack a breach protocol into "
 	}
 	p.send(style(hot, verb+target.tmpl.Name+"!") + crlf)
 	w.broadcast(p.RoomID, p, style(dim, p.Name+" attacks "+target.tmpl.Name+".")+crlf)
+}
+
+// containerVerbs are the (randomized) ways you go at an inert cache — a
+// gentleman pries, he does not "lunge at" a crate. (#46)
+var containerVerbs = []string{
+	"You pry at ", "You crack open ", "You jimmy ", "You force ",
+	"You bash at ", "You wrench at ", "You crowbar ", "You lever open ",
 }
 
 func (w *World) engagePvP(p, target *Player) {

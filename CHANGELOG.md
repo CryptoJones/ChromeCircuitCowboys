@@ -22,6 +22,9 @@ incrementally; see the issue links.)
   the Undercity). (#29)
 
 ### Fixed
+- **Containers no longer get "lunged at."** Opening/attacking a cache uses a
+  randomized container verb (pry / crack / jimmy / force / …) instead of the
+  combat "You lunge at …" line. (#46)
 - **Lighter dim/ambience text** in the default scheme — the dark-grey hint text
   is now a more readable light grey. (#47)
 
