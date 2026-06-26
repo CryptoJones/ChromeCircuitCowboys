@@ -11,6 +11,8 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **Quick party-chat shortcut `;`** — `;<msg>` goes straight to crew chat
+  (same as GSAY), like `'`=say and `:`=emote. (#43)
 - **Hidden `roomid` command** (also `whereami`) prints the current room's
   internal id + exits — for building/debugging; not listed in HELP. (#28)
 - **Character sheet spells out "Armor Class"** instead of the cryptic "AC". (#30)
