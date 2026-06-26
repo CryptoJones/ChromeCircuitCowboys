@@ -14,15 +14,15 @@ Ideas and tasks not yet scheduled.
 - [x] `OPEN` command for supply/data caches instead of attacking them ([#16](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/16)) — _shipped v2.2.0: OPEN cracks open caches_
 - [x] `ACCEPT` multiple quests — `accept 1 2 3 4` and `accept all` ([#17](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/17)) — _shipped v2.2.0: accept 1 2 3 / accept all_
 - [x] Completed quests can't be re-accepted — except the low-level RP ring rumors ([#18](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/18)) — _shipped v2.2.0: completed story bounties are one-time; rings exempt_
-- [ ] Fitness center on the outer ring (Sprawlbelt) — non-lethal PvP sparring, no death or loot/cyberware loss ([#19](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/19))
-- [ ] New-player NPC in the clone booth — TALK for a brief intro to commands, actions, etc. ([#20](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/20))
-- [ ] Spanish-speaking NPCs — greet in Spanish / "¡Viva la Ciudad de la Noche!" ([#21](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/21))
-- [ ] Chinese-speaking NPCs that trash-talk you in Chinese ([#22](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/22))
-- [ ] Easter egg: a Dixie Flatline homage somewhere in the rings — calls you "Boy" (oblique, IP-scrub-safe) ([#23](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/23))
-- [ ] Data terminals across meatspace — send messages + credits to other players ([#24](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/24))
-- [ ] Player-to-player trading — two-sided confirm, items + scrip, atomic swap ([#25](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/25))
+- [x] Fitness center on the outer ring (Sprawlbelt) — non-lethal PvP sparring, no death or loot/cyberware loss ([#19](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/19)) — _shipped v2.2.0: Iron Temple sparring gym, non-lethal_
+- [x] New-player NPC in the clone booth — TALK for a brief intro to commands, actions, etc. ([#20](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/20)) — _shipped v2.2.0: TALK booth onboarding primer_
+- [x] Spanish-speaking NPCs — greet in Spanish / "¡Viva la Ciudad de la Noche!" ([#21](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/21)) — _shipped v2.2.0: Spanish ring NPCs_
+- [x] Chinese-speaking NPCs that trash-talk you in Chinese ([#22](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/22)) — _shipped v2.2.0: Chinese trash-talk NPCs w/ gloss_
+- [x] Easter egg: a Dixie Flatline homage somewhere in the rings — calls you "Boy" (oblique, IP-scrub-safe) ([#23](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/23)) — _shipped v2.2.0: laughing ROM construct, calls you Boy_
+- [x] Data terminals across meatspace — send messages + credits to other players ([#24](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/24)) — _shipped v2.2.0: SEND mail / WIRE scrip at terminals_
+- [x] Player-to-player trading — two-sided confirm, items + scrip, atomic swap ([#25](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/25)) — _shipped v2.2.0: two-sided confirm-locked TRADE_
 - [x] New-sleeve buff: +15% health when you get a new sleeve (re-sleeve) ([#26](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/26)) — _shipped v2.2.0: +15% HP buffer on re-sleeve_
-- [ ] Red-light district joytoy NPCs — pay scrip, fade-to-black, grants a buff ([#27](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/27))
+- [x] Red-light district joytoy NPCs — pay scrip, fade-to-black, grants a buff ([#27](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/27)) — _shipped v2.2.0: PAY a joytoy for a fade-to-black restore_
 - [x] Loot crates & net mobs shouldn't leave a "corpse" — they have no bodies; reword the death/loot text for them ([#5](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/5)) — _shipped in v2.1.0: caches crack open, ICE shatters into shards_
 - [x] 16-bit map feature — render a CP437/ANSI map showing how to exit the "level" or proceed to the next harder area ([#6](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/6)) — _`MAP`/`M`: labelled exits + PROCEED/WAY-OUT arrows, works in Undercity, Net, and surface_
 - [x] Quests redeemable at the giver, not just at brokers ([#7](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/7)) — _claim now pays out at the fixer/ring-giver room or a broker_
