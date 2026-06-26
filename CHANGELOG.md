@@ -13,6 +13,7 @@ incrementally; see the issue links.)
 ### Added
 - **`OPEN` command for caches.** Crack open a supply/data cache with `OPEN`
   instead of attacking it — the intuitive verb for an inert container. (#16)
+- **Combat shortcuts.** `A` = attack, `LO` = loot (`L` still = look). (#14)
 
 ### Changed
 
