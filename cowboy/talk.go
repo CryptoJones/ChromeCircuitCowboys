@@ -145,6 +145,15 @@ var roomNPC = map[string]npcVoice{
 		"输得起吗？看你这身行头，怕是连本钱都没有。 // Can you even afford to lose? Doubt you've got the scrip, choom.",
 		"别装了，谁不知道你昨天还在缸里泡着。 // Don't front — everybody knows you were floating in a tank yesterday.",
 	}},
+	// Easter egg (#23): an old hacker's personality burned onto a ROM cart,
+	// laughing in a forgotten terminal. An oblique homage — no trademarked name —
+	// that calls you "Boy."
+	"sb_7": {"a laughing ROM construct", []string{
+		"Haha... hah. That you breathing out there, Boy? Hard to tell from in here.",
+		"ICE is just somebody else's fear, compiled, Boy. Walk through it like it's nothing.",
+		"Dying's a habit, Boy. Do it enough times and it stops meaning much. *dry static laughter*",
+		"I'm a hangover of somebody who was good once. Flatline says hi, Boy. Now beat it.",
+	}},
 }
 
 // talk delivers a line of local backstory — or, in the Re-Clone Bay, the
