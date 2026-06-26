@@ -11,6 +11,9 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **Crew-vs-crew sparring** — in the Iron Temple gym, party-vs-party matches:
+  a downed fighter stays out until one whole crew is wiped, then everyone's
+  restored. Still non-lethal. (#45)
 - **Clans + crew reward bonuses** — `CLAN create/join/leave/list`. Killing as a
   party of 2+ in a room grants a +15%% reward bonus; if 2+ crewmates share a
   clan, that's multiplied by 1.8 (×2.07 total). Clan persists per character. (#44)

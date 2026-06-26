@@ -14,6 +14,9 @@ const (
 // RewardPct exposes rewardPct for tooling/tests.
 func (w *World) RewardPct(killer *Player) int { return w.rewardPct(killer) }
 
+// Downed reports whether the player is knocked out in a gym team-spar (tests).
+func (p *Player) Downed() bool { return p.downed }
+
 // rewardPct returns the kill-reward multiplier (percent; 100 = no bonus) for a
 // killer based on their in-room crew and shared clan membership.
 func (w *World) rewardPct(killer *Player) int {

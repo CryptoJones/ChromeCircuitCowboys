@@ -14,6 +14,10 @@ func (w *World) breakRecall(p *Player) {
 // starts a fight. Rounds resolve on Tick, MajorMUD-style.
 func (w *World) engage(p *Player, arg string) {
 	arg = strings.ToLower(strings.TrimSpace(arg))
+	if p.downed {
+		p.send(style(dim, "You're knocked out — wait for the match to reset.") + crlf)
+		return
+	}
 	if p.homing > 0 { // throwing the first punch breaks your own recall
 		p.homing = 0
 		p.send(style(dim, "Your recall breaks as you move on a target.") + crlf)
@@ -23,6 +27,10 @@ func (w *World) engage(p *Player, arg string) {
 	// outside the clone pods — draw there and a security drone flatlines you.
 	if arg != "" {
 		if target := w.playerInRoomByName(p.RoomID, arg, p); target != nil {
+			if target.downed {
+				p.send(style(dim, target.Name+" is already down — pick someone standing.") + crlf)
+				return
+			}
 			if w.pvpAllowed(p) {
 				w.engagePvP(p, target)
 			} else {
@@ -263,6 +271,52 @@ func (w *World) resolveCombat() {
 	}
 }
 
+// sparTeamMatch reports whether a knockout here is part of a crew-vs-crew match:
+// the loser is in a party with at least one crewmate also present in the gym.
+func (w *World) sparTeamMatch(loser *Player) bool {
+	if loser.party == nil {
+		return false
+	}
+	for _, m := range loser.party.Members {
+		if m != loser && m.RoomID == loser.RoomID {
+			return true
+		}
+	}
+	return false
+}
+
+// checkSparMatch ends a team spar when one crew is fully downed in the gym, and
+// restores everyone (clears downed, full HP) for the next round.
+func (w *World) checkSparMatch(loser, winner *Player) {
+	allDown := func(p *Player) bool {
+		if p.party == nil {
+			return p.downed
+		}
+		any := false
+		for _, m := range p.party.Members {
+			if m.RoomID == loser.RoomID {
+				any = true
+				if !m.downed {
+					return false
+				}
+			}
+		}
+		return any
+	}
+	if !allDown(loser) {
+		return
+	}
+	winName := winner.Name
+	if winner.party != nil {
+		winName = "the winning crew"
+	}
+	for _, p := range w.playersIn(loser.RoomID, nil) {
+		p.downed = false
+		p.HP = p.MaxHP
+		p.send(style(gold, "*** MATCH OVER — "+winName+" takes it. Everyone's patched up. ***") + crlf)
+	}
+}
+
 // attackersOf returns every runner currently fighting mob m in its room.
 func (w *World) attackersOf(m *Mob) []*Player {
 	var out []*Player
@@ -473,9 +527,21 @@ func (w *World) pvpFlatline(winner, loser *Player) {
 	// In a sparring gym a "kill" is just a knockout: the loser yields, wakes at
 	// full HP, and keeps everything. No re-sleeve, no corpse, no siphon.
 	if r := w.room(loser.RoomID); r != nil && r.Spar {
-		loser.HP = loser.MaxHP
 		loser.pvpTarget = nil
 		winner.pvpTarget = nil
+		// Team spar: if the loser has crewmates also in the gym, they stay DOWN
+		// (out of the match) until one whole crew is wiped — then everyone's
+		// restored. Solo spar: just a knockout, wake at full HP.
+		if w.sparTeamMatch(loser) {
+			loser.downed = true
+			loser.HP = 1
+			loser.send(style(hot, "*** You're dropped — out of the match. ***") + crlf)
+			winner.send(style(gold, "*** You drop "+loser.Name+"! ***") + crlf)
+			w.broadcast(loser.RoomID, loser, style(dim, winner.Name+" drops "+loser.Name+" in the cage.")+crlf)
+			w.checkSparMatch(loser, winner)
+			return
+		}
+		loser.HP = loser.MaxHP
 		loser.send(style(hot, "*** You're dropped — you tap out. Just a spar; you wake up sore but whole. ***") + crlf)
 		winner.send(style(gold, "*** You win the spar! "+loser.Name+" taps out. ***") + crlf)
 		w.broadcast(loser.RoomID, nil, style(dim, winner.Name+" wins a sparring match against "+loser.Name+".")+crlf)
