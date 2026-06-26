@@ -21,6 +21,7 @@ Ideas and tasks not yet scheduled.
 - [ ] Easter egg: a Dixie Flatline homage somewhere in the rings — calls you "Boy" (oblique, IP-scrub-safe) ([#23](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/23))
 - [ ] Data terminals across meatspace — send messages + credits to other players ([#24](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/24))
 - [ ] Player-to-player trading — two-sided confirm, items + scrip, atomic swap ([#25](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/25))
+- [ ] New-sleeve buff: +15% health when you get a new sleeve (re-sleeve) ([#26](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/26))
 - [x] Loot crates & net mobs shouldn't leave a "corpse" — they have no bodies; reword the death/loot text for them ([#5](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/5)) — _shipped in v2.1.0: caches crack open, ICE shatters into shards_
 - [x] 16-bit map feature — render a CP437/ANSI map showing how to exit the "level" or proceed to the next harder area ([#6](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/6)) — _`MAP`/`M`: labelled exits + PROCEED/WAY-OUT arrows, works in Undercity, Net, and surface_
 - [x] Quests redeemable at the giver, not just at brokers ([#7](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/7)) — _claim now pays out at the fixer/ring-giver room or a broker_
