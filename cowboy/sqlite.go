@@ -36,7 +36,8 @@ func OpenSQLite(path string) (*SQLiteStore, error) {
 		inv_json      TEXT NOT NULL,
 		quests_json   TEXT NOT NULL DEFAULT '{}',
 		stash_json    TEXT NOT NULL DEFAULT '{}',
-		stat_points   INTEGER NOT NULL DEFAULT 0
+		stat_points   INTEGER NOT NULL DEFAULT 0,
+		done_json     TEXT NOT NULL DEFAULT '{}'
 	)`); err != nil {
 		db.Close()
 		return nil, err
@@ -45,6 +46,7 @@ func OpenSQLite(path string) (*SQLiteStore, error) {
 	// harmlessly when the column is already present).
 	_, _ = db.Exec(`ALTER TABLE cowboy_player ADD COLUMN stash_json TEXT NOT NULL DEFAULT '{}'`)
 	_, _ = db.Exec(`ALTER TABLE cowboy_player ADD COLUMN stat_points INTEGER NOT NULL DEFAULT 0`)
+	_, _ = db.Exec(`ALTER TABLE cowboy_player ADD COLUMN done_json TEXT NOT NULL DEFAULT '{}'`)
 	return &SQLiteStore{db: db}, nil
 }
 
@@ -54,12 +56,12 @@ func (s *SQLiteStore) Close() error { return s.db.Close() }
 // Load fetches a saved character by name.
 func (s *SQLiteStore) Load(name string) (*SavedPlayer, bool, error) {
 	var sp SavedPlayer
-	var invJSON, questsJSON, stashJSON string
+	var invJSON, questsJSON, stashJSON, doneJSON string
 	err := s.db.QueryRow(`SELECT name, class, level, xp, eddies, hp, maxhp, body, reflexes,
-		intelligence, weapon_bonus, weapon_name, ram, deck_bonus, room, inv_json, quests_json, stash_json, stat_points
+		intelligence, weapon_bonus, weapon_name, ram, deck_bonus, room, inv_json, quests_json, stash_json, stat_points, done_json
 		FROM cowboy_player WHERE name = ? COLLATE NOCASE`, name).
 		Scan(&sp.Name, &sp.Class, &sp.Level, &sp.XP, &sp.Eddies, &sp.HP, &sp.MaxHP, &sp.Body,
-			&sp.Reflexes, &sp.Intelligence, &sp.WeaponBonus, &sp.WeaponName, &sp.RAM, &sp.DeckBonus, &sp.Room, &invJSON, &questsJSON, &stashJSON, &sp.StatPoints)
+			&sp.Reflexes, &sp.Intelligence, &sp.WeaponBonus, &sp.WeaponName, &sp.RAM, &sp.DeckBonus, &sp.Room, &invJSON, &questsJSON, &stashJSON, &sp.StatPoints, &doneJSON)
 	if err == sql.ErrNoRows {
 		return nil, false, nil
 	}
@@ -72,6 +74,8 @@ func (s *SQLiteStore) Load(name string) (*SavedPlayer, bool, error) {
 	_ = json.Unmarshal([]byte(stashJSON), &sp.Stash)
 	sp.Quests = map[string]int{}
 	_ = json.Unmarshal([]byte(questsJSON), &sp.Quests)
+	sp.Done = map[string]int{}
+	_ = json.Unmarshal([]byte(doneJSON), &sp.Done)
 	return &sp, true, nil
 }
 
@@ -100,17 +104,18 @@ func (s *SQLiteStore) Save(sp *SavedPlayer) error {
 	inv, _ := json.Marshal(sp.Inv)
 	qjson, _ := json.Marshal(sp.Quests)
 	stash, _ := json.Marshal(sp.Stash)
+	done, _ := json.Marshal(sp.Done)
 	_, err := s.db.Exec(`INSERT INTO cowboy_player
-		(name, class, level, xp, eddies, hp, maxhp, body, reflexes, intelligence, weapon_bonus, weapon_name, ram, deck_bonus, room, inv_json, quests_json, stash_json, stat_points)
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+		(name, class, level, xp, eddies, hp, maxhp, body, reflexes, intelligence, weapon_bonus, weapon_name, ram, deck_bonus, room, inv_json, quests_json, stash_json, stat_points, done_json)
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 		ON CONFLICT(name) DO UPDATE SET
 		  class=excluded.class, level=excluded.level, xp=excluded.xp, eddies=excluded.eddies, hp=excluded.hp,
 		  maxhp=excluded.maxhp, body=excluded.body, reflexes=excluded.reflexes,
 		  intelligence=excluded.intelligence, weapon_bonus=excluded.weapon_bonus,
 		  weapon_name=excluded.weapon_name, ram=excluded.ram, deck_bonus=excluded.deck_bonus,
 		  room=excluded.room, inv_json=excluded.inv_json, quests_json=excluded.quests_json, stash_json=excluded.stash_json,
-		  stat_points=excluded.stat_points`,
+		  stat_points=excluded.stat_points, done_json=excluded.done_json`,
 		sp.Name, sp.Class, sp.Level, sp.XP, sp.Eddies, sp.HP, sp.MaxHP, sp.Body, sp.Reflexes,
-		sp.Intelligence, sp.WeaponBonus, sp.WeaponName, sp.RAM, sp.DeckBonus, sp.Room, string(inv), string(qjson), string(stash), sp.StatPoints)
+		sp.Intelligence, sp.WeaponBonus, sp.WeaponName, sp.RAM, sp.DeckBonus, sp.Room, string(inv), string(qjson), string(stash), sp.StatPoints, string(done))
 	return err
 }

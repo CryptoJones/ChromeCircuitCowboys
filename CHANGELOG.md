@@ -29,6 +29,8 @@ incrementally; see the issue links.)
 - **Quest board shows your state.** On a fixer's board, a bounty you've already
   accepted is greyed out (with progress), and one that's complete and ready to
   turn in is flagged RED `[READY — turn in]`. (#10)
+- **Story bounties are one-time.** Once you've claimed a story/street bounty you
+  can't re-accept it; the low-level RP-ring rumors stay repeatable. Persisted. (#18)
 
 ### Fixed
 - **MAP now always shows the way out.** The `▲ WAY OUT` arrow follows realm
