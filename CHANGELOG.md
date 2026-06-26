@@ -11,6 +11,8 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **Hidden `roomid` command** (also `whereami`) prints the current room's
+  internal id + exits — for building/debugging; not listed in HELP. (#28)
 - **Character sheet spells out "Armor Class"** instead of the cryptic "AC". (#30)
 
 ### Changed
