@@ -29,7 +29,7 @@ Ideas and tasks not yet scheduled.
 - [ ] MAP shows the way back to your party when separated ([#52](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/52))
 - [ ] `LOOK <item>` — detailed, lore-filled item descriptions (examine) ([#53](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/53))
 - [ ] Generate lore-filled extended item descriptions via Violet Lotus ([#54](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/54)) — _do via plan mode_
-- [ ] Character password auth (set at creation, verify at login) — for standalone play ([#55](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/55))
+- [ ] Character password auth (set at creation, verify at login) — all game modes ([#55](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/55))
 - [ ] Prompt pre-existing (passwordless) characters to set a password on first login ([#56](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/56))
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
