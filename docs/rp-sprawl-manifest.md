@@ -1,5 +1,12 @@
 # Chrome Circuit Cowboys — Street-Level RP Sprawl (PROPOSAL)
 
+> ⚠️ **PROPOSAL — NOT the carved world.** This is an aspirational ~250-room
+> design sketch; **none of it is built.** The actual carved RP rings (the Inner
+> Circuit + Sprawlbelt + the Iron Temple sparring gym) are a much smaller
+> 17-room set — see the generated map **[`rp-rings.drawio`](rp-rings.drawio)** /
+> [`rp-rings.png`](rp-rings.png), which stays in sync with the code. Don't read
+> this file as the live map.
+
 **~250 roleplay rooms** on the same floor as Neon Alley — a grind-optional social
 sprawl where RPers can run campaigns without fighting through the level system.
 10 districts × 25 rooms. Most rooms are RP-safe; light **L1–11** mobs appear only
