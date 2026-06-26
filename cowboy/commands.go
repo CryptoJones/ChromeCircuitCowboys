@@ -116,6 +116,10 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.sell(p, arg)
 	case "use":
 		w.use(p, arg)
+	case "drop":
+		w.drop(p, arg)
+	case "get", "pickup":
+		w.pickUp(p, arg)
 	case "loot", "lo", "salvage":
 		w.loot(p)
 	case "install", "ripper":
@@ -225,6 +229,9 @@ func (w *World) lookText(p *Player) {
 	}
 	if p.RoomID == startRoom {
 		p.send(style(dim, "The clone-booth tech is here — TALK for a quick orientation.") + crlf)
+	}
+	if pile := w.floorList(p.RoomID); pile != "" {
+		p.send(style(gold, "On the floor: ") + pile + style(dim, " (GET <item> / GET ALL)") + crlf)
 	}
 	if jt, ok := joytoyRooms[p.RoomID]; ok {
 		p.send(style(dim, jt+" is working here — PAY for some company (€$"+itoa(joytoyFee)+").") + crlf)
@@ -751,6 +758,7 @@ func helpText() string {
 		"  who             — who's jacked in\r\n" +
 		"  score (st)      — your character sheet\r\n" +
 		"  list / buy <x>  — vendor (at shops); sell <item> [qty]; use <item> to consume\r\n" +
+		"  drop / get      — drop <item>/all on the floor; get <item>/all (share loot)\r\n" +
 		"  open            — crack open a supply/data cache in the room\r\n" +
 		"  loot (lo)       — strip a flatlined body, ICE shards, or a cache of its gear\r\n" +
 		"  install <cyber> — Emergency Medic re-installs salvaged cyberware (at the Night Market)\r\n" +

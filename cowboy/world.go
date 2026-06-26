@@ -19,6 +19,7 @@ type World struct {
 	players      map[int]*Player
 	byName       map[string]*Player
 	corpses      []*Corpse // dropped bodys awaiting recovery (in-memory; not persisted)
+	floor        map[string]map[string]int // roomID -> item -> qty dropped on the floor (in-memory)
 	nextID       int
 	store        Persistence
 	roll         func(n int) int // returns 0..n-1; injectable for tests
@@ -59,6 +60,7 @@ func NewWorld(store Persistence) *World {
 		store:        store,
 		roll:         rand.Intn,
 		respawnTicks: defaultRespawnTicks,
+		floor:        map[string]map[string]int{},
 	}
 	for _, t := range w.tmpls {
 		if t.Home != "" { // morph-only stages (no Home) are never spawned directly
