@@ -1,5 +1,7 @@
 package cowboy
 
+import "strings"
+
 // TALK lets a runner get the lay of the land from whoever's around — the local
 // fixer if one is hiring here, otherwise a passer-by. Each level has its own
 // backstory, so the authored world is discoverable in-game, not just via quests.
@@ -132,6 +134,17 @@ var roomNPC = map[string]npcVoice{
 		"¡Siéntate, siéntate! Los fideos están calientes. La noche es larga, cowboy.",
 		"Dicen que los muertos caminan en la Red. Yo digo: come primero, preocúpate después.",
 	}},
+	// Chinese-speaking locals who talk shit at fresh clones (#22). Each line is
+	// the taunt with a dim English gloss after " // ".
+	"sb_3": {"a sneering turf-tagger", []string{
+		"你算哪根葱？新克隆体，菜味儿还没散呢。 // Who do you even think you are? Fresh clone, still reeking of the vat.",
+		"滚回你的舱里去，菜鸟。 // Crawl back to your pod, rookie.",
+		"这条街不欢迎你这种货色。 // This street's got no room for your kind.",
+	}},
+	"sb_4": {"a smirking three-card hustler", []string{
+		"输得起吗？看你这身行头，怕是连本钱都没有。 // Can you even afford to lose? Doubt you've got the scrip, choom.",
+		"别装了，谁不知道你昨天还在缸里泡着。 // Don't front — everybody knows you were floating in a tank yesterday.",
+	}},
 }
 
 // talk delivers a line of local backstory — or, in the Re-Clone Bay, the
@@ -144,7 +157,12 @@ func (w *World) talk(p *Player, arg string) {
 		return
 	}
 	if npc, ok := roomNPC[p.RoomID]; ok && len(npc.lines) > 0 {
-		p.send(style(neon, npc.speaker+": ") + style(green, npc.lines[w.roll(len(npc.lines))]) + crlf)
+		line := npc.lines[w.roll(len(npc.lines))]
+		said, gloss := line, ""
+		if i := strings.Index(line, " // "); i >= 0 { // dim English gloss after " // "
+			said, gloss = line[:i], "  "+style(dim, "("+line[i+4:]+")")
+		}
+		p.send(style(neon, npc.speaker+": ") + style(green, said) + gloss + crlf)
 		return
 	}
 	lore := zoneLore[loreKey(p.RoomID)]

@@ -23,6 +23,8 @@ incrementally; see the issue links.)
   the core commands from the booth tech, Doc Splice. (#20)
 - **Spanish-speaking locals.** Flavor NPCs around the rings greet you in
   Spanish (¡Viva la Ciudad de la Noche!). (#21)
+- **Chinese-speaking locals.** Some ring NPCs trash-talk fresh clones in
+  Mandarin, with a dim English gloss. (#22)
 - **Batch quest accept.** `ACCEPT 1 2 3` takes several bounties at once and
   `ACCEPT ALL` takes every eligible one; each pick is guarded independently. (#17)
 - **Character points.** Each level banks spendable character points (shown on
