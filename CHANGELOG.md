@@ -14,6 +14,8 @@ incrementally; see the issue links.)
 - **Character sheet spells out "Armor Class"** instead of the cryptic "AC". (#30)
 
 ### Changed
+- **Renamed the "Back Alley" room to "Underground Entrance"** (the descent into
+  the Undercity). (#29)
 
 ### Fixed
 - **Lighter dim/ambience text** in the default scheme — the dark-grey hint text
