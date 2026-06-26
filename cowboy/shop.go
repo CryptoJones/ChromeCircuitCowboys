@@ -151,8 +151,32 @@ func (w *World) install(p *Player, arg string) {
 		return
 	}
 	x, ok := findWare(name)
-	if !ok || (x.bonus <= 0 && x.deck <= 0) {
+	if !ok || (x.bonus <= 0 && x.deck <= 0 && !x.isImplant()) {
 		p.send(style(dim, "That's not cyberware a Emergency Medic can install.") + crlf)
+		return
+	}
+	if x.isImplant() {
+		p.Body += x.body
+		p.Reflexes += x.refl
+		p.Intelligence += x.intel
+		if x.body > 0 { // Body raises max HP — heal the new headroom
+			old := p.MaxHP
+			p.MaxHP = maxHPFor(p)
+			p.HP += p.MaxHP - old
+		}
+		w.consumeInv(p, name)
+		var parts []string
+		if x.body > 0 {
+			parts = append(parts, "Body +"+itoa(x.body))
+		}
+		if x.refl > 0 {
+			parts = append(parts, "Reflexes +"+itoa(x.refl))
+		}
+		if x.intel > 0 {
+			parts = append(parts, "Intelligence +"+itoa(x.intel))
+		}
+		w.save(p)
+		p.send(style(green, "The Emergency Medic wires in the "+name+". "+strings.Join(parts, ", ")+".") + crlf)
 		return
 	}
 	if x.bonus > 0 {

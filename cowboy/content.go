@@ -96,8 +96,15 @@ type ware struct {
 	ram   int // ram-chip: RAM restored on use
 	bonus int // weapon: attack bonus granted on purchase (permanent)
 	deck  int // cyberdeck: MaxRAM bonus granted on purchase (permanent)
+	body  int // implant: permanent Body boost on install
+	refl  int // implant: permanent Reflexes boost on install
+	intel int // implant: permanent Intelligence boost on install
 	desc  string
 }
+
+// isImplant reports whether a ware is a stat implant (installed at a medic for a
+// permanent Body/Reflexes/Intelligence boost — the per-band class grind aids).
+func (x ware) isImplant() bool { return x.body > 0 || x.refl > 0 || x.intel > 0 }
 
 // shopWares is the MASTER catalog — every purchasable/loadable item across all
 // tiers. findWare searches it, so any looted item can be used/installed anywhere.
@@ -118,6 +125,28 @@ var shopWares = []ware{
 	{name: "monowire", price: 8000, bonus: 45, desc: "monomolecular wire, +45 attack (permanent)"},
 	{name: "quantum-deck", price: 1500, deck: 16, desc: "quantum deck, +16 max RAM (permanent)"},
 	{name: "neural-deck", price: 6000, deck: 28, desc: "neural-lace deck, +28 max RAM (permanent)"},
+
+	// Stat implants — per-band class grind aids (install at a Emergency Medic for
+	// a permanent stat boost). Three per tier: Body / Reflexes / Intelligence.
+	{name: "subdermal-plating", price: 110, body: 2, desc: "subdermal armor weave, +2 Body (permanent)"},
+	{name: "reflex-booster", price: 110, refl: 2, desc: "reflex booster chip, +2 Reflexes (permanent)"},
+	{name: "neural-coprocessor", price: 110, intel: 2, desc: "neural coprocessor, +2 Intelligence (permanent)"},
+
+	{name: "titanium-weave", price: 320, body: 3, desc: "titanium muscle weave, +3 Body (permanent)"},
+	{name: "kerenzikov", price: 320, refl: 3, desc: "kerenzikov nerve wiring, +3 Reflexes (permanent)"},
+	{name: "cortex-bridge", price: 320, intel: 3, desc: "cortex bridge, +3 Intelligence (permanent)"},
+
+	{name: "myomer-bundle", price: 850, body: 4, desc: "myomer muscle bundle, +4 Body (permanent)"},
+	{name: "synaptic-amp", price: 850, refl: 4, desc: "synaptic amplifier, +4 Reflexes (permanent)"},
+	{name: "mnemonic-array", price: 850, intel: 4, desc: "mnemonic array, +4 Intelligence (permanent)"},
+
+	{name: "juggernaut-frame", price: 2000, body: 5, desc: "juggernaut subframe, +5 Body (permanent)"},
+	{name: "sandevistan", price: 2000, refl: 5, desc: "sandevistan rig, +5 Reflexes (permanent)"},
+	{name: "quantum-cortex", price: 2000, intel: 5, desc: "quantum cortex, +5 Intelligence (permanent)"},
+
+	{name: "goliath-chassis", price: 4500, body: 6, desc: "goliath chassis, +6 Body (permanent)"},
+	{name: "hyper-reflex", price: 4500, refl: 6, desc: "hyper-reflex lattice, +6 Reflexes (permanent)"},
+	{name: "ascendant-mind", price: 4500, intel: 6, desc: "ascendant mind-core, +6 Intelligence (permanent)"},
 }
 
 func findWare(name string) (ware, bool) {

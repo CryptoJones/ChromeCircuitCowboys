@@ -19,6 +19,9 @@ incrementally; see the issue links.)
 - **Character points.** Each level banks spendable character points (shown on
   the score sheet when you have any); `SPEND <body|reflexes|intelligence>` raises
   a stat (Body also lifts MaxHP). Persisted across logout. (#11)
+- **Stat-implant cyberware.** Each level band's vendors now stock three implants
+  (Body / Reflexes / Intelligence), so every class can buy a grind aid and
+  `INSTALL` it at a medic for a permanent stat boost. (#15)
 
 ### Changed
 
