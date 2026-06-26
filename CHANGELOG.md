@@ -11,6 +11,8 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **`LOOK <item>` examines an item** — name, flavor, mechanical effect, and
+  market value — instead of always describing the room. (#53)
 - **`DROP` / `GET` floor items** — drop loot on the room floor (incl. `DROP ALL`)
   for crewmates to `GET` (or `GET ALL`); LOOK shows what's lying there. (#51)
 - **Unsafe-logout penalty** — logging out somewhere unsafe means you got jumped
