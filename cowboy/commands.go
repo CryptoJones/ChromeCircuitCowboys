@@ -1,6 +1,7 @@
 package cowboy
 
 import (
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -48,6 +49,14 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 
 	if dir, ok := dirAliases[cmd]; ok {
 		w.move(p, dir)
+		w.sendPrompt(p)
+		return false
+	}
+
+	// A bare number is an inventory quick-use slot (the server emits it on a
+	// single digit keypress, no Enter — fast for combat).
+	if n, err := strconv.Atoi(cmd); err == nil && arg == "" {
+		w.quickUse(p, n)
 		w.sendPrompt(p)
 		return false
 	}
@@ -328,16 +337,42 @@ func (w *World) spend(p *Player, arg string) {
 	w.save(p)
 }
 
+// sortedInv returns the carried item names (qty > 0) in a stable order, so the
+// INVENTORY numbering and the digit quick-use map to the same slots.
+func sortedInv(p *Player) []string {
+	names := make([]string, 0, len(p.Inv))
+	for k, q := range p.Inv {
+		if q > 0 {
+			names = append(names, k)
+		}
+	}
+	sort.Strings(names)
+	return names
+}
+
 func (w *World) inventory(p *Player) {
 	p.send(style(neon, "-- Inventory ("+itoa(invCount(p))+"/"+itoa(carryCap(p))+") --") + crlf)
 	p.send(style(gold, "  €$ "+itoa(p.Eddies)+" scrip") + crlf)
-	if len(p.Inv) == 0 {
+	items := sortedInv(p)
+	if len(items) == 0 {
 		p.send(style(dim, "  (no items)") + crlf)
 		return
 	}
-	for name, qty := range p.Inv {
-		p.send("  " + name + " x" + itoa(qty) + crlf)
+	for i, name := range items {
+		p.send("  " + style(gold, itoa(i+1)+")") + " " + name + " x" + itoa(p.Inv[name]) + crlf)
 	}
+	p.send(style(dim, "  press a number to USE that item (no Enter), or USE <name>") + crlf)
+}
+
+// quickUse uses the Nth inventory item (as numbered by INVENTORY) — driven by a
+// single digit keypress at the prompt, so it's fast mid-combat.
+func (w *World) quickUse(p *Player, n int) {
+	items := sortedInv(p)
+	if n < 1 || n > len(items) {
+		p.send(style(dim, "No item #"+itoa(n)+" in your pack. (type I to list)") + crlf)
+		return
+	}
+	w.use(p, items[n-1])
 }
 
 // atStash reports whether the runner is at their Re-Clone Bay, where their

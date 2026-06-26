@@ -386,6 +386,14 @@ func serve(nc net.Conn, events chan event) {
 		default:
 			if b >= 0x20 && b < 0x7f {
 				c.mu.Lock()
+				// A lone digit at an empty prompt is an instant inventory
+				// quick-use (no Enter), mirroring arrow-key movement.
+				if len(c.inLine) == 0 && b >= '1' && b <= '9' {
+					c.raw("\r\n")
+					c.mu.Unlock()
+					events <- event{typ: evLine, c: c, line: string(b)}
+					continue
+				}
 				c.inLine = append(c.inLine, b)
 				c.raw(string(b)) // echo
 				c.mu.Unlock()

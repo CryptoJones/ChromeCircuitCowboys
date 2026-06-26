@@ -14,6 +14,8 @@ incrementally; see the issue links.)
 - **`OPEN` command for caches.** Crack open a supply/data cache with `OPEN`
   instead of attacking it — the intuitive verb for an inert container. (#16)
 - **Combat shortcuts.** `A` = attack, `LO` = loot (`L` still = look). (#14)
+- **Numbered inventory + quick-use.** `INVENTORY` is numbered; pressing a digit
+  at the prompt instantly USEs that slot (no Enter — fast for combat). (#13)
 - **Batch quest accept.** `ACCEPT 1 2 3` takes several bounties at once and
   `ACCEPT ALL` takes every eligible one; each pick is guarded independently. (#17)
 - **Character points.** Each level banks spendable character points (shown on
