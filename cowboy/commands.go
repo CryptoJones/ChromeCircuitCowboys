@@ -76,6 +76,14 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.wireScrip(p, arg)
 	case "mail", "messages":
 		w.readMail(p)
+	case "trade":
+		w.trade(p, arg)
+	case "offer":
+		w.tradeOffer(p, arg)
+	case "confirm":
+		w.tradeConfirm(p)
+	case "cancel":
+		w.tradeCancel(p)
 	case "map", "m":
 		w.showMap(p)
 	case "say", "'":
@@ -674,6 +682,7 @@ func helpText() string {
 		"  map (m)         — local map: exits, and the way deeper or out\r\n" +
 		"  talk            — ask a local about this level (lore/backstory)\r\n" +
 		"  send / wire      — at a terminal: SEND <runner> <msg> / WIRE <runner> <scrip>; MAIL to read\r\n" +
+		"  trade <runner>   — face-to-face swap: OFFER <item>/<scrip>, CONFIRM, CANCEL\r\n" +
 		"  spend <stat>    — spend character points to raise body/reflexes/intelligence\r\n" +
 		"  attack <foe> (a) — engage a hostile (alias kill/breach)\r\n" +
 		"  flee            — try to break a fight and bolt\r\n" +

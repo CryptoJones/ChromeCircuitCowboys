@@ -36,6 +36,9 @@ incrementally; see the issue links.)
 - **Data terminals.** At any vendor/medic room or the Data Port: `SEND <runner>
   <msg>` to mail another player (delivered on their next login), `WIRE <runner>
   <scrip>` to transfer credits (even to offline runners), and `MAIL` to read. (#24)
+- **Player trading.** `TRADE <runner>` opens a face-to-face swap: each side
+  OFFERs items/scrip, and nothing moves until BOTH CONFIRM (any change re-opens
+  both confirmations). Atomic, validated, CANCEL anytime. (#25)
 - **Batch quest accept.** `ACCEPT 1 2 3` takes several bounties at once and
   `ACCEPT ALL` takes every eligible one; each pick is guarded independently. (#17)
 - **Character points.** Each level banks spendable character points (shown on
