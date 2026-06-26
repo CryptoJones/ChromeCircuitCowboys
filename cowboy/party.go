@@ -18,7 +18,7 @@ func (pt *Party) has(p *Player) bool {
 	return false
 }
 
-func (pt *Party) add(p *Player)    { pt.Members = append(pt.Members, p); p.party = pt }
+func (pt *Party) add(p *Player) { pt.Members = append(pt.Members, p); p.party = pt }
 func (pt *Party) remove(p *Player) {
 	out := pt.Members[:0]
 	for _, m := range pt.Members {
@@ -75,6 +75,10 @@ func (w *World) invite(p *Player, arg string) {
 		p.send(style(dim, target.Name+" is already in a crew.") + crlf)
 		return
 	}
+	if target.IsBot { // AI runners never refuse — they fall in and follow you around
+		w.botJoinCrew(p, target)
+		return
+	}
 	if target.partyInvite != nil {
 		p.send(style(dim, target.Name+" already has a pending invite.") + crlf)
 		return
@@ -111,6 +115,33 @@ func (w *World) acceptInvite(p *Player) {
 	}
 	inviter.party.add(p)
 	inviter.party.broadcast(style(green, p.Name+" joins the crew. ("+itoa(len(inviter.party.Members))+" members)") + crlf)
+}
+
+// botJoinCrew auto-joins an AI runner to the inviter's crew (no ACCEPT step) and
+// warps it to the inviter's room so it follows from there. Bots in a crew go
+// silent — no chatter, no wandering — and just tag along (see tickBots).
+func (w *World) botJoinCrew(leader, bot *Player) {
+	if leader.party == nil {
+		leader.party = &Party{Leader: leader}
+		leader.party.add(leader)
+	}
+	if bot.RoomID != leader.RoomID { // bring it to you so partyFollow can carry it onward
+		w.broadcast(bot.RoomID, bot, style(dim, bot.Name+" peels off, answering a crew call.")+crlf)
+		bot.RoomID = leader.RoomID
+		w.broadcast(leader.RoomID, bot, style(dim, bot.Name+" rolls up alongside "+leader.Name+".")+crlf)
+	}
+	leader.party.add(bot)
+	leader.party.broadcast(style(green, bot.Name+" falls in with your crew. ("+itoa(len(leader.party.Members))+" members)") + crlf)
+}
+
+// firstHuman returns the first non-bot member of a crew, or nil if it's all bots.
+func firstHuman(pt *Party) *Player {
+	for _, m := range pt.Members {
+		if !m.IsBot {
+			return m
+		}
+	}
+	return nil
 }
 
 // declineInvite turns down a pending crew invite.
@@ -157,7 +188,7 @@ func (w *World) leaveParty(p *Player) {
 	p.send(style(green, "You leave the crew.") + crlf)
 	pt.broadcast(style(dim, p.Name+" left the crew.") + crlf)
 	if wasLeader && len(pt.Members) > 0 {
-		pt.Leader = pt.Members[0]
+		pt.Leader = newLeader(pt)
 		pt.broadcast(style(dim, pt.Leader.Name+" now leads the crew.") + crlf)
 	}
 	w.dissolveIfTooSmall(pt)
@@ -173,14 +204,26 @@ func (w *World) dropFromParty(p *Player) {
 	pt.remove(p)
 	pt.broadcast(style(dim, p.Name+" dropped from the crew.") + crlf)
 	if wasLeader && len(pt.Members) > 0 {
-		pt.Leader = pt.Members[0]
+		pt.Leader = newLeader(pt)
 		pt.broadcast(style(dim, pt.Leader.Name+" now leads the crew.") + crlf)
 	}
 	w.dissolveIfTooSmall(pt)
 }
 
+// newLeader picks a crew's next leader, preferring a human over a bot so control
+// never falls to an AI runner while a real player is still aboard.
+func newLeader(pt *Party) *Player {
+	if h := firstHuman(pt); h != nil {
+		return h
+	}
+	return pt.Members[0]
+}
+
+// dissolveIfTooSmall tears a crew down once it can't function: fewer than two
+// members, or no human left (an all-bot crew has no one to lead it, so the bots
+// are freed back to wandering).
 func (w *World) dissolveIfTooSmall(pt *Party) {
-	if len(pt.Members) < 2 {
+	if len(pt.Members) < 2 || firstHuman(pt) == nil {
 		for _, m := range pt.Members {
 			m.send(style(dim, "The crew dissolves.") + crlf)
 			m.party = nil

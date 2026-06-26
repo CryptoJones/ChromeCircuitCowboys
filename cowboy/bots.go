@@ -130,6 +130,9 @@ func (w *World) tickBots() {
 		if !b.IsBot {
 			continue
 		}
+		if b.party != nil { // crewed up: shut up and follow — no chatter, no wandering off
+			continue
+		}
 		switch w.roll(6) { // ~2/3 of ticks the bot just idles
 		case 0:
 			w.botWander(b)
