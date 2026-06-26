@@ -228,3 +228,42 @@ func (w *World) awardXP(killer *Player, xp int) {
 		w.checkLevelUp(r)
 	}
 }
+
+// addPartyLoot makes a kill drop something usable for each player type (class)
+// in the crew present at the kill, so nobody walks away empty-handed (#50): a
+// RAM consumable for Net-leaning classes, a heal for meat-leaning ones, scaled
+// to the killer's level band. Solo kills are unaffected.
+func (w *World) addPartyLoot(p *Player, loot map[string]int) {
+	if p.party == nil || len(p.party.Members) < 2 {
+		return
+	}
+	band := (p.Level-1)/10 + 1
+	if band < 1 {
+		band = 1
+	}
+	if band > 10 {
+		band = 10
+	}
+	seen := map[string]bool{}
+	for _, m := range p.party.Members {
+		if m.RoomID != p.RoomID { // only the crew actually present shares the drop
+			continue
+		}
+		cls := strings.ToLower(m.Class)
+		if seen[cls] {
+			continue
+		}
+		seen[cls] = true
+		loot[classLootItem(cls, band)]++
+	}
+}
+
+// classLootItem picks a band-appropriate consumable a class will actually use.
+func classLootItem(cls string, band int) string {
+	switch cls {
+	case "hacker", "mechanic": // Net/tech-leaning → RAM
+		return ramFor(band)
+	default: // enforcer / operator / unspecified → survivability
+		return healFor(band)
+	}
+}

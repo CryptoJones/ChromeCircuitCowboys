@@ -11,6 +11,9 @@ Second backlog batch: party/co-op play, economy, QoL, and polish. (Items land
 incrementally; see the issue links.)
 
 ### Added
+- **Party loot for every class** — a crew kill now drops something usable for
+  each player type present (RAM for Net classes, a heal for meat classes),
+  scaled to level. Solo kills unchanged. (#50)
 - **Arc-climax bounties award a character point** — the 19 underground-boss /
   Net-arc story quests now grant a spendable character point on claim. (#32)
 - **Data terminals scattered across the surface** — ~1 in 4 surface rooms now
