@@ -16,6 +16,7 @@ Ideas and tasks not yet scheduled.
 - [ ] Expand all NPCs' default responses via Violet Lotus (they're too terse) ([#39](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/39)) — _do via plan mode_
 - [ ] Sell unwanted items for scrip at vendors (`SELL`) ([#40](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/40))
 - [ ] Multiple players can attack the same mob at once (shared combat + reward model) ([#41](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/41))
+- [ ] Party follow: members move with the leader ([#42](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/42))
 
 - [x] Make any key press continue from the MOTD ([#3](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/3)) — _AdmiralBBS `ShowMOTD` reads any key (or Enter); shipped in AdmiralBBS v2.0.7, live on pluto_
 - [x] Drones have no body — reword the loot text when you loot them ([#8](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/8)) — _shipped v2.2.0: machines leave wreckage, never a corpse_
