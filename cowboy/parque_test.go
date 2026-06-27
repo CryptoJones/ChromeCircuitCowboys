@@ -1,6 +1,9 @@
 package cowboy
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestParqueCentralEightSpokeHub(t *testing.T) {
 	w := NewWorld(NewMemStore())
@@ -50,6 +53,19 @@ func TestDiagonalDirections(t *testing.T) {
 	w.move(p, "in")
 	if p.RoomID != "parque_central" {
 		t.Errorf("IN from a gate should return to the park, in %s", p.RoomID)
+	}
+}
+
+func TestWarmPulseGateIsListed(t *testing.T) {
+	w := NewWorld(NewMemStore())
+	p, drain := newTestPlayer(w, "Boss", "z10_14")
+	w.lookText(p)
+	if out := drain(); !strings.Contains(out, "Exits:") || !strings.Contains(out, "up") {
+		t.Errorf("the Warm Pulse exits should list the gated 'up', got: %q", out)
+	}
+	w.showMap(p)
+	if out := drain(); !strings.Contains(out, "UP") {
+		t.Errorf("MAP should show the gated UP exit, got: %q", out)
 	}
 }
 

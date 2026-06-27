@@ -256,12 +256,15 @@ func (w *World) lookText(p *Player) {
 	if jt, ok := joytoyRooms[p.RoomID]; ok {
 		p.send(style(dim, jt+" is working here — PAY for some company (€$"+itoa(joytoyFee)+").") + crlf)
 	}
-	// Exits.
+	// Exits (mapDirs covers the diagonals too).
 	var dirs []string
-	for _, d := range []string{"north", "south", "east", "west", "up", "down", "in", "out"} {
+	for _, d := range mapDirs {
 		if _, ok := r.Exits[d]; ok {
 			dirs = append(dirs, d)
 		}
+	}
+	if g, ok := departGates[p.RoomID]; ok { // gated one-way exit isn't in r.Exits
+		dirs = append(dirs, g.dir)
 	}
 	p.send(style(dim, "Exits: "+strings.Join(dirs, ", ")) + crlf)
 	// Other players.

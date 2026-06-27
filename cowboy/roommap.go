@@ -245,6 +245,10 @@ func (w *World) showMap(p *Player) {
 		any = true
 		b.WriteString("   " + style(hot, padRight(strings.ToUpper(d), 6)) + style(dim, "→ ") + w.exitLabel(p.RoomID, dest) + crlf)
 	}
+	if g, ok := departGates[p.RoomID]; ok { // gated one-way exit (not in r.Exits)
+		any = true
+		b.WriteString("   " + style(hot, padRight(strings.ToUpper(g.dir), 6)) + style(dim, "→ ") + style(gold, "a way out — one-way (confirm)") + crlf)
+	}
 	if !any {
 		b.WriteString(style(dim, "   (no exits — you're boxed in)") + crlf)
 	}
