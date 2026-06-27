@@ -199,6 +199,27 @@ func (w *World) onwardStep(start string, harder bool) (dir string, ok bool) {
 	return "", false
 }
 
+// zoneObjectiveStep finds the way to the current zone's objective — the home of a
+// quest-target mob in this realm+zone — for when there's no harder area to point
+// to (the deepest band). dir == "" with ok means the objective is this very room.
+func (w *World) zoneObjectiveStep(start string) (dir string, ok bool) {
+	realm, zone := areaInfo(start)
+	if zone == 0 {
+		return "", false // surface has no single objective
+	}
+	goals := map[string]bool{}
+	for _, q := range quests {
+		t, has := w.tmpls[q.Target]
+		if !has || t.Home == "" {
+			continue
+		}
+		if tr, tz := areaInfo(t.Home); tr == realm && tz == zone {
+			goals[t.Home] = true
+		}
+	}
+	return w.stepToRooms(start, goals)
+}
+
 // showMap renders the MAP command.
 func (w *World) showMap(p *Player) {
 	r := w.room(p.RoomID)
@@ -231,6 +252,13 @@ func (w *World) showMap(p *Player) {
 
 	if dir, ok := w.onwardStep(p.RoomID, true); ok {
 		b.WriteString("  " + style(gold, "▼ PROCEED to the next harder area: go "+strings.ToUpper(dir)) + crlf)
+	} else if dir, ok := w.zoneObjectiveStep(p.RoomID); ok {
+		// Deepest band — nothing harder to head for, so point at the final objective.
+		if dir == "" {
+			b.WriteString("  " + style(gold, "▼ FINAL OBJECTIVE is HERE — end of the line, cowboy.") + crlf)
+		} else {
+			b.WriteString("  " + style(gold, "▼ FINAL OBJECTIVE: go "+strings.ToUpper(dir)) + crlf)
+		}
 	}
 	if dir, ok := w.onwardStep(p.RoomID, false); ok {
 		b.WriteString("  " + style(dim, "▲ WAY OUT toward easier ground: go "+strings.ToUpper(dir)) + crlf)

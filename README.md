@@ -74,6 +74,7 @@ The BBS bridges callers to the listen address. Flags:
 
 ## Recent releases
 
+- **v2.5.8** — `MAP` no longer goes quiet in the deepest band (L91-99): with no harder area left, it now points you to the zone's **FINAL OBJECTIVE** instead of only showing the way back.
 - **v2.5.7** — **Randomized loot**: mobs now drop varied gear from their zone's shop stock (no more endless stimpaks); AI crewmates no longer inflate party loot. **`GSAY`** crew calls now get answered by your bot crew.
 - **v2.5.6** — Quest **level requirements are waived while you're in a crew** — run higher-tier bounties with a party backing you up.
 - **v2.5.5** — `QUESTS` now shows a **direction to head** for each active bounty (toward the target while hunting, toward the giver/broker once it's READY to claim).
