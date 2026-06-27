@@ -25,6 +25,8 @@ func (w *World) effAttack(p *Player) int {
 var dirAliases = map[string]string{
 	"n": "north", "s": "south", "e": "east", "w": "west", "u": "up", "d": "down",
 	"north": "north", "south": "south", "east": "east", "west": "west", "up": "up", "down": "down",
+	"ne": "northeast", "se": "southeast", "sw": "southwest", "nw": "northwest", // diagonals (park hub)
+	"northeast": "northeast", "southeast": "southeast", "southwest": "southwest", "northwest": "northwest",
 	"out": "out", "o": "out", // capsule pod -> street
 	"in": "in", // street -> your capsule pod
 }
@@ -102,6 +104,10 @@ func (w *World) Command(p *Player, line string) (quit bool) {
 		w.tradeConfirm(p)
 	case "cancel":
 		w.tradeCancel(p)
+	case "yes", "y":
+		w.confirmDepart(p)
+	case "no":
+		w.cancelDepart(p)
 	case "map", "m":
 		w.showMap(p)
 	case "say", "'":
@@ -535,6 +541,10 @@ func (w *World) move(p *Player, dir string) {
 		p.homing = 0
 		p.send(style(dim, "Your recall fizzles as you move.") + crlf)
 	}
+	if w.tryDepartGate(p, dir) { // one-way gated exit — prompts YES/NO instead of moving
+		return
+	}
+	p.confirmExit = "" // any ordinary move cancels a pending departure
 	r := w.room(p.RoomID)
 	dest, ok := r.Exits[dir]
 	if !ok {

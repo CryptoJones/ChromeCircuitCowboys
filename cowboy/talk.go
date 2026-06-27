@@ -124,6 +124,12 @@ type npcVoice struct {
 // roomNPC places named flavor NPCs in specific rooms (the rings / the surface).
 // TALK checks here before the generic per-zone lore.
 var roomNPC = map[string]npcVoice{
+	// El Parque Central — the green heart of the city (Spanish-speaking abuela).
+	"parque_central": {"Abuela Mariposa at the elote cart", []string{
+		"Bienvenido al Parque Central, mijo. Aquí no hay neón que te queme los ojos. // Welcome to Central Park, kid. No neon here to burn your eyes.",
+		"Cómete un elote. Bajaste hasta el fondo y volviste — eso merece maíz. // Eat an elote. You went all the way down and came back — that earns corn.",
+		"Los árboles eran un sueño de los viejos. Alguien lo construyó. Respira. // The trees were the old folks' dream. Someone built it. Breathe.",
+	}},
 	// Spanish-speaking locals around Noche City (#21).
 	"ic_1": {"Rosa, a flower-cart vendor", []string{
 		"¡Hola, choom! Bienvenido a la Ciudad de la Noche.",

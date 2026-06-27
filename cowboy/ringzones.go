@@ -33,7 +33,7 @@ func ring(id, name, desc, flags string, exits map[string]string) *Room {
 }
 
 func buildRingRooms() []*Room {
-	return []*Room{
+	rooms := []*Room{
 		// ---- Inner Circuit (RP-safe express loop) ----
 		ring("ic_1", "Inner Circuit :: Neon Gate", "An elevated maglev platform where the Inner Circuit hums in a ring of cold blue light; the Strip glows far below and Neon Alley is a step south.", "s",
 			map[string]string{"south": "neon_alley", "east": "ic_2", "west": "ic_6"}),
@@ -72,6 +72,31 @@ func buildRingRooms() []*Room {
 		ring("sb_10", "Sprawlbelt :: The Mending Stop", "A folding-cot belt clinic where a street medic patches the beltway's walking wounded and trades word of who's hiring.", "sm",
 			map[string]string{"east": "sb_1", "west": "sb_9"}),
 	}
+	// El Parque Central — the green heart at the dead centre of the rings, a true
+	// 8-spoke hub: the Inner Circuit sits on the four cardinals, the Sprawlbelt on
+	// the four diagonals. Each gate opens IN toward the centre; the park fans back
+	// OUT the eight ways. Also where The Warm Pulse surfaces a runner who's
+	// finished the whole Undercity descent.
+	gates := map[string]string{ // park exit direction -> the ring "gate" room it reaches
+		"north": "ic_1", "east": "ic_3", "south": "ic_4", "west": "ic_6", // Inner Circuit (cardinals)
+		"northeast": "sb_2", "southeast": "sb_5", "southwest": "sb_8", "northwest": "sb_10", // Sprawlbelt (diagonals)
+	}
+	byID := map[string]*Room{}
+	for _, r := range rooms {
+		byID[r.ID] = r
+	}
+	parkExits := map[string]string{}
+	for dir, gateID := range gates {
+		parkExits[dir] = gateID
+		if g := byID[gateID]; g != nil {
+			g.Exits["in"] = "parque_central" // the gate opens IN toward the centre
+		}
+	}
+	park := ring("parque_central", "El Parque Central",
+		"A square kilómetro of impossible green at the dead centre of the rings: real grass underfoot, jacarandás dropping violet blossom, a cracked-tile fountain still whispering. Abuelas sell elotes and champurrado from a cart, niños chase a drone-kite, and the neon keeps a respectful distance out at the rails. Aquí, por fin, se respira. (Here, at last, you can breathe.) Eight paths radiate OUT to the rings — the Inner Circuit on the cardinals, the Sprawlbelt on the diagonals.", "s",
+		parkExits)
+	rooms = append(rooms, park)
+	return rooms
 }
 
 // buildRingMobs places the rings' light L1-11 strays (homed in the non-safe belt

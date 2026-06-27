@@ -74,6 +74,7 @@ The BBS bridges callers to the listen address. Flags:
 
 ## Recent releases
 
+- **v2.6.0** — **El Parque Central**: a green oasis at the dead centre of Noche City, an 8-spoke hub reachable from the surface by heading `IN` toward the centre (Inner Circuit on the cardinals, Sprawlbelt on the diagonals). Adds **diagonal movement** (`NE/SE/SW/NW`) and a **gated one-way exit** from The Warm Pulse (the Undercity finale) that surfaces you in the park after a YES/NO "you can't come straight back" confirm.
 - **v2.5.8** — `MAP` no longer goes quiet in the deepest band (L91-99): with no harder area left, it now points you to the zone's **FINAL OBJECTIVE** instead of only showing the way back.
 - **v2.5.7** — **Randomized loot**: mobs now drop varied gear from their zone's shop stock (no more endless stimpaks); AI crewmates no longer inflate party loot. **`GSAY`** crew calls now get answered by your bot crew.
 - **v2.5.6** — Quest **level requirements are waived while you're in a crew** — run higher-tier bounties with a party backing you up.

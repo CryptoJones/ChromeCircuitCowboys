@@ -26,9 +26,9 @@ type areaDef struct {
 }
 
 type zoneDef struct {
-	band        int
-	key, name   string
-	areas       []areaDef
+	band      int
+	key, name string
+	areas     []areaDef
 }
 
 func a(id, name, desc, flags, mob, cache string) areaDef {
@@ -197,7 +197,7 @@ var undergroundZoneData = []zoneDef{
 		a("z10_11", "The Long Ascent", "The rig grinds up the ceiling track for miles, laser-grids sweeping the rails as a Loom heavy chassis-prime drops onto the cage roof.", "", "e|a Loom heavy chassis-prime", ""),
 		a("z10_12", "Beneath the Tungsten Teeth", "A swaying maintenance platform pinned under the titanic blast-gates, their tungsten teeth grinding open by inches; a port and cradle for the last stand.", "ms", "", ""),
 		a("z10_13", "The Loom Masterframe", "A crystalline storm of hard-light barriers and ceiling laser-grids: the distilled defensive consciousness of the entire corporate era. Sacrifice your chrome, then weld the sky shut.", "", "b|the Loom Masterframe", ""),
-		a("z10_14", "The Warm Pulse", "The gates dead-welded and the link above severed forever; far below the blackouts stop and the geothermal grids settle into a slow steady warmth. Rest, runner.", "ms", "", ""),
+		a("z10_14", "The Warm Pulse", "The gates dead-welded behind you; far below the blackouts stop and the geothermal grids settle into a slow steady warmth. Rest, runner — you earned it. When you're ready, a warm thermal updraft breathes UP through a fissure in the welded sky: climb it and you'll surface at the heart of the city. (Go UP to leave — The Warm Pulse seals behind you and you'd have to descend all over again to return.)", "ms", "", ""),
 	}},
 }
 
@@ -304,6 +304,14 @@ func opposite(d string) string {
 		return "down"
 	case "down":
 		return "up"
+	case "northeast":
+		return "southwest"
+	case "southwest":
+		return "northeast"
+	case "southeast":
+		return "northwest"
+	case "northwest":
+		return "southeast"
 	}
 	return d
 }

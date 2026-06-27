@@ -9,7 +9,7 @@ import "strings"
 // same in the Undercity, the Net, and the surface — it reads the live room
 // graph, so it never drifts from the authored world.
 
-var mapDirs = []string{"north", "south", "east", "west", "up", "down", "in", "out"}
+var mapDirs = []string{"north", "south", "east", "west", "up", "down", "northeast", "southeast", "southwest", "northwest", "in", "out"}
 
 // areaInfo classifies a room id into a realm ("meat", "net", or "city") and a
 // zone number within that realm (0 for the surface). Difficulty rises with the
@@ -292,6 +292,7 @@ func (w *World) partyElsewhere(p *Player) bool {
 var dirShort = map[string]string{
 	"north": "N", "south": "S", "east": "E", "west": "W",
 	"up": "U", "down": "D", "in": "IN", "out": "OUT",
+	"northeast": "NE", "southeast": "SE", "southwest": "SW", "northwest": "NW",
 }
 
 // stepToRooms BFS-walks the room graph from start to the nearest room in goals
