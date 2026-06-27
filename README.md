@@ -74,6 +74,7 @@ The BBS bridges callers to the listen address. Flags:
 
 ## Recent releases
 
+- **v2.5.5** — `QUESTS` now shows a **direction to head** for each active bounty (toward the target while hunting, toward the giver/broker once it's READY to claim).
 - **v2.5.4** — Your crew piles onto a mob the instant **you** attack; crewmates' hits (and hits on them) now show in your **combat log**; `GROUP ALL` recruits every free runner in the room; `INSTALL <item|#> [qty]` installs by inventory number and in bulk (e.g. `INSTALL 1 8`).
 - **v2.5.3** — Crewed AI runners follow you and **fight** any mob attacking the crew; kills, XP, quest credit, and loot stay with you (bots soak hits but never die or steal aggro).
 - **v2.5.2** — **Recruit** AI runners into your crew with `GROUP <runner>` — they auto-join, warp to you, and tag along silently.

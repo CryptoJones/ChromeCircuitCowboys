@@ -260,6 +260,54 @@ func (w *World) partyElsewhere(p *Player) bool {
 	return false
 }
 
+// dirShort abbreviates a direction word for compact display (north → N, etc.).
+var dirShort = map[string]string{
+	"north": "N", "south": "S", "east": "E", "west": "W",
+	"up": "U", "down": "D", "in": "IN", "out": "OUT",
+}
+
+// stepToRooms BFS-walks the room graph from start to the nearest room in goals
+// and returns the first move toward it. dir == "" with ok == true means start is
+// already one of the goal rooms ("you're here"). ok == false means unreachable.
+func (w *World) stepToRooms(start string, goals map[string]bool) (dir string, ok bool) {
+	if len(goals) == 0 {
+		return "", false
+	}
+	if goals[start] {
+		return "", true
+	}
+	type node struct{ id, first string }
+	seen := map[string]bool{start: true}
+	queue := []node{{start, ""}}
+	for len(queue) > 0 {
+		cur := queue[0]
+		queue = queue[1:]
+		r := w.room(cur.id)
+		if r == nil {
+			continue
+		}
+		for _, d := range mapDirs {
+			dest, has := r.Exits[d]
+			if !has {
+				continue
+			}
+			first := cur.first
+			if first == "" {
+				first = d
+			}
+			if goals[dest] {
+				return first, true
+			}
+			if seen[dest] {
+				continue
+			}
+			seen[dest] = true
+			queue = append(queue, node{dest, first})
+		}
+	}
+	return "", false
+}
+
 // stepToParty BFS-walks the room graph to the nearest crewmate not in this room
 // and returns the first move toward them (and whose room it is).
 func (w *World) stepToParty(p *Player) (dir, who string, ok bool) {

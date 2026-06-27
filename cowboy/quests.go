@@ -211,12 +211,68 @@ func (w *World) showQuests(p *Player) {
 		if !ok {
 			continue
 		}
+		ready := got >= q.Count
 		state := itoa(got) + "/" + itoa(q.Count)
-		if got >= q.Count {
+		if ready {
 			state = style(gold, "READY — CLAIM at a broker or its giver")
 		}
-		p.send("  " + style(green, q.Name) + style(dim, " ["+q.Target+"] ") + state + crlf)
+		hint := w.questDirection(p, q, ready)
+		if hint != "" {
+			hint = "  " + hint
+		}
+		p.send("  " + style(green, q.Name) + style(dim, " ["+q.Target+"] ") + state + hint + crlf)
 	}
+}
+
+// questDirection returns a short which-way-to-go hint for an active bounty: toward
+// the turn-in (its giver, or any broker for generic street bounties) when it's
+// READY, otherwise toward the target mob (a live spawn if one exists, else its
+// home). Empty string if there's nowhere to point (unreachable / unknown).
+func (w *World) questDirection(p *Player, q Quest, ready bool) string {
+	goals := map[string]bool{}
+	if ready {
+		if q.Giver != "" {
+			goals[q.Giver] = true
+		} else {
+			for id, r := range w.rooms { // generic bounty turns in at any broker
+				if r.Vendor {
+					goals[id] = true
+				}
+			}
+		}
+	} else {
+		for _, m := range w.mobs { // head for a live instance of the target if we can find one
+			if m.dead {
+				continue
+			}
+			if (m.origin != nil && m.origin.ID == q.Target) || (m.tmpl != nil && m.tmpl.ID == q.Target) {
+				goals[m.RoomID] = true
+			}
+		}
+		if len(goals) == 0 { // none alive right now — point at its spawn home
+			if t, ok := w.tmpls[q.Target]; ok && t.Home != "" {
+				goals[t.Home] = true
+			}
+		}
+	}
+	dir, ok := w.stepToRooms(p.RoomID, goals)
+	if !ok {
+		return ""
+	}
+	if dir == "" { // already standing where you need to be
+		if ready {
+			return style(gold, "→ turn in HERE")
+		}
+		return style(hot, "→ target is HERE")
+	}
+	short := dirShort[dir]
+	if short == "" {
+		short = strings.ToUpper(dir)
+	}
+	if ready {
+		return style(gold, "→ "+short+" to CLAIM")
+	}
+	return style(neon, "→ "+short)
 }
 
 // accept takes bounties offered in the current room (by the local fixer/NPC).
