@@ -76,6 +76,45 @@ var botEmotes = []string{
 	"mutters into a dead comm-line.",
 }
 
+// botCrewReplies are short answers an AI runner radios back when a crewmate uses
+// crew chat (GSAY) — the one time crewed bots break their silence.
+var botCrewReplies = []string{
+	"Copy that, boss.",
+	"On it.",
+	"Right behind you.",
+	"Loud and clear.",
+	"Say the word.",
+	"I'm on overwatch.",
+	"Ten-four, choom.",
+	"Locked and loaded.",
+	"Eyes open, moving up.",
+	"Whatever you need.",
+}
+
+// botCrewChatter has up to two AI runners in the speaker's room answer a crew
+// radio call — the deliberate exception to crewed bots staying silent: they
+// "respond in kind" to GSAY.
+func (w *World) botCrewChatter(speaker *Player) {
+	if speaker.party == nil {
+		return
+	}
+	replied := 0
+	for _, m := range speaker.party.Members {
+		if replied >= 2 {
+			break
+		}
+		if !m.IsBot || m.RoomID != speaker.RoomID {
+			continue
+		}
+		if w.roll(2) != 0 { // only some answer, so it's banter not a wall of text
+			continue
+		}
+		line := botCrewReplies[w.roll(len(botCrewReplies))]
+		speaker.party.broadcast(style(hot, "[crew] "+m.Name+": ") + line + crlf)
+		replied++
+	}
+}
+
 // EnableBots seeds n AI runners across the surface. Call once after NewWorld
 // (the server does; tests opt in). No-op for n<=0; capped at the roster size.
 // Names already taken by a real session are skipped.

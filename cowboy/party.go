@@ -286,6 +286,7 @@ func (w *World) groupChat(p *Player, msg string) {
 		return
 	}
 	p.party.broadcast(style(hot, "[crew] "+p.Name+": ") + msg + crlf)
+	w.botCrewChatter(p) // crewed AI runners answer crew radio calls in kind
 }
 
 // awardXP grants kill XP, split across crew members in the same room (each gets
@@ -334,6 +335,9 @@ func (w *World) addPartyLoot(p *Player, loot map[string]int) {
 	}
 	seen := map[string]bool{}
 	for _, m := range p.party.Members {
+		if m.IsBot { // AI runners don't need gear — and counting them floods the drop
+			continue
+		}
 		if m.RoomID != p.RoomID { // only the crew actually present shares the drop
 			continue
 		}

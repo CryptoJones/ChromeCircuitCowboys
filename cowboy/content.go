@@ -91,12 +91,12 @@ func buildMobTemplates() map[string]*MobTemplate {
 
 // ware is a purchasable item.
 type ware struct {
-	name  string
-	price int
-	heal  int // stimpak: HP restored on use
-	ram   int // ram-chip: RAM restored on use
-	bonus int // weapon: attack bonus granted on purchase (permanent)
-	deck  int // cyberdeck: MaxRAM bonus granted on purchase (permanent)
+	name     string
+	price    int
+	heal     int    // stimpak: HP restored on use
+	ram      int    // ram-chip: RAM restored on use
+	bonus    int    // weapon: attack bonus granted on purchase (permanent)
+	deck     int    // cyberdeck: MaxRAM bonus granted on purchase (permanent)
 	body     int    // implant: permanent Body boost on install
 	refl     int    // implant: permanent Reflexes boost on install
 	intel    int    // implant: permanent Intelligence boost on install
@@ -180,6 +180,21 @@ var (
 	streetWares      = pickWares("stimpak", "ram-chip", "ice-breaker")              // Chrome Rose
 	nightMarketWares = pickWares("stimpak", "ram-chip", "mono-katana", "cyberdeck") // Night Market (+ Emergency Medic)
 )
+
+// areaLootWares returns the shop stock for the area a mob lives in, used to seed
+// random loot drops so a zone's mobs yield the gear sold locally (not just the
+// same consumable). Surface mobs drop street gear; zone mobs drop their band's
+// vendor stock.
+func areaLootWares(roomID string) []ware {
+	realm, zone := areaInfo(roomID)
+	if realm == "city" || zone < 1 {
+		return streetWares
+	}
+	if zone > 10 {
+		zone = 10
+	}
+	return waresForBand(zone)
+}
 
 // waresForRoom returns the gear a vendor in roomID stocks. The two city vendors
 // carry curated street stock; authored zone vendors scale with their band; any

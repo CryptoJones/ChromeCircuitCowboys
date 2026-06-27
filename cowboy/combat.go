@@ -496,6 +496,11 @@ func (w *World) killMob(p *Player, m *Mob) {
 	}
 	if !box { // caches are their own loot; for real kills, cut the crew in
 		w.addPartyLoot(p, loot)
+		// Area loot: ~50% chance to drop a random item from the local zone's shop
+		// stock, so kills yield varied local gear instead of the same consumable.
+		if pool := areaLootWares(m.RoomID); len(pool) > 0 && w.roll(2) == 0 {
+			loot[pool[w.roll(len(pool))].name]++
+		}
 	}
 	w.corpses = append(w.corpses, &Corpse{
 		Owner: m.tmpl.Name, RoomID: m.RoomID, Loot: loot, Scrip: scrip, mob: m, IsICE: ice, IsBox: box, IsMech: mech,
