@@ -74,6 +74,8 @@ The BBS bridges callers to the listen address. Flags:
 
 ## Recent releases
 
+- **v2.6.3** — No shops or medics in the Net — its access shells are still safe checkpoints, but you gear up in meatspace (Net is pure breach/combat).
+
 - **v2.6.2** — `GSAY` now gets answered by **every** crewed AI runner in the room (not just two), each in its own **class voice** (Netrunner/Solo/Techie/Fixer/Medtech/Media/Rocker/Nomad).
 
 - **v2.6.1** — The gated one-way exit (e.g. The Warm Pulse's `UP`) now shows in the room's **exit list and on `MAP`**, so you don't have to know it's there; room exit lists also include the new diagonals.

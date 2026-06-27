@@ -22,11 +22,11 @@ import "fmt"
 // ---------------------------------------------------------------------------
 
 type netAreaDef struct {
-	name                       string
-	topDesc, midDesc, botDesc  string
-	midFoe                     string // ICE foe at the MID layer
-	boss                       string // arc boss at the BOT layer ("" = a data-cache instead); marks the climax
-	hub                        bool   // TOP is a safe-node + band-scaled vendor (the zone's resupply)
+	name                      string
+	topDesc, midDesc, botDesc string
+	midFoe                    string // ICE foe at the MID layer
+	boss                      string // arc boss at the BOT layer ("" = a data-cache instead); marks the climax
+	hub                       bool   // TOP is a safe-node + band-scaled vendor (the zone's resupply)
 }
 
 type netZoneDef struct {
@@ -336,9 +336,8 @@ func buildNetZones() ([]*Room, []*MobTemplate) {
 			bot := &Room{ID: botID, Net: true, Name: ar.name + " :: Core", Desc: wrapText(ar.botDesc, 76),
 				Exits: map[string]string{"up": midID}}
 
-			if ar.hub { // zone resupply: safe access shell with a band-scaled vendor
-				top.Safe, top.Vendor = true, true
-				zoneVendorBand[topID] = z.band
+			if ar.hub { // the zone's safe access shell — no shops/medics in the Net (gear up in meatspace)
+				top.Safe = true
 			} else { // recon ICE patrols the shell
 				mobs = append(mobs, netMob("c", z.band, topID+"_m", "a recon-ICE sentry", topID))
 			}
