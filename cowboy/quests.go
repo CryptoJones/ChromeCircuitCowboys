@@ -182,7 +182,11 @@ func (w *World) showQuests(p *Player) {
 		for i, q := range offered {
 			lvl := ""
 			if p.Level < q.MinLevel {
-				lvl = style(red, "  [needs level "+itoa(q.MinLevel)+"]")
+				if p.party != nil { // running with a crew waives the level requirement
+					lvl = style(dim, "  [lvl "+itoa(q.MinLevel)+" — waived: crew]")
+				} else {
+					lvl = style(red, "  [needs level "+itoa(q.MinLevel)+"]")
+				}
 			}
 			// Colour by the player's state with this bounty: greyed if already
 			// accepted and in progress, RED when it's complete and ready to turn
@@ -313,8 +317,8 @@ func (w *World) accept(p *Player, arg string) {
 		}
 		seen[n] = true
 		q := offered[n-1]
-		if p.Level < q.MinLevel {
-			p.send(style(red, q.Name+": you need level "+itoa(q.MinLevel)+" for that job.") + crlf)
+		if p.party == nil && p.Level < q.MinLevel { // a crew waives the level requirement
+			p.send(style(red, q.Name+": you need level "+itoa(q.MinLevel)+" for that job (or run it with a crew).") + crlf)
 			continue
 		}
 		if _, active := p.Quests[q.ID]; active {
