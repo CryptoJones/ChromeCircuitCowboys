@@ -60,6 +60,22 @@ Ideas and tasks not yet scheduled.
 - [x] Quests redeemable at the giver, not just at brokers ([#7](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/7)) — _claim now pays out at the fixer/ring-giver room or a broker_
 - [x] Teleport-home has a 10-second delay, interrupted if attacked by a mob ([#4](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/4)) — _shipped in v2.0.0 (HOME recall)_
 
+## v2.5.x – v2.6.x — live-session enhancements (AI crew, loot, navigation, Net)
+
+- [x] Default to 32 AI runners populating the world ([#59](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/59)) — _shipped v2.5.1_
+- [x] Recruit AI runners into your crew (GROUP auto-join, silent follow) ([#60](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/60)) — _shipped v2.5.2_
+- [x] Crewed AI runners fight for the crew; kills/XP/loot credit the human ([#61](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/61)) — _shipped v2.5.3_
+- [x] Crew rallies on your attack; show crew actions in the combat log ([#62](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/62)) — _shipped v2.5.4_
+- [x] `GROUP ALL` — recruit every free runner in the room ([#63](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/63)) — _shipped v2.5.4_
+- [x] `INSTALL` by inventory number and quantity (e.g. `INSTALL 1 8`) ([#64](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/64)) — _shipped v2.5.4_
+- [x] `QUESTS` shows a direction to head for each active bounty ([#65](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/65)) — _shipped v2.5.5_
+- [x] Waive quest level requirements while in a crew ([#66](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/66)) — _shipped v2.5.6_
+- [x] Randomized loot drops from each zone's shop stock ([#67](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/67)) — _shipped v2.5.7_
+- [x] `GSAY` answered by all crewed AI runners, in class voice ([#68](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/68)) — _shipped v2.5.7 + v2.6.2_
+- [x] `MAP` points to the FINAL OBJECTIVE in the deepest band ([#69](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/69)) — _shipped v2.5.8_
+- [x] El Parque Central — 8-spoke hub, diagonal movement, gated one-way finale ([#70](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/70)) — _shipped v2.6.0 + v2.6.1_
+- [x] No shops or medics in the Net ([#71](https://github.com/CryptoJones/ChromeCircuitCowboys/issues/71)) — _shipped v2.6.3_
+
 ---
 
 *Proudly Made in Nebraska. Go Big Red! 🌽 <https://xkcd.com/2347/>*
