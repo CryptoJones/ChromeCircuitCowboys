@@ -91,27 +91,41 @@ var botCrewReplies = []string{
 	"Whatever you need.",
 }
 
-// botCrewChatter has up to two AI runners in the speaker's room answer a crew
-// radio call — the deliberate exception to crewed bots staying silent: they
-// "respond in kind" to GSAY.
+// botVoiceReplies are class-flavoured GSAY answers, so each AI runner radios back
+// in its own character's voice. Class is matched lowercased; unknown classes fall
+// back to botCrewReplies.
+var botVoiceReplies = map[string][]string{
+	"netrunner": {"Decrypting now — stand by.", "Eyes on the ICE, boss.", "Routing us through a clean proxy.", "I'm already three layers deep."},
+	"solo":      {"Guns hot. Point me at it.", "Right behind you.", "Say the word and I drop 'em.", "Reloaded and ready."},
+	"techie":    {"Rig's tuned — let's roll.", "I can hotwire that.", "Gimme ten seconds with it.", "Tools are out."},
+	"fixer":     {"I know a guy. Handled.", "Consider it done.", "I'll make some calls.", "Leave the deal to me."},
+	"medtech":   {"Vitals green — patched and ready.", "Don't bleed on my floor.", "Trauma kits stocked.", "I've got you if it goes loud."},
+	"media":     {"Getting this on the feed.", "The whole street's gonna hear it.", "Rolling — keep talking.", "This is a story."},
+	"rocker":    {"Crank it the hell up!", "Let's make some noise.", "For the street!", "I'm wired and ready."},
+	"nomad":     {"The clan rides with you.", "Family's got your back.", "Lead on, kin.", "We move together."},
+}
+
+// botReplyLine picks a GSAY answer in the bot's class voice.
+func botReplyLine(w *World, b *Player) string {
+	pool := botVoiceReplies[strings.ToLower(b.Class)]
+	if len(pool) == 0 {
+		pool = botCrewReplies
+	}
+	return pool[w.roll(len(pool))]
+}
+
+// botCrewChatter has EVERY crewed AI runner in the speaker's room answer a crew
+// radio call, each in its own character's voice — the deliberate exception to
+// crewed bots staying silent: they "respond in kind" to GSAY.
 func (w *World) botCrewChatter(speaker *Player) {
 	if speaker.party == nil {
 		return
 	}
-	replied := 0
 	for _, m := range speaker.party.Members {
-		if replied >= 2 {
-			break
-		}
 		if !m.IsBot || m.RoomID != speaker.RoomID {
 			continue
 		}
-		if w.roll(2) != 0 { // only some answer, so it's banter not a wall of text
-			continue
-		}
-		line := botCrewReplies[w.roll(len(botCrewReplies))]
-		speaker.party.broadcast(style(hot, "[crew] "+m.Name+": ") + line + crlf)
-		replied++
+		speaker.party.broadcast(style(hot, "[crew] "+m.Name+": ") + botReplyLine(w, m) + crlf)
 	}
 }
 

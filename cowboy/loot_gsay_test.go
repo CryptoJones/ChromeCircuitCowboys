@@ -51,18 +51,32 @@ func TestPartyLootSkipsBots(t *testing.T) {
 	}
 }
 
-func TestGsayBotsRespond(t *testing.T) {
+func TestGsayAllBotsRespondInVoice(t *testing.T) {
 	w := NewWorld(NewMemStore())
-	w.SetRoll(func(n int) int { return 0 }) // force bots to answer + pick the first line
-	w.EnableBots(1)
-	bot := botsIn(w)[0]
+	w.SetRoll(func(n int) int { return 0 }) // deterministic line pick
+	w.EnableBots(5)
+	bots := botsIn(w)
 	boss, drain := newTestPlayer(w, "Boss", "ic_1")
-	w.invite(boss, bot.Name)
+	for _, b := range bots { // recruit all five into the crew
+		w.invite(boss, b.Name)
+	}
 	drain() // clear join noise
 
 	w.groupChat(boss, "form up on me")
 	out := drain()
-	if !strings.Contains(out, bot.Name) || !strings.Contains(out, "[crew]") {
-		t.Errorf("a crewed bot should answer GSAY in the crew channel, got: %q", out)
+
+	// EVERY crewed bot in the room answers (not just two).
+	for _, b := range bots {
+		if !strings.Contains(out, b.Name+": ") {
+			t.Errorf("crewed bot %q should answer GSAY, missing from: %q", b.Name, out)
+		}
+	}
+	// And the reply is in that bot's class voice (e.g. a netrunner's first line).
+	for _, b := range bots {
+		if pool := botVoiceReplies[strings.ToLower(b.Class)]; len(pool) > 0 {
+			if !strings.Contains(out, pool[0]) {
+				t.Errorf("bot %q (%s) should answer in class voice %q", b.Name, b.Class, pool[0])
+			}
+		}
 	}
 }
